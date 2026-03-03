@@ -75,7 +75,8 @@ body {
   display: flex;
   gap: 4px;
   flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 24px;
 }
 .nav-tool {
   display: inline-flex;

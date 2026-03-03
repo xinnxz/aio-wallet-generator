@@ -473,10 +473,9 @@ body {
   color: var(--gray-700);
 }
 .tool-sub {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--gray-400);
   margin-top: -4px;
-  display: none;
 }
 
 /* ============================

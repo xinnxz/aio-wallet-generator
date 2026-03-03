@@ -1,30 +1,7 @@
 /**
- * app.js — Client-side wallet generation + UI + motion effects
+ * app.js — Client-side wallet generation + UI
  * Vanilla JS, no framework
  */
-
-// ==============================
-// MOTION: Scroll Reveal + Parallax
-// ==============================
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Parallax: move hero background shapes on scroll
-const heroBg = document.querySelector('.hero-bg');
-if (heroBg) {
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    heroBg.style.transform = `translateY(${y * 0.3}px)`;
-  }, { passive: true });
-}
 
 // -- State --
 const state = {

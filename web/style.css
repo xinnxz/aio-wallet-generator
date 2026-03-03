@@ -91,11 +91,9 @@ body {
 .nav-link:hover, .nav-link.active { color: var(--gray-900); }
 
 /* -- Hero -- */
-/* -- Hero -- */
 .hero {
   text-align: center;
-  padding: 56px 20px 32px;
-  background: url('./images/hero-bg.png') center/cover no-repeat;
+  padding: 48px 20px 24px;
 }
 .hero h1 {
   font-size: 28px;

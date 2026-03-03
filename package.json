@@ -1,0 +1,59 @@
+{
+  "name": "web3-wallet-toolkit",
+  "version": "1.0.0",
+  "description": "All-in-One Web3 Wallet Generator - Generate, manage & export 10K+ wallets across 30+ chains",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "web3-wallet": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "vite web",
+    "build": "vite build web"
+  },
+  "keywords": [
+    "web3",
+    "wallet",
+    "generator",
+    "ethereum",
+    "solana",
+    "bitcoin",
+    "airdrop",
+    "crypto",
+    "bulk",
+    "batch"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ethers": "^6.13.0",
+    "@solana/web3.js": "^1.95.0",
+    "bitcoinjs-lib": "^6.1.6",
+    "ecpair": "^2.1.0",
+    "tiny-secp256k1": "^2.2.3",
+    "bip39": "^3.1.0",
+    "bip32": "^4.0.0",
+    "tronweb": "^6.0.0",
+    "@mysten/sui": "^1.16.0",
+    "aptos": "^1.21.0",
+    "@cosmjs/crypto": "^0.32.4",
+    "@cosmjs/amino": "^0.32.4",
+    "@cosmjs/encoding": "^0.32.4",
+    "@cosmjs/proto-signing": "^0.32.4",
+    "@ton/ton": "^15.0.0",
+    "@ton/crypto": "^3.3.0",
+    "starknet": "^6.17.0",
+    "tweetnacl": "^1.0.3",
+    "bs58": "^6.0.0",
+    "commander": "^12.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.1.0",
+    "cli-table3": "^0.6.5",
+    "json2csv": "^6.0.0-alpha.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

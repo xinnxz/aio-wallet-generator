@@ -774,16 +774,40 @@ body {
   font-size: 12px;
   color: var(--gray-800);
 }
-.key-cell {
+/* -- Detail row (expandable keys) -- */
+.detail-row td {
+  padding: 0 16px 10px !important;
+  border-bottom: 1px solid var(--gray-100) !important;
+  background: var(--blue-light) !important;
+}
+.detail-row:hover td { background: var(--blue-light) !important; }
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.detail-field {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.detail-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--gray-400);
+  flex-shrink: 0;
+  min-width: 72px;
+}
+.detail-value {
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 11px;
-  color: var(--gray-500);
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: var(--gray-600);
+  word-break: break-all;
+  background: none;
+  padding: 0;
 }
-.col-key.hidden { display: none; }
 
 .chain-tag {
   display: inline-block;

@@ -217,17 +217,12 @@ function render() {
 
   dom.tbody.innerHTML = '';
   for (const w of slice) {
+    // Main row (always 4 columns: #, Chain, Address, Actions)
     const tr = document.createElement('tr');
-
-    // Build key columns visibility
-    const keyHidden = state.showKeys ? '' : 'hidden';
-
     tr.innerHTML = `
       <td style="color:#9ca3af;font-size:12px">${w.index}</td>
       <td><span class="chain-tag">${w.chain.toUpperCase()}</span></td>
       <td class="address-cell" title="${w.address}">${w.address}</td>
-      <td class="key-cell col-key ${keyHidden}" title="${w.privateKey || ''}">${w.privateKey || ''}</td>
-      <td class="key-cell col-key ${keyHidden}" title="${w.mnemonic || ''}">${w.mnemonic || '-'}</td>
       <td>
         <button class="copy-btn" data-val="${esc(w.address)}" data-label="Copy Address" title="Copy address">
           <i class="hgi-stroke hgi-copy-01"></i> Copy Address
@@ -237,15 +232,25 @@ function render() {
         </button>` : ''}
       </td>`;
     dom.tbody.appendChild(tr);
+
+    // Detail row (only visible when showKeys is on)
+    if (state.showKeys) {
+      const detailTr = document.createElement('tr');
+      detailTr.className = 'detail-row';
+      detailTr.innerHTML = `<td colspan="4">
+        <div class="detail-content">
+          ${w.privateKey ? `<div class="detail-field"><span class="detail-label">Private Key</span><code class="detail-value">${esc(w.privateKey)}</code></div>` : ''}
+          ${w.mnemonic ? `<div class="detail-field"><span class="detail-label">Mnemonic</span><code class="detail-value">${esc(w.mnemonic)}</code></div>` : ''}
+        </div>
+      </td>`;
+      dom.tbody.appendChild(detailTr);
+    }
   }
 
   dom.resultCount.textContent = list.length.toLocaleString();
   dom.pageInfo.textContent = `Page ${state.page} of ${pages}`;
   dom.prevPage.disabled = state.page <= 1;
   dom.nextPage.disabled = state.page >= pages;
-
-  // Update header column visibility
-  $$('th.col-key').forEach(th => th.classList.toggle('hidden', !state.showKeys));
 }
 
 function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }

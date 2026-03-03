@@ -21,8 +21,11 @@
         <span>Web3 Wallet Generator</span>
       </a>
       <div class="nav-links">
-        <a href="#generator" class="nav-link active">Generator</a>
-        <a href="https://github.com" target="_blank" class="nav-link">GitHub</a>
+        <a href="/" class="nav-link active">Generator</a>
+        <a href="chains.html" class="nav-link">Chains</a>
+        <button class="nav-toggle" id="dark-toggle" title="Toggle dark mode">
+          <i class="hgi-stroke hgi-moon-02" id="dark-icon"></i>
+        </button>
       </div>
     </div>
   </nav>
@@ -169,6 +172,10 @@
           <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
           <span id="toggle-text">Show keys</span>
         </button>
+        <button class="btn-ghost" id="copy-all-btn">
+          <i class="hgi-stroke hgi-copy-01"></i>
+          Copy all
+        </button>
         <button class="btn-ghost" id="clear-btn">
           <i class="hgi-stroke hgi-delete-02"></i>
           Clear
@@ -217,6 +224,15 @@
         <i class="hgi-stroke hgi-text-font"></i> TXT
       </button>
     </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section class="history-section" id="history-section" style="display:none">
+    <h3>History</h3>
+    <div id="history-list" class="history-list"></div>
+    <button class="btn-ghost" id="clear-history" style="margin-top:8px">
+      <i class="hgi-stroke hgi-delete-02"></i> Clear history
+    </button>
   </section>
 
   <!-- FOOTER -->

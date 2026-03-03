@@ -349,3 +349,124 @@ document.addEventListener('click', e => {
 $('#export-csv').addEventListener('click', exportCSV);
 $('#export-json').addEventListener('click', exportJSON);
 $('#export-txt').addEventListener('click', exportTXT);
+
+// ==============================
+// DARK MODE
+// ==============================
+const darkToggle = $('#dark-toggle');
+const darkIcon = $('#dark-icon');
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  darkIcon.className = theme === 'dark' ? 'hgi-stroke hgi-sun-03' : 'hgi-stroke hgi-moon-02';
+  localStorage.setItem('theme', theme);
+}
+
+// Init from localStorage
+if (localStorage.getItem('theme') === 'dark') setTheme('dark');
+
+darkToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ==============================
+// COPY ALL ADDRESSES
+// ==============================
+$('#copy-all-btn').addEventListener('click', () => {
+  if (!state.wallets.length) return toast('No wallets to copy', true);
+  const addresses = state.wallets.map(w => w.address).join('\n');
+  navigator.clipboard.writeText(addresses).then(() => {
+    toast(`${state.wallets.length} addresses copied`);
+  }).catch(() => toast('Copy failed', true));
+});
+
+// ==============================
+// HISTORY (localStorage)
+// ==============================
+const HISTORY_KEY = 'wallet_gen_history';
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveToHistory(chain, count, wallets) {
+  const history = getHistory();
+  history.unshift({
+    id: Date.now(),
+    chain,
+    count,
+    date: new Date().toLocaleString(),
+    wallets: wallets.slice(0, 500), // cap at 500 to save space
+  });
+  // Keep max 10 entries
+  if (history.length > 10) history.length = 10;
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch {}
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = getHistory();
+  const section = $('#history-section');
+  const list = $('#history-list');
+
+  if (!history.length) { section.style.display = 'none'; return; }
+
+  section.style.display = 'block';
+  list.innerHTML = '';
+
+  for (const h of history) {
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `
+      <div>
+        <strong>${h.chain.toUpperCase()}</strong> — ${h.count.toLocaleString()} wallets
+        <span>${h.date}</span>
+      </div>
+      <button class="history-load" data-id="${h.id}">Load</button>`;
+    list.appendChild(item);
+  }
+}
+
+// Load history on click
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.history-load');
+  if (!btn) return;
+  const history = getHistory();
+  const entry = history.find(h => h.id === parseInt(btn.dataset.id));
+  if (!entry) return;
+
+  state.wallets = entry.wallets;
+  state.chain = entry.chain;
+  state.page = 1;
+  state.query = '';
+  dom.searchInput.value = '';
+  dom.resultsSection.style.display = 'block';
+  dom.exportSection.style.display = 'block';
+  render();
+  dom.resultsSection.scrollIntoView({ behavior: 'smooth' });
+  toast(`Loaded ${entry.count} ${entry.chain.toUpperCase()} wallets`);
+});
+
+// Clear history
+$('#clear-history').addEventListener('click', () => {
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+  toast('History cleared');
+});
+
+// Hook into generate — save to history after generation
+const origGenClick = dom.generateBtn.onclick;
+dom.generateBtn.addEventListener('click', () => {
+  // After generate finishes, save to history
+  const checkSave = setInterval(() => {
+    if (!state.generating && state.wallets.length) {
+      clearInterval(checkSave);
+      saveToHistory(state.chain, state.wallets.length, state.wallets);
+    }
+  }, 500);
+});
+
+// Init history on load
+renderHistory();

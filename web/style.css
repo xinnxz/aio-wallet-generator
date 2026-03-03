@@ -619,3 +619,82 @@ body {
   .input-row .input { max-width: 100%; }
   .stats-inner { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* -- Nav Toggle -- */
+.nav-toggle {
+  padding: 6px 8px;
+  background: none;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--gray-500);
+  font-size: 16px;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+}
+.nav-toggle:hover { background: var(--gray-50); }
+
+/* -- History -- */
+.history-section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.history-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.history-list { display: flex; flex-direction: column; gap: 6px; }
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  font-size: 13px;
+}
+.history-item span { color: var(--gray-500); font-size: 12px; }
+.history-load {
+  padding: 4px 10px;
+  font-size: 11px;
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  color: var(--blue);
+  font-family: inherit;
+}
+.history-load:hover { background: var(--blue-light); }
+
+/* ============================
+   DARK MODE
+   ============================ */
+[data-theme="dark"] {
+  --white: #1a1a2e;
+  --gray-50: #16162a;
+  --gray-100: #1e1e3a;
+  --gray-200: #2a2a4a;
+  --gray-300: #3a3a5a;
+  --gray-400: #7a7a9a;
+  --gray-500: #9a9ab0;
+  --gray-600: #b0b0c8;
+  --gray-700: #d0d0e0;
+  --gray-800: #e8e8f0;
+  --gray-900: #f5f5fa;
+  --blue: #3b82f6;
+  --blue-light: rgba(59,130,246,0.15);
+  --green: #22c55e;
+  --red: #ef4444;
+}
+[data-theme="dark"] body { background: #0f0f23; }
+[data-theme="dark"] .nav { background: rgba(26,26,46,0.9); }
+[data-theme="dark"] .hero-bg::before { opacity: 0.08; }
+[data-theme="dark"] .hero-bg::after { opacity: 0.06; }
+[data-theme="dark"] .search-box { background: var(--gray-100); }
+[data-theme="dark"] .search-box .input { background: transparent; color: var(--gray-800); }
+[data-theme="dark"] .input { background: var(--gray-100); color: var(--gray-800); border-color: var(--gray-300); }

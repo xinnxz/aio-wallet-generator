@@ -281,17 +281,21 @@ body {
   padding: 8px;
 }
 .step-num {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
   border-radius: 50%;
   background: var(--blue);
   color: var(--white);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
+  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: 1px;
 }
 .step-item strong {
   display: block;
@@ -311,6 +315,75 @@ body {
     grid-template-columns: 1fr;
   }
   .hero-sidebar { display: none; }
+}
+
+/* ============================
+   TRUST & SECURITY
+   ============================ */
+.trust-section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.trust-inner { text-align: center; }
+.trust-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+}
+.trust-sub {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+}
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  text-align: left;
+}
+.trust-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.trust-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.trust-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.trust-icon--green { background: #ecfdf5; color: #059669; }
+.trust-icon--blue { background: #eff6ff; color: #2563eb; }
+.trust-icon--purple { background: #f5f3ff; color: #7c3aed; }
+.trust-icon--orange { background: #fff7ed; color: #ea580c; }
+.trust-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 6px;
+}
+.trust-card p {
+  font-size: 12px;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .trust-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================

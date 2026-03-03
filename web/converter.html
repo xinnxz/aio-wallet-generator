@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converter — Web3 Wallet Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Format Converter</h1>
+      <p>Convert between hex, Base58, Bech32, and other formats.</p>
+    </div>
+  </section>
+
+  <section style="max-width:600px;margin:0 auto;padding:0 20px 40px;">
+
+    <div class="form-card" style="margin-bottom:24px">
+      <div class="form-header"><h2>Hex ↔ Base58</h2></div>
+      <div class="form-body">
+        <label class="form-label">Hex</label>
+        <input type="text" id="hex-input" class="input" placeholder="0a1b2c3d..." style="font-family:monospace;font-size:12px">
+        <div style="display:flex;gap:8px;margin:12px 0">
+          <button class="btn-outline" id="hex-to-b58">Hex → Base58</button>
+          <button class="btn-outline" id="b58-to-hex">Base58 → Hex</button>
+        </div>
+        <label class="form-label">Base58</label>
+        <input type="text" id="b58-input" class="input" placeholder="5Kd3..." style="font-family:monospace;font-size:12px">
+      </div>
+    </div>
+
+    <div class="form-card" style="margin-bottom:24px">
+      <div class="form-header"><h2>Checksum Address</h2></div>
+      <div class="form-body">
+        <label class="form-label">EVM Address (lowercase or mixed)</label>
+        <input type="text" id="checksum-input" class="input" placeholder="0xd8da6bf26964af9d7eed9e03e53415d37aa96045" style="font-family:monospace;font-size:12px">
+        <button class="btn-primary" id="checksum-btn" style="margin-top:12px">
+          <i class="hgi-stroke hgi-checkmark-circle-02"></i> Checksummed
+        </button>
+        <div id="checksum-result" style="display:none;margin-top:12px;padding:12px;background:var(--blue-light);border-radius:8px;font-family:monospace;font-size:12px;word-break:break-all;color:var(--blue)"></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-header"><h2>Mnemonic ↔ Seed</h2></div>
+      <div class="form-body">
+        <label class="form-label">BIP39 Mnemonic (12 or 24 words)</label>
+        <textarea id="mnemonic-input" class="input" rows="2" placeholder="abandon abandon abandon ..." style="resize:vertical;font-size:13px"></textarea>
+        <button class="btn-primary" id="mnemonic-btn" style="margin-top:12px">
+          <i class="hgi-stroke hgi-exchange-01"></i> Generate Seed
+        </button>
+        <div id="seed-result" style="display:none;margin-top:12px;padding:12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;font-family:monospace;font-size:11px;word-break:break-all"></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>All conversions are processed client-side. Nothing leaves your browser.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    // Base58 alphabet
+    const ALPHA = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
+    function hexToBytes(hex) {
+      hex = hex.replace(/^0x/, '');
+      const bytes = [];
+      for (let i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
+      return new Uint8Array(bytes);
+    }
+
+    function bytesToHex(bytes) {
+      return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function encodeBase58(bytes) {
+      let num = BigInt('0x' + bytesToHex(bytes));
+      let result = '';
+      while (num > 0n) { result = ALPHA[Number(num % 58n)] + result; num /= 58n; }
+      for (const b of bytes) { if (b === 0) result = '1' + result; else break; }
+      return result || '1';
+    }
+
+    function decodeBase58(str) {
+      let num = 0n;
+      for (const c of str) {
+        const i = ALPHA.indexOf(c);
+        if (i === -1) throw new Error('Invalid Base58 char: ' + c);
+        num = num * 58n + BigInt(i);
+      }
+      let hex = num.toString(16);
+      if (hex.length % 2) hex = '0' + hex;
+      const bytes = [];
+      for (let i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
+      for (const c of str) { if (c === '1') bytes.unshift(0); else break; }
+      return new Uint8Array(bytes);
+    }
+
+    // Hex → Base58
+    document.querySelector('#hex-to-b58').addEventListener('click', () => {
+      try {
+        const hex = document.querySelector('#hex-input').value.trim();
+        document.querySelector('#b58-input').value = encodeBase58(hexToBytes(hex));
+      } catch (e) { alert('Invalid hex: ' + e.message); }
+    });
+
+    // Base58 → Hex
+    document.querySelector('#b58-to-hex').addEventListener('click', () => {
+      try {
+        const b58 = document.querySelector('#b58-input').value.trim();
+        document.querySelector('#hex-input').value = bytesToHex(decodeBase58(b58));
+      } catch (e) { alert('Invalid Base58: ' + e.message); }
+    });
+
+    // Checksum
+    document.querySelector('#checksum-btn').addEventListener('click', () => {
+      const addr = document.querySelector('#checksum-input').value.trim();
+      try {
+        const checksummed = ethers.getAddress(addr);
+        const r = document.querySelector('#checksum-result');
+        r.style.display = 'block';
+        r.textContent = checksummed;
+      } catch { alert('Invalid EVM address'); }
+    });
+
+    // Mnemonic → Seed
+    document.querySelector('#mnemonic-btn').addEventListener('click', () => {
+      const mn = document.querySelector('#mnemonic-input').value.trim();
+      if (!mn) return alert('Enter a mnemonic');
+      try {
+        const wallet = ethers.Wallet.fromPhrase(mn);
+        const r = document.querySelector('#seed-result');
+        r.style.display = 'block';
+        r.innerHTML = `<strong>Address:</strong> ${wallet.address}<br><strong>Private Key:</strong> ${wallet.privateKey}`;
+      } catch (e) { alert('Invalid mnemonic: ' + e.message); }
+    });
+  </script>
+</body>
+</html>

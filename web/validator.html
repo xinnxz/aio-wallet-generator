@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validate Address — Web3 Wallet Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Validate Wallet Address</h1>
+      <p>Check if a wallet address is valid for any supported chain.</p>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <div class="form-card">
+      <div class="form-header">
+        <h2>Paste an address</h2>
+      </div>
+      <div class="form-body">
+        <label class="form-label" for="address-input">Address</label>
+        <input type="text" id="address-input" class="input" placeholder="0x... / bc1... / T... / cosmos1...">
+
+        <div style="margin-top:16px">
+          <button class="btn-primary" id="validate-btn">
+            <i class="hgi-stroke hgi-checkmark-circle-02"></i> Validate
+          </button>
+        </div>
+
+        <div id="result" style="display:none; margin-top:16px; padding:16px; border-radius:8px; font-size:14px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>All validation is performed client-side. Nothing is sent to any server.</p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    const input = document.querySelector('#address-input');
+    const btn = document.querySelector('#validate-btn');
+    const result = document.querySelector('#result');
+
+    const patterns = {
+      evm:     { re: /^0x[0-9a-fA-F]{40}$/, name: 'EVM (Ethereum, BSC, Polygon, etc.)' },
+      bitcoin_native: { re: /^bc1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,90}$/, name: 'Bitcoin (Native SegWit)' },
+      bitcoin_legacy: { re: /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/, name: 'Bitcoin (Legacy/SegWit)' },
+      solana:  { re: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/, name: 'Solana' },
+      tron:    { re: /^T[1-9A-HJ-NP-Za-km-z]{33}$/, name: 'Tron' },
+      cosmos:  { re: /^(cosmos|osmo|celestia|sei|inj|juno|evmos|kava|stride|akash|stars|regen)1[a-z0-9]{38}$/, name: 'Cosmos (IBC)' },
+      sui:     { re: /^0x[0-9a-fA-F]{64}$/, name: 'Sui / Aptos / Starknet' },
+      ton:     { re: /^(EQ|UQ)[A-Za-z0-9_-]{46}$/, name: 'TON' },
+    };
+
+    btn.addEventListener('click', () => {
+      const addr = input.value.trim();
+      if (!addr) { showResult('Enter an address to validate.', 'error'); return; }
+
+      for (const [key, p] of Object.entries(patterns)) {
+        if (p.re.test(addr)) {
+          showResult(`Valid ${p.name} address`, 'success');
+          return;
+        }
+      }
+      showResult('Address does not match any known chain format.', 'error');
+    });
+
+    function showResult(msg, type) {
+      result.style.display = 'block';
+      result.textContent = msg;
+      result.style.background = type === 'success' ? 'var(--blue-light)' : '#fef2f2';
+      result.style.color = type === 'success' ? 'var(--blue)' : '#dc2626';
+      result.style.border = type === 'success' ? '1px solid var(--blue)' : '1px solid #fca5a5';
+    }
+  </script>
+</body>
+</html>

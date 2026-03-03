@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encrypt / Decrypt — Web3 Wallet Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Encrypt / Decrypt Wallet Files</h1>
+      <p>Protect your wallet data with AES-256-GCM encryption.</p>
+    </div>
+  </section>
+
+  <section style="max-width:520px;margin:0 auto;padding:0 20px 40px;">
+    <div class="form-card" style="margin-bottom:24px">
+      <div class="form-header"><h2>Encrypt</h2></div>
+      <div class="form-body">
+        <label class="form-label">Paste wallet data (JSON)</label>
+        <textarea id="encrypt-input" class="input" rows="5" placeholder='[{"address": "0x...", "privateKey": "0x..."}]' style="resize:vertical;font-family:'SF Mono',monospace;font-size:12px"></textarea>
+
+        <label class="form-label" style="margin-top:12px">Password</label>
+        <input type="password" id="encrypt-pass" class="input" placeholder="Strong password">
+
+        <button class="btn-primary" style="margin-top:16px" id="encrypt-btn">
+          <i class="hgi-stroke hgi-lock-key"></i> Encrypt & Download
+        </button>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-header"><h2>Decrypt</h2></div>
+      <div class="form-body">
+        <label class="form-label">Upload encrypted file</label>
+        <input type="file" id="decrypt-file" accept=".encrypted,.json,.txt" style="font-size:13px;margin-bottom:12px">
+
+        <label class="form-label">Password</label>
+        <input type="password" id="decrypt-pass" class="input" placeholder="Enter password">
+
+        <button class="btn-primary" style="margin-top:16px" id="decrypt-btn">
+          <i class="hgi-stroke hgi-lock-unlocked-01"></i> Decrypt
+        </button>
+
+        <pre id="decrypt-output" style="display:none;margin-top:16px;padding:16px;background:var(--gray-50);border-radius:8px;font-size:12px;overflow-x:auto;border:1px solid var(--gray-200)"></pre>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>AES-256-GCM with PBKDF2 key derivation (100K iterations). All processing client-side.</p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script>
+    // Encrypt using Web Crypto API
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const key = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+      return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, key, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+    }
+
+    document.querySelector('#encrypt-btn').addEventListener('click', async () => {
+      const data = document.querySelector('#encrypt-input').value.trim();
+      const pass = document.querySelector('#encrypt-pass').value;
+      if (!data || !pass) return alert('Provide data and password');
+
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(pass, salt);
+      const enc = new TextEncoder();
+      const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(data));
+
+      // Pack: salt(16) + iv(12) + ciphertext
+      const packed = new Uint8Array(salt.length + iv.length + ciphertext.byteLength);
+      packed.set(salt, 0);
+      packed.set(iv, 16);
+      packed.set(new Uint8Array(ciphertext), 28);
+
+      const blob = new Blob([packed], { type: 'application/octet-stream' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `wallets-${Date.now()}.encrypted`;
+      a.click();
+    });
+
+    document.querySelector('#decrypt-btn').addEventListener('click', async () => {
+      const file = document.querySelector('#decrypt-file').files[0];
+      const pass = document.querySelector('#decrypt-pass').value;
+      if (!file || !pass) return alert('Provide file and password');
+
+      const buf = await file.arrayBuffer();
+      const arr = new Uint8Array(buf);
+      const salt = arr.slice(0, 16);
+      const iv = arr.slice(16, 28);
+      const ciphertext = arr.slice(28);
+
+      try {
+        const key = await deriveKey(pass, salt);
+        const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+        const text = new TextDecoder().decode(dec);
+        const output = document.querySelector('#decrypt-output');
+        output.style.display = 'block';
+        try { output.textContent = JSON.stringify(JSON.parse(text), null, 2); }
+        catch { output.textContent = text; }
+      } catch {
+        alert('Decryption failed. Wrong password?');
+      }
+    });
+  </script>
+</body>
+</html>

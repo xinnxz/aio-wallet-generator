@@ -350,25 +350,7 @@ $('#export-csv').addEventListener('click', exportCSV);
 $('#export-json').addEventListener('click', exportJSON);
 $('#export-txt').addEventListener('click', exportTXT);
 
-// ==============================
-// DARK MODE
-// ==============================
-const darkToggle = $('#dark-toggle');
-const darkIcon = $('#dark-icon');
-
-function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  darkIcon.className = theme === 'dark' ? 'hgi-stroke hgi-sun-03' : 'hgi-stroke hgi-moon-02';
-  localStorage.setItem('theme', theme);
-}
-
-// Init from localStorage
-if (localStorage.getItem('theme') === 'dark') setTheme('dark');
-
-darkToggle.addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  setTheme(current === 'dark' ? 'light' : 'dark');
-});
+// (Dark mode is handled by nav.js)
 
 // ==============================
 // COPY ALL ADDRESSES

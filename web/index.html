@@ -13,22 +13,8 @@
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">
-        <i class="hgi-stroke hgi-wallet-03"></i>
-        <span>Web3 Wallet Generator</span>
-      </a>
-      <div class="nav-links">
-        <a href="/" class="nav-link active">Generator</a>
-        <a href="chains.html" class="nav-link">Chains</a>
-        <button class="nav-toggle" id="dark-toggle" title="Toggle dark mode">
-          <i class="hgi-stroke hgi-moon-02" id="dark-icon"></i>
-        </button>
-      </div>
-    </div>
-  </nav>
+  <!-- NAV (loaded by nav.js) -->
+  <nav class="nav" id="main-nav"></nav>
 
   <!-- HERO (parallax layer) -->
   <section class="hero" id="hero">
@@ -244,6 +230,7 @@
   <div class="toast-wrap" id="toast-wrap"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+  <script src="nav.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

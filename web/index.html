@@ -3,236 +3,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web3 Wallet Generator — Generate 10K+ Wallets Across 30+ Chains</title>
-  <meta name="description" content="Generate, manage and export cryptocurrency wallets at scale. Support for EVM, Solana, Bitcoin, Tron, Sui, Aptos, Cosmos, TON, and Starknet.">
+  <title>Web3 Wallet Generator — Generate wallets across 30+ chains</title>
+  <meta name="description" content="Generate cryptocurrency wallets at scale. Support for EVM, Solana, Bitcoin, Tron, Sui, Aptos, Cosmos, TON, Starknet.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- ============================================================ -->
-  <!-- HEADER / HERO SECTION -->
-  <!-- ============================================================ -->
-  <header class="header" id="header">
-    <div class="header-bg-effects">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-    </div>
-    <div class="container">
-      <div class="logo">
-        <span class="logo-icon">🔐</span>
-        <span class="logo-text">WEB3 Wallet Generator</span>
-        <span class="logo-badge">v1.0</span>
-      </div>
-      <p class="header-subtitle">Generate • Manage • Export — 30+ Chains Supported</p>
-    </div>
-  </header>
 
-  <!-- ============================================================ -->
-  <!-- LIVE STATS BAR -->
-  <!-- ============================================================ -->
-  <section class="stats-bar" id="stats-bar">
-    <div class="container stats-grid">
-      <div class="stat-item">
-        <span class="stat-value" id="stat-total">0</span>
-        <span class="stat-label">Total Generated</span>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">
+        <i class="hgi-stroke hgi-wallet-03"></i>
+        <span>Web3 Wallet Generator</span>
+      </a>
+      <div class="nav-links">
+        <a href="#generator" class="nav-link active">Generator</a>
+        <a href="https://github.com" target="_blank" class="nav-link">GitHub</a>
       </div>
-      <div class="stat-item">
-        <span class="stat-value" id="stat-chains">0</span>
-        <span class="stat-label">Chains Used</span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Generate wallets across 30+ chains</h1>
+    <p>All wallets are generated locally in your browser. Nothing is sent anywhere.</p>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" id="stats" style="display:none">
+    <div class="stats-inner">
+      <div class="stat"><span class="stat-val" id="stat-total">0</span><span class="stat-lbl">Generated</span></div>
+      <div class="stat"><span class="stat-val" id="stat-chains">0</span><span class="stat-lbl">Chains</span></div>
+      <div class="stat"><span class="stat-val" id="stat-time">0s</span><span class="stat-lbl">Time</span></div>
+      <div class="stat"><span class="stat-val" id="stat-speed">0</span><span class="stat-lbl">Wallets/sec</span></div>
+    </div>
+  </section>
+
+  <!-- CHAIN TOOLS GRID (iLovePDF style) -->
+  <section class="tools-section" id="generator">
+    <div class="tools-grid">
+      <button class="tool-card active" data-chain="evm">
+        <div class="tool-icon tool-icon--blue">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">EVM</span>
+        <span class="tool-sub">22 networks</span>
+      </button>
+
+      <button class="tool-card" data-chain="solana">
+        <div class="tool-icon tool-icon--purple">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">Solana</span>
+      </button>
+
+      <button class="tool-card" data-chain="bitcoin">
+        <div class="tool-icon tool-icon--orange">
+          <i class="hgi-stroke hgi-bitcoin"></i>
+        </div>
+        <span class="tool-label">Bitcoin</span>
+      </button>
+
+      <button class="tool-card" data-chain="tron">
+        <div class="tool-icon tool-icon--red">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">Tron</span>
+      </button>
+
+      <button class="tool-card" data-chain="sui">
+        <div class="tool-icon tool-icon--sky">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">Sui</span>
+      </button>
+
+      <button class="tool-card" data-chain="aptos">
+        <div class="tool-icon tool-icon--teal">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">Aptos</span>
+      </button>
+
+      <button class="tool-card" data-chain="cosmos">
+        <div class="tool-icon tool-icon--indigo">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">Cosmos</span>
+        <span class="tool-sub">12 IBC chains</span>
+      </button>
+
+      <button class="tool-card" data-chain="ton">
+        <div class="tool-icon tool-icon--blue">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">TON</span>
+      </button>
+
+      <button class="tool-card" data-chain="starknet">
+        <div class="tool-icon tool-icon--purple">
+          <i class="hgi-stroke hgi-blockchain-06"></i>
+        </div>
+        <span class="tool-label">Starknet</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- GENERATOR FORM -->
+  <section class="form-section" id="form-section">
+    <div class="form-card">
+      <div class="form-header">
+        <h2 id="form-title">Generate EVM Wallets</h2>
+        <p class="form-desc">Select the number of wallets to generate.</p>
       </div>
-      <div class="stat-item">
-        <span class="stat-value" id="stat-time">0s</span>
-        <span class="stat-label">Gen Time</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-value" id="stat-speed">0</span>
-        <span class="stat-label">Wallets/sec</span>
+
+      <div class="form-body">
+        <label class="form-label" for="count-input">Amount</label>
+        <div class="input-row">
+          <input type="number" id="count-input" class="input" min="1" max="100000" value="10">
+          <div class="presets">
+            <button class="preset" data-count="10">10</button>
+            <button class="preset" data-count="100">100</button>
+            <button class="preset" data-count="1000">1K</button>
+            <button class="preset" data-count="5000">5K</button>
+            <button class="preset" data-count="10000">10K</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="generate-btn">
+          <i class="hgi-stroke hgi-play"></i>
+          Generate
+        </button>
+
+        <!-- Progress -->
+        <div class="progress" id="progress" style="display:none">
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          <span class="progress-label" id="progress-label">0%</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================ -->
-  <!-- MAIN CONTENT -->
-  <!-- ============================================================ -->
-  <main class="main-content container">
-    <!-- GENERATOR PANEL -->
-    <section class="panel generator-panel" id="generator-panel">
-      <div class="panel-header">
-        <h2 class="panel-title">
-          <span class="panel-icon">⚡</span>
-          Wallet Generator
-        </h2>
-        <p class="panel-subtitle">Select chain and quantity to generate wallets</p>
+  <!-- RESULTS -->
+  <section class="results-section" id="results-section" style="display:none">
+    <div class="results-header">
+      <div class="results-title">
+        <h2>Results</h2>
+        <span class="badge" id="result-count">0</span>
       </div>
-
-      <div class="generator-controls">
-        <!-- Chain Selection -->
-        <div class="control-group">
-          <label class="control-label" for="chain-select">Blockchain</label>
-          <div class="chain-selector" id="chain-selector">
-            <button class="chain-btn active" data-chain="evm" title="Ethereum & All EVM Chains">
-              <span class="chain-emoji">🔷</span>
-              <span class="chain-name">EVM</span>
-              <span class="chain-count">22 networks</span>
-            </button>
-            <button class="chain-btn" data-chain="solana" title="Solana">
-              <span class="chain-emoji">🟣</span>
-              <span class="chain-name">Solana</span>
-            </button>
-            <button class="chain-btn" data-chain="bitcoin" title="Bitcoin">
-              <span class="chain-emoji">🟠</span>
-              <span class="chain-name">Bitcoin</span>
-            </button>
-            <button class="chain-btn" data-chain="tron" title="Tron">
-              <span class="chain-emoji">🔴</span>
-              <span class="chain-name">Tron</span>
-            </button>
-            <button class="chain-btn" data-chain="sui" title="Sui">
-              <span class="chain-emoji">💧</span>
-              <span class="chain-name">Sui</span>
-            </button>
-            <button class="chain-btn" data-chain="aptos" title="Aptos">
-              <span class="chain-emoji">🌀</span>
-              <span class="chain-name">Aptos</span>
-            </button>
-            <button class="chain-btn" data-chain="cosmos" title="Cosmos IBC">
-              <span class="chain-emoji">⚛️</span>
-              <span class="chain-name">Cosmos</span>
-              <span class="chain-count">12 chains</span>
-            </button>
-            <button class="chain-btn" data-chain="ton" title="TON (Telegram)">
-              <span class="chain-emoji">💎</span>
-              <span class="chain-name">TON</span>
-            </button>
-            <button class="chain-btn" data-chain="starknet" title="Starknet">
-              <span class="chain-emoji">⭐</span>
-              <span class="chain-name">Starknet</span>
-            </button>
-          </div>
+      <div class="results-actions">
+        <div class="search-box">
+          <i class="hgi-stroke hgi-search-01"></i>
+          <input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
         </div>
-
-        <!-- Count Input -->
-        <div class="control-group">
-          <label class="control-label" for="count-input">Wallet Count</label>
-          <div class="count-wrapper">
-            <input type="number" id="count-input" class="count-input" min="1" max="100000" value="10" placeholder="Number of wallets">
-            <div class="count-presets">
-              <button class="preset-btn" data-count="10">10</button>
-              <button class="preset-btn" data-count="100">100</button>
-              <button class="preset-btn" data-count="1000">1K</button>
-              <button class="preset-btn" data-count="5000">5K</button>
-              <button class="preset-btn" data-count="10000">10K</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Generate Button -->
-        <button class="generate-btn" id="generate-btn">
-          <span class="generate-btn-icon">🚀</span>
-          <span class="generate-btn-text">Generate Wallets</span>
+        <button class="btn-ghost" id="toggle-keys">
+          <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
+          <span id="toggle-text">Show keys</span>
         </button>
-
-        <!-- Progress Bar (hidden by default) -->
-        <div class="progress-wrapper" id="progress-wrapper" style="display: none;">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-          </div>
-          <span class="progress-text" id="progress-text">0%</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- RESULTS TABLE -->
-    <section class="panel results-panel" id="results-panel" style="display: none;">
-      <div class="panel-header">
-        <h2 class="panel-title">
-          <span class="panel-icon">📋</span>
-          Generated Wallets
-          <span class="wallet-count-badge" id="wallet-count-badge">0</span>
-        </h2>
-        <div class="panel-actions">
-          <div class="search-wrapper">
-            <input type="text" id="search-input" class="search-input" placeholder="🔍 Search address...">
-          </div>
-          <button class="toggle-btn" id="toggle-keys-btn" title="Show/Hide Private Keys">
-            <span id="toggle-keys-icon">🔒</span>
-            <span>Keys Hidden</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="table-wrapper" id="table-wrapper">
-        <table class="wallet-table" id="wallet-table">
-          <thead>
-            <tr>
-              <th class="sortable" data-sort="index">#</th>
-              <th class="sortable" data-sort="chain">Chain</th>
-              <th>Address</th>
-              <th class="key-column hidden" data-column="privateKey">Private Key</th>
-              <th class="key-column hidden" data-column="mnemonic">Mnemonic</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="wallet-tbody"></tbody>
-        </table>
-      </div>
-
-      <!-- Virtual scroll spacer -->
-      <div id="scroll-spacer" style="display:none;"></div>
-
-      <!-- Pagination -->
-      <div class="pagination" id="pagination">
-        <button class="page-btn" id="prev-page" disabled>← Prev</button>
-        <span class="page-info" id="page-info">Page 1</span>
-        <button class="page-btn" id="next-page">Next →</button>
-      </div>
-    </section>
-
-    <!-- EXPORT PANEL -->
-    <section class="panel export-panel" id="export-panel" style="display: none;">
-      <div class="panel-header">
-        <h2 class="panel-title">
-          <span class="panel-icon">📥</span>
-          Export Wallets
-        </h2>
-      </div>
-      <div class="export-buttons">
-        <button class="export-btn" data-format="csv" id="export-csv">
-          <span class="export-icon">📄</span>
-          <span class="export-label">CSV</span>
-          <span class="export-desc">Comma-separated</span>
-        </button>
-        <button class="export-btn" data-format="json" id="export-json">
-          <span class="export-icon">📋</span>
-          <span class="export-label">JSON</span>
-          <span class="export-desc">Structured data</span>
-        </button>
-        <button class="export-btn" data-format="txt" id="export-txt">
-          <span class="export-icon">📝</span>
-          <span class="export-label">TXT</span>
-          <span class="export-desc">Plain text</span>
+        <button class="btn-ghost" id="clear-btn">
+          <i class="hgi-stroke hgi-delete-02"></i>
+          Clear
         </button>
       </div>
-    </section>
-  </main>
-
-  <!-- ============================================================ -->
-  <!-- FOOTER -->
-  <!-- ============================================================ -->
-  <footer class="footer">
-    <div class="container">
-      <p>🔐 Web3 Wallet Generator Toolkit — <span class="footer-highlight">30+ Chains</span> • <span class="footer-highlight">10K+ Wallets</span> • <span class="footer-highlight">100% Client-Side</span></p>
-      <p class="footer-warning">⚠️ Private keys are generated locally in your browser. Never share them with anyone.</p>
     </div>
+
+    <div class="table-wrap">
+      <table class="table" id="wallet-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Chain</th>
+            <th>Address</th>
+            <th class="col-key hidden">Private Key</th>
+            <th class="col-key hidden">Mnemonic</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="wallet-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination">
+      <button class="btn-ghost" id="prev-page" disabled>
+        <i class="hgi-stroke hgi-arrow-left-01"></i> Prev
+      </button>
+      <span class="page-info" id="page-info">Page 1</span>
+      <button class="btn-ghost" id="next-page">
+        Next <i class="hgi-stroke hgi-arrow-right-01"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- EXPORT -->
+  <section class="export-section" id="export-section" style="display:none">
+    <h3>Export</h3>
+    <div class="export-row">
+      <button class="btn-outline" id="export-csv">
+        <i class="hgi-stroke hgi-file-02"></i> CSV
+      </button>
+      <button class="btn-outline" id="export-json">
+        <i class="hgi-stroke hgi-source-code"></i> JSON
+      </button>
+      <button class="btn-outline" id="export-txt">
+        <i class="hgi-stroke hgi-text-font"></i> TXT
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>All wallets are generated client-side. Private keys never leave your browser.</p>
   </footer>
 
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toast-container"></div>
+  <!-- Toast -->
+  <div class="toast-wrap" id="toast-wrap"></div>
 
-  <!-- Ethers.js from CDN (for client-side EVM wallet generation) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
   <script src="app.js"></script>
 </body>

@@ -31,7 +31,7 @@
  */
 
 import { ethers } from 'ethers';
-import { EVM_CHAINS } from '../utils/config.js';
+import { EVM_CHAINS } from '../../utils/config.js';
 
 /**
  * Generate 1 EVM wallet baru

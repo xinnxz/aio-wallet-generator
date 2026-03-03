@@ -34,12 +34,17 @@
  */
 
 import { ethers } from 'ethers';
-import * as bip39 from 'bip39';
-import BIP32Factory from 'bip32';
+import bip39Pkg from 'bip39';
+import BIP32Pkg from 'bip32';
 import * as ecc from 'tiny-secp256k1';
 import { BIP44_PATHS } from '../utils/config.js';
 import * as evmChain from './chains/evm.js';
+import * as bitcoinChain from './chains/bitcoin.js';
+import * as tronChain from './chains/tron.js';
 
+// ESM/CJS interop
+const bip39 = bip39Pkg.default || bip39Pkg;
+const BIP32Factory = BIP32Pkg.BIP32Factory || BIP32Pkg.default || BIP32Pkg;
 const bip32 = BIP32Factory(ecc);
 
 /**
@@ -104,22 +109,15 @@ export function deriveWallets(mnemonic, count, chain = 'evm') {
         wallet = evmChain.generateFromMnemonic(mnemonic, i);
         break;
 
-      // Untuk chain lain yang support HD derivation
-      case 'bitcoin': {
-        // Lazy import untuk menghindari circular dependency
-        const btc = await import('./chains/bitcoin.js');
-        wallet = btc.generateFromMnemonic(mnemonic, i);
+      case 'bitcoin':
+        wallet = bitcoinChain.generateFromMnemonic(mnemonic, i);
         break;
-      }
 
-      case 'tron': {
-        const tron = await import('./chains/tron.js');
-        wallet = tron.generateFromMnemonic(mnemonic, i);
+      case 'tron':
+        wallet = tronChain.generateFromMnemonic(mnemonic, i);
         break;
-      }
 
       default:
-        // Fallback: gunakan EVM derivation
         wallet = evmChain.generateFromMnemonic(mnemonic, i);
         wallet.chain = chain;
     }
@@ -151,17 +149,13 @@ export async function deriveWalletsAsync(mnemonic, count, chain = 'evm') {
         wallet = evmChain.generateFromMnemonic(mnemonic, i);
         break;
 
-      case 'bitcoin': {
-        const btc = await import('./chains/bitcoin.js');
-        wallet = btc.generateFromMnemonic(mnemonic, i);
+      case 'bitcoin':
+        wallet = bitcoinChain.generateFromMnemonic(mnemonic, i);
         break;
-      }
 
-      case 'tron': {
-        const tron = await import('./chains/tron.js');
-        wallet = tron.generateFromMnemonic(mnemonic, i);
+      case 'tron':
+        wallet = tronChain.generateFromMnemonic(mnemonic, i);
         break;
-      }
 
       default:
         wallet = evmChain.generateFromMnemonic(mnemonic, i);

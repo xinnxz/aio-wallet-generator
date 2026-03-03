@@ -33,10 +33,16 @@
  */
 
 import * as bitcoin from 'bitcoinjs-lib';
-import * as bip39 from 'bip39';
-import BIP32Factory from 'bip32';
+import bip39Pkg from 'bip39';
+import BIP32Pkg from 'bip32';
 import * as ecc from 'tiny-secp256k1';
-import ECPairFactory from 'ecpair';
+import ECPairPkg from 'ecpair';
+
+// Handle ESM/CJS interop — beberapa package ini aslinya CommonJS
+// Saat di-import via ESM, exports-nya terbungkus dalam .default
+const bip39 = bip39Pkg.default || bip39Pkg;
+const BIP32Factory = BIP32Pkg.BIP32Factory || BIP32Pkg.default || BIP32Pkg;
+const ECPairFactory = ECPairPkg.ECPairFactory || ECPairPkg.default || ECPairPkg;
 
 // Initialize BIP32 dan ECPair dengan secp256k1 implementation
 // tiny-secp256k1 = implementasi cepat dari kurva secp256k1

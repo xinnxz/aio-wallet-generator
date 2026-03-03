@@ -639,6 +639,85 @@ body {
   color: var(--gray-400);
 }
 
+/* ============================
+   LOADING OVERLAY — 3D Cube
+   ============================ */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+.cube-wrapper {
+  width: 80px;
+  height: 80px;
+  perspective: 300px;
+}
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: cubeRotate 2s ease-in-out infinite;
+}
+.cube-face {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(37,99,235,0.3);
+  border-radius: 4px;
+  background: rgba(37,99,235,0.08);
+}
+.cube-face.front  { transform: translateZ(40px); }
+.cube-face.back   { transform: translateZ(-40px) rotateY(180deg); }
+.cube-face.left   { transform: translateX(-40px) rotateY(-90deg); }
+.cube-face.right  { transform: translateX(40px) rotateY(90deg); }
+.cube-face.top    { transform: translateY(-40px) rotateX(90deg); }
+.cube-face.bottom { transform: translateY(40px) rotateX(-90deg); }
+
+@keyframes cubeRotate {
+  0%   { transform: rotateX(-30deg) rotateY(0deg); }
+  50%  { transform: rotateX(-30deg) rotateY(180deg); }
+  100% { transform: rotateX(-30deg) rotateY(360deg); }
+}
+
+.loading-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.loading-percent {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue);
+  font-variant-numeric: tabular-nums;
+}
+.loading-label {
+  font-size: 13px;
+  color: var(--gray-500);
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .loading-overlay {
+  background: rgba(15,15,35,0.9);
+}
+[data-theme="dark"] .cube-face {
+  border-color: rgba(59,130,246,0.4);
+  background: rgba(59,130,246,0.12);
+}
+
 /* -- Toast -- */
 .toast-wrap {
   position: fixed;

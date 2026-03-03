@@ -226,6 +226,26 @@
     <p>All wallets are generated client-side. Private keys never leave your browser.</p>
   </footer>
 
+  <!-- LOADING OVERLAY (3D Cube animation) -->
+  <div class="loading-overlay" id="loading-overlay" style="display:none">
+    <div class="loading-content">
+      <div class="cube-wrapper">
+        <div class="cube">
+          <div class="cube-face front"></div>
+          <div class="cube-face back"></div>
+          <div class="cube-face left"></div>
+          <div class="cube-face right"></div>
+          <div class="cube-face top"></div>
+          <div class="cube-face bottom"></div>
+        </div>
+      </div>
+      <div class="loading-info">
+        <span class="loading-percent" id="loading-percent">0%</span>
+        <span class="loading-label" id="loading-label">Generating wallets...</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div class="toast-wrap" id="toast-wrap"></div>
 

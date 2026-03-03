@@ -126,6 +126,15 @@ async function generate(chain, count) {
   dom.generateBtn.querySelector('i').className = 'hgi-stroke hgi-loading-03';
   dom.progress.style.display = 'block';
 
+  // Show 3D cube loading overlay
+  const overlay = document.getElementById('loading-overlay');
+  const loadPct = document.getElementById('loading-percent');
+  const loadLabel = document.getElementById('loading-label');
+  overlay.style.display = 'flex';
+  overlay.style.opacity = '1';
+  loadPct.textContent = '0%';
+  loadLabel.textContent = `Generating ${chain.toUpperCase()} wallets...`;
+
   const wallets = [];
   const batch = 100;
   const t0 = Date.now();
@@ -144,6 +153,9 @@ async function generate(chain, count) {
       const pct = (done / count * 100).toFixed(0);
       dom.progressFill.style.width = pct + '%';
       dom.progressLabel.textContent = `${done.toLocaleString()} / ${count.toLocaleString()}`;
+
+      // Update cube overlay percentage
+      loadPct.textContent = pct + '%';
 
       if (done < count) {
         setTimeout(next, 0);
@@ -165,6 +177,15 @@ async function generate(chain, count) {
         dom.generateBtn.disabled = false;
         dom.generateBtn.querySelector('i').className = 'hgi-stroke hgi-play';
         setTimeout(() => { dom.progress.style.display = 'none'; dom.progressFill.style.width = '0%'; }, 600);
+
+        // Hide cube overlay with fade
+        loadPct.textContent = '100%';
+        loadLabel.textContent = 'Done!';
+        setTimeout(() => {
+          overlay.style.transition = 'opacity 0.4s';
+          overlay.style.opacity = '0';
+          setTimeout(() => { overlay.style.display = 'none'; overlay.style.transition = ''; }, 400);
+        }, 500);
 
         toast(`${count.toLocaleString()} wallets generated in ${elapsed}s`);
         resolve(wallets);

@@ -91,11 +91,11 @@ body {
 .nav-link:hover, .nav-link.active { color: var(--gray-900); }
 
 /* -- Hero -- */
-/* -- Hero (iLoveIMG-style gradient) -- */
+/* -- Hero -- */
 .hero {
   text-align: center;
   padding: 56px 20px 32px;
-  background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 40%, var(--gray-50) 100%);
+  background: url('./images/hero-bg.png') center/cover no-repeat;
 }
 .hero h1 {
   font-size: 28px;

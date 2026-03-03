@@ -215,8 +215,12 @@ function render() {
       <td class="key-cell col-key ${keyHidden}" title="${w.privateKey || ''}">${w.privateKey || ''}</td>
       <td class="key-cell col-key ${keyHidden}" title="${w.mnemonic || ''}">${w.mnemonic || '-'}</td>
       <td>
-        <button class="copy-btn" data-val="${esc(w.address)}" data-label="Addr">Addr</button>
-        <button class="copy-btn" data-val="${esc(w.privateKey || '')}" data-label="Key">Key</button>
+        <button class="copy-btn" data-val="${esc(w.address)}" data-label="Copy Address" title="Copy address">
+          <i class="hgi-stroke hgi-copy-01"></i> Copy Address
+        </button>
+        ${w.privateKey ? `<button class="copy-btn" data-val="${esc(w.privateKey)}" data-label="Copy Key" title="Copy private key">
+          <i class="hgi-stroke hgi-lock-key"></i> Copy Key
+        </button>` : ''}
       </td>`;
     dom.tbody.appendChild(tr);
   }
@@ -359,10 +363,11 @@ document.addEventListener('click', e => {
   if (!btn) return;
   const text = btn.dataset.val;
   const label = btn.dataset.label;
+  const origHTML = btn.innerHTML;
   navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'OK';
+    btn.innerHTML = '<i class="hgi-stroke hgi-checkmark-circle-02"></i> Copied';
     btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 1000);
+    setTimeout(() => { btn.innerHTML = origHTML; btn.classList.remove('copied'); }, 1000);
   }).catch(() => toast('Copy failed', true));
 });
 

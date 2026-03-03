@@ -591,6 +591,9 @@ body {
   color: var(--blue);
 }
 .copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 4px 8px;
   font-size: 11px;
   color: var(--gray-500);
@@ -599,9 +602,12 @@ body {
   border-radius: 4px;
   cursor: pointer;
   margin-right: 4px;
+  margin-bottom: 4px;
   transition: background 0.15s, transform 0.1s;
   font-family: inherit;
+  white-space: nowrap;
 }
+.copy-btn i { font-size: 12px; }
 .copy-btn:hover { background: var(--gray-50); }
 .copy-btn:active { transform: scale(0.9); }
 .copy-btn.copied { color: var(--green); border-color: var(--green); }

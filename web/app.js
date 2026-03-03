@@ -257,8 +257,15 @@ function exportJSON() {
 
 function exportTXT() {
   if (!state.wallets.length) return toast('Nothing to export', true);
-  const lines = state.wallets.map(w => `${w.index}\t${w.chain}\t${w.address}\t${w.privateKey || ''}\t${w.mnemonic || ''}`);
-  download(['Index\tChain\tAddress\tPrivateKey\tMnemonic', ...lines].join('\n'), `wallets-${state.chain}-${Date.now()}.txt`, 'text/plain');
+  const header = `AIO Chain — Wallet Export\nChain: ${state.chain.toUpperCase()}\nTotal: ${state.wallets.length}\nDate: ${new Date().toLocaleString()}\n${'═'.repeat(60)}`;
+  const blocks = state.wallets.map(w => {
+    let block = `\n#${w.index}\n  Address:     ${w.address}`;
+    if (w.privateKey) block += `\n  Private Key: ${w.privateKey}`;
+    if (w.mnemonic) block += `\n  Mnemonic:    ${w.mnemonic}`;
+    block += `\n${'─'.repeat(60)}`;
+    return block;
+  });
+  download(header + '\n' + blocks.join('\n'), `wallets-${state.chain}-${Date.now()}.txt`, 'text/plain');
   toast('TXT exported');
 }
 

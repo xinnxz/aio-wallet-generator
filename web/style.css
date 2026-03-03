@@ -415,9 +415,9 @@ body {
   padding: 0 0 24px;
 }
 .tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 .tool-card {
   display: flex;

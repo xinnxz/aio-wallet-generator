@@ -27,15 +27,18 @@
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h1>Generate wallets across 30+ chains</h1>
-    <p>All wallets are generated locally in your browser. Nothing is sent anywhere.</p>
+  <!-- HERO (parallax layer) -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content reveal">
+      <h1>Generate wallets across 30+ chains</h1>
+      <p>All wallets are generated locally in your browser. Nothing is sent anywhere.</p>
+    </div>
   </section>
 
   <!-- STATS -->
   <section class="stats" id="stats" style="display:none">
-    <div class="stats-inner">
+    <div class="stats-inner reveal">
       <div class="stat"><span class="stat-val" id="stat-total">0</span><span class="stat-lbl">Generated</span></div>
       <div class="stat"><span class="stat-val" id="stat-chains">0</span><span class="stat-lbl">Chains</span></div>
       <div class="stat"><span class="stat-val" id="stat-time">0s</span><span class="stat-lbl">Time</span></div>
@@ -47,67 +50,67 @@
   <section class="tools-section" id="generator">
     <div class="tools-grid">
 
-      <button class="tool-card active" data-chain="evm">
+      <button class="tool-card reveal active" data-chain="evm">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="Ethereum" width="28" height="28">
+          <img src="./images/eth.png" alt="Ethereum" width="32" height="32">
         </div>
         <span class="tool-label">EVM</span>
         <span class="tool-sub">22 networks</span>
       </button>
 
-      <button class="tool-card" data-chain="solana">
+      <button class="tool-card reveal" data-chain="solana">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/solana-sol-logo.svg" alt="Solana" width="28" height="28">
+          <img src="./images/sol.png" alt="Solana" width="32" height="32">
         </div>
         <span class="tool-label">Solana</span>
       </button>
 
-      <button class="tool-card" data-chain="bitcoin">
+      <button class="tool-card reveal" data-chain="bitcoin">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="Bitcoin" width="28" height="28">
+          <img src="./images/btc.png" alt="Bitcoin" width="32" height="32">
         </div>
         <span class="tool-label">Bitcoin</span>
       </button>
 
-      <button class="tool-card" data-chain="tron">
+      <button class="tool-card reveal" data-chain="tron">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="Tron" width="28" height="28">
+          <img src="./images/trx.png" alt="Tron" width="32" height="32">
         </div>
         <span class="tool-label">Tron</span>
       </button>
 
-      <button class="tool-card" data-chain="sui">
+      <button class="tool-card reveal" data-chain="sui">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/sui-sui-logo.svg" alt="Sui" width="28" height="28">
+          <img src="./images/sui.jpeg" alt="Sui" width="32" height="32">
         </div>
         <span class="tool-label">Sui</span>
       </button>
 
-      <button class="tool-card" data-chain="aptos">
+      <button class="tool-card reveal" data-chain="aptos">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/aptos-apt-logo.svg" alt="Aptos" width="28" height="28">
+          <img src="./images/apt.png" alt="Aptos" width="32" height="32">
         </div>
         <span class="tool-label">Aptos</span>
       </button>
 
-      <button class="tool-card" data-chain="cosmos">
+      <button class="tool-card reveal" data-chain="cosmos">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/cosmos-atom-logo.svg" alt="Cosmos" width="28" height="28">
+          <img src="./images/atom.png" alt="Cosmos" width="32" height="32">
         </div>
         <span class="tool-label">Cosmos</span>
         <span class="tool-sub">12 IBC chains</span>
       </button>
 
-      <button class="tool-card" data-chain="ton">
+      <button class="tool-card reveal" data-chain="ton">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/toncoin-ton-logo.svg" alt="TON" width="28" height="28">
+          <img src="./images/ton.png" alt="TON" width="32" height="32">
         </div>
         <span class="tool-label">TON</span>
       </button>
 
-      <button class="tool-card" data-chain="starknet">
+      <button class="tool-card reveal" data-chain="starknet">
         <div class="tool-icon">
-          <img src="https://cryptologos.cc/logos/starknet-token-strk-logo.svg" alt="Starknet" width="28" height="28">
+          <img src="./images/strk.png" alt="Starknet" width="32" height="32">
         </div>
         <span class="tool-label">Starknet</span>
       </button>
@@ -116,7 +119,7 @@
   </section>
 
   <!-- GENERATOR FORM -->
-  <section class="form-section" id="form-section">
+  <section class="form-section reveal" id="form-section">
     <div class="form-card">
       <div class="form-header">
         <h2 id="form-title">Generate EVM Wallets</h2>

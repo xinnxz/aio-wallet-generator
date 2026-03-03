@@ -301,6 +301,18 @@
               <i class="hgi-stroke hgi-search-01"></i>
               <input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
             </div>
+            <button class="btn-ghost" id="toggle-keys">
+              <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
+              <span id="toggle-text">Show keys</span>
+            </button>
+            <button class="btn-ghost" id="copy-all-btn">
+              <i class="hgi-stroke hgi-copy-01"></i>
+              Copy all
+            </button>
+            <button class="btn-ghost" id="clear-btn">
+              <i class="hgi-stroke hgi-delete-02"></i>
+              Clear
+            </button>
           </div>
         </div>
 
@@ -332,26 +344,8 @@
       </section>
     </main>
 
-    <!-- RIGHT SIDEBAR: Actions & Export -->
+    <!-- RIGHT SIDEBAR: Export & History -->
     <aside class="sidebar sidebar--right" id="sidebar-right">
-      <div class="sidebar-card">
-        <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-settings-02"></i> Quick Actions
-        </h4>
-        <div class="sidebar-actions">
-          <button class="btn-sidebar" id="toggle-keys">
-            <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
-            <span id="toggle-text">Show Keys</span>
-          </button>
-          <button class="btn-sidebar" id="copy-all-btn">
-            <i class="hgi-stroke hgi-copy-01"></i> Copy All Addresses
-          </button>
-          <button class="btn-sidebar btn-sidebar--danger" id="clear-btn">
-            <i class="hgi-stroke hgi-delete-02"></i> Clear All
-          </button>
-        </div>
-      </div>
-
       <div class="sidebar-card" id="export-section">
         <h4 class="sidebar-title">
           <i class="hgi-stroke hgi-file-export"></i> Export

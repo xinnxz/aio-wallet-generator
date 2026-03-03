@@ -69,6 +69,7 @@ body {
   font-weight: 700;
   font-size: 15px;
   flex-shrink: 0;
+  width: 200px;
 }
 .nav-brand i { font-size: 20px; color: var(--blue); }
 .nav-menu {
@@ -97,8 +98,10 @@ body {
 .nav-right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
   flex-shrink: 0;
+  width: 200px;
 }
 .nav-toggle {
   display: flex;

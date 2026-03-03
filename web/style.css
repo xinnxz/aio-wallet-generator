@@ -75,8 +75,7 @@ body {
   display: flex;
   gap: 4px;
   flex: 1;
-  justify-content: flex-start;
-  margin-left: 24px;
+  justify-content: center;
 }
 .nav-tool {
   display: inline-flex;
@@ -100,6 +99,26 @@ body {
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+}
+.nav-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--gray-200);
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  color: var(--gray-500);
+  font-size: 16px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  font-family: inherit;
+}
+.nav-toggle:hover {
+  color: var(--gray-800);
+  border-color: var(--gray-300);
+  background: var(--gray-50);
 }
 .nav-hamburger {
   display: none;

@@ -47,7 +47,10 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--gray-800);
-  background: var(--gray-50);
+  background-color: var(--gray-50);
+  background-image:
+    radial-gradient(circle, var(--gray-200) 1px, transparent 1px);
+  background-size: 24px 24px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -56,6 +59,7 @@ body {
 .nav {
   background: var(--white);
   border-bottom: 1px solid var(--gray-200);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -93,6 +97,8 @@ body {
 .hero {
   text-align: center;
   padding: 48px 20px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
 }
 .hero h1 {
   font-size: 28px;
@@ -162,7 +168,8 @@ body {
 }
 .tool-card:hover {
   border-color: var(--gray-300);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 .tool-card.active {
   border-color: var(--blue);
@@ -206,6 +213,7 @@ body {
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow);
 }
 .form-header {
   padding: 20px 24px 0;

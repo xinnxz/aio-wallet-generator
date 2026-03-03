@@ -416,33 +416,45 @@ body {
 }
 .tools-grid {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  justify-content: center;
 }
 .tool-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 16px 8px 14px;
-  flex: 1;
+  justify-content: center;
+  gap: 6px;
+  width: 80px;
+  height: 80px;
   background: var(--white);
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
   font-family: inherit;
+  position: relative;
 }
 .tool-card:hover {
   border-color: var(--gray-300);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow);
 }
 .tool-card.active {
-  background: var(--blue);
+  background: var(--blue-light);
   border-color: var(--blue);
-  color: var(--white);
 }
-.tool-card.active .tool-label { color: var(--white); }
-.tool-card.active .tool-sub { color: rgba(255,255,255,0.7); }
+.tool-card.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 20%;
+  right: 20%;
+  height: 3px;
+  background: var(--blue);
+  border-radius: 3px 3px 0 0;
+}
+.tool-card.active .tool-label { color: var(--blue); }
+.tool-card.active .tool-sub { color: var(--blue); opacity: 0.7; }
 .tool-icon {
   width: 44px;
   height: 44px;
@@ -464,6 +476,7 @@ body {
   font-size: 10px;
   color: var(--gray-400);
   margin-top: -4px;
+  display: none;
 }
 
 /* ============================

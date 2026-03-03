@@ -142,84 +142,142 @@
     </div>
   </section>
 
-  <!-- RESULTS -->
-  <section class="results-section" id="results-section" style="display:none">
-    <div class="results-header">
-      <div class="results-title">
-        <h2>Results</h2>
-        <span class="badge" id="result-count">0</span>
-      </div>
-      <div class="results-actions">
-        <div class="search-box">
-          <i class="hgi-stroke hgi-search-01"></i>
-          <input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
+  <!-- RESULTS LAYOUT (3-column) -->
+  <div class="results-layout" id="results-layout" style="display:none">
+
+    <!-- LEFT SIDEBAR: Chain Info -->
+    <aside class="sidebar sidebar--left" id="sidebar-left">
+      <div class="sidebar-card">
+        <h4 class="sidebar-title">
+          <i class="hgi-stroke hgi-blockchain-06"></i> Chain Info
+        </h4>
+        <div class="sidebar-field">
+          <span class="sidebar-label">Chain</span>
+          <span class="sidebar-value" id="info-chain">EVM</span>
         </div>
-        <button class="btn-ghost" id="toggle-keys">
-          <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
-          <span id="toggle-text">Show keys</span>
-        </button>
-        <button class="btn-ghost" id="copy-all-btn">
-          <i class="hgi-stroke hgi-copy-01"></i>
-          Copy all
-        </button>
-        <button class="btn-ghost" id="clear-btn">
-          <i class="hgi-stroke hgi-delete-02"></i>
-          Clear
+        <div class="sidebar-field">
+          <span class="sidebar-label">Curve</span>
+          <span class="sidebar-value" id="info-curve">secp256k1</span>
+        </div>
+        <div class="sidebar-field">
+          <span class="sidebar-label">Address Format</span>
+          <span class="sidebar-value" id="info-format">0x... (42 chars)</span>
+        </div>
+        <div class="sidebar-field">
+          <span class="sidebar-label">Derivation</span>
+          <span class="sidebar-value" id="info-path">m/44'/60'/0'/0</span>
+        </div>
+        <div class="sidebar-field">
+          <span class="sidebar-label">Networks</span>
+          <span class="sidebar-value" id="info-networks">22 networks</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card sidebar-card--tip">
+        <h4 class="sidebar-title">
+          <i class="hgi-stroke hgi-shield-check"></i> Security
+        </h4>
+        <ul class="sidebar-tips">
+          <li>Keys are generated locally</li>
+          <li>Never share your private key</li>
+          <li>Store mnemonics offline</li>
+          <li>Use encrypted export for backups</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- CENTER: Table -->
+    <main class="results-main">
+      <section class="results-section" id="results-section">
+        <div class="results-header">
+          <div class="results-title">
+            <h2>Results</h2>
+            <span class="badge" id="result-count">0</span>
+          </div>
+          <div class="results-actions">
+            <div class="search-box">
+              <i class="hgi-stroke hgi-search-01"></i>
+              <input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" id="wallet-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Chain</th>
+                <th>Address</th>
+                <th class="col-key hidden">Private Key</th>
+                <th class="col-key hidden">Mnemonic</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="wallet-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination" id="pagination">
+          <button class="btn-ghost" id="prev-page" disabled>
+            <i class="hgi-stroke hgi-arrow-left-01"></i> Prev
+          </button>
+          <span class="page-info" id="page-info">Page 1</span>
+          <button class="btn-ghost" id="next-page">
+            Next <i class="hgi-stroke hgi-arrow-right-01"></i>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- RIGHT SIDEBAR: Actions & Export -->
+    <aside class="sidebar sidebar--right" id="sidebar-right">
+      <div class="sidebar-card">
+        <h4 class="sidebar-title">
+          <i class="hgi-stroke hgi-settings-02"></i> Quick Actions
+        </h4>
+        <div class="sidebar-actions">
+          <button class="btn-sidebar" id="toggle-keys">
+            <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
+            <span id="toggle-text">Show Keys</span>
+          </button>
+          <button class="btn-sidebar" id="copy-all-btn">
+            <i class="hgi-stroke hgi-copy-01"></i> Copy All Addresses
+          </button>
+          <button class="btn-sidebar btn-sidebar--danger" id="clear-btn">
+            <i class="hgi-stroke hgi-delete-02"></i> Clear All
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-card" id="export-section">
+        <h4 class="sidebar-title">
+          <i class="hgi-stroke hgi-file-export"></i> Export
+        </h4>
+        <div class="sidebar-actions">
+          <button class="btn-sidebar" id="export-csv">
+            <i class="hgi-stroke hgi-file-02"></i> Export CSV
+          </button>
+          <button class="btn-sidebar" id="export-json">
+            <i class="hgi-stroke hgi-source-code"></i> Export JSON
+          </button>
+          <button class="btn-sidebar" id="export-txt">
+            <i class="hgi-stroke hgi-text-font"></i> Export TXT
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-card" id="history-section" style="display:none">
+        <h4 class="sidebar-title">
+          <i class="hgi-stroke hgi-clock-02"></i> History
+        </h4>
+        <div id="history-list" class="history-list"></div>
+        <button class="btn-sidebar btn-sidebar--danger" id="clear-history" style="margin-top:8px">
+          <i class="hgi-stroke hgi-delete-02"></i> Clear History
         </button>
       </div>
-    </div>
-
-    <div class="table-wrap">
-      <table class="table" id="wallet-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Chain</th>
-            <th>Address</th>
-            <th class="col-key hidden">Private Key</th>
-            <th class="col-key hidden">Mnemonic</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="wallet-tbody"></tbody>
-      </table>
-    </div>
-
-    <div class="pagination" id="pagination">
-      <button class="btn-ghost" id="prev-page" disabled>
-        <i class="hgi-stroke hgi-arrow-left-01"></i> Prev
-      </button>
-      <span class="page-info" id="page-info">Page 1</span>
-      <button class="btn-ghost" id="next-page">
-        Next <i class="hgi-stroke hgi-arrow-right-01"></i>
-      </button>
-    </div>
-  </section>
-
-  <!-- EXPORT -->
-  <section class="export-section" id="export-section" style="display:none">
-    <h3>Export</h3>
-    <div class="export-row">
-      <button class="btn-outline" id="export-csv">
-        <i class="hgi-stroke hgi-file-02"></i> CSV
-      </button>
-      <button class="btn-outline" id="export-json">
-        <i class="hgi-stroke hgi-source-code"></i> JSON
-      </button>
-      <button class="btn-outline" id="export-txt">
-        <i class="hgi-stroke hgi-text-font"></i> TXT
-      </button>
-    </div>
-  </section>
-
-  <!-- HISTORY -->
-  <section class="history-section" id="history-section" style="display:none">
-    <h3>History</h3>
-    <div id="history-list" class="history-list"></div>
-    <button class="btn-ghost" id="clear-history" style="margin-top:8px">
-      <i class="hgi-stroke hgi-delete-02"></i> Clear history
-    </button>
-  </section>
+    </aside>
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer">

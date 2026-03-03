@@ -51,6 +51,7 @@ const dom = {
   progressFill:  $('#progress-fill'),
   progressLabel: $('#progress-label'),
   formTitle:     $('#form-title'),
+  resultsLayout: $('#results-layout'),
   resultsSection:$('#results-section'),
   exportSection: $('#export-section'),
   tbody:         $('#wallet-tbody'),
@@ -69,6 +70,19 @@ const dom = {
   statChains:    $('#stat-chains'),
   statTime:      $('#stat-time'),
   statSpeed:     $('#stat-speed'),
+};
+
+// -- Chain metadata (for sidebar) --
+const chainMeta = {
+  evm:      { name: 'EVM',      curve: 'secp256k1',  format: '0x... (42 chars, checksummed)', path: "m/44'/60'/0'/0", networks: '22 networks' },
+  solana:   { name: 'Solana',   curve: 'Ed25519',    format: 'Base58 (32-44 chars)',         path: "m/44'/501'/0'/0'", networks: '1 network' },
+  bitcoin:  { name: 'Bitcoin',  curve: 'secp256k1',  format: 'bc1... (Native SegWit)',       path: "m/44'/0'/0'/0/0", networks: '1 network' },
+  tron:     { name: 'Tron',     curve: 'secp256k1',  format: 'T... (Base58Check, 34 chars)', path: "m/44'/195'/0'/0/0", networks: '1 network' },
+  sui:      { name: 'Sui',      curve: 'Ed25519',    format: '0x... (66 chars)',             path: 'Move VM',          networks: '1 network' },
+  aptos:    { name: 'Aptos',    curve: 'Ed25519',    format: '0x... (66 chars)',             path: 'Aptos VM',         networks: '1 network' },
+  cosmos:   { name: 'Cosmos',   curve: 'secp256k1',  format: 'Bech32 (chain prefix)',        path: "m/44'/118'/0'/0/0", networks: '12 IBC chains' },
+  ton:      { name: 'TON',      curve: 'Ed25519',    format: 'EQ... (Base64url, 48 chars)',  path: 'TON SDK',          networks: '1 network' },
+  starknet: { name: 'Starknet', curve: 'STARK curve', format: '0x... (66 chars)',            path: 'Cairo VM',         networks: '1 network' },
 };
 
 // -- Chain generators --
@@ -314,10 +328,18 @@ dom.generateBtn.addEventListener('click', async () => {
   state.query = '';
   state.page = 1;
   dom.searchInput.value = '';
-  dom.resultsSection.style.display = 'block';
-  dom.exportSection.style.display = 'block';
+  dom.resultsLayout.style.display = 'grid';
+
+  // Populate sidebar chain info
+  const meta = chainMeta[state.chain] || chainMeta.evm;
+  $('#info-chain').textContent = meta.name;
+  $('#info-curve').textContent = meta.curve;
+  $('#info-format').textContent = meta.format;
+  $('#info-path').textContent = meta.path;
+  $('#info-networks').textContent = meta.networks;
+
   render();
-  dom.resultsSection.scrollIntoView({ behavior: 'smooth' });
+  dom.resultsLayout.scrollIntoView({ behavior: 'smooth' });
 });
 
 // Search
@@ -345,8 +367,7 @@ dom.clearBtn.addEventListener('click', () => {
   state.query = '';
   state.page = 1;
   dom.searchInput.value = '';
-  dom.resultsSection.style.display = 'none';
-  dom.exportSection.style.display = 'none';
+  dom.resultsLayout.style.display = 'none';
   toast('Cleared');
 });
 
@@ -450,10 +471,18 @@ document.addEventListener('click', e => {
   state.page = 1;
   state.query = '';
   dom.searchInput.value = '';
-  dom.resultsSection.style.display = 'block';
-  dom.exportSection.style.display = 'block';
+  dom.resultsLayout.style.display = 'grid';
+
+  // Populate sidebar chain info
+  const meta = chainMeta[entry.chain] || chainMeta.evm;
+  $('#info-chain').textContent = meta.name;
+  $('#info-curve').textContent = meta.curve;
+  $('#info-format').textContent = meta.format;
+  $('#info-path').textContent = meta.path;
+  $('#info-networks').textContent = meta.networks;
+
   render();
-  dom.resultsSection.scrollIntoView({ behavior: 'smooth' });
+  dom.resultsLayout.scrollIntoView({ behavior: 'smooth' });
   toast(`Loaded ${entry.count} ${entry.chain.toUpperCase()} wallets`);
 });
 

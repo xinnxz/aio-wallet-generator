@@ -25,7 +25,7 @@
     <div class="nav-inner">
       <a href="/" class="nav-brand">
         <i class="hgi-stroke hgi-wallet-03"></i>
-        <span>W3 Wallet Gen</span>
+        <span>AIO Wallet Generator</span>
       </a>
       <div class="nav-menu">
         ${links.map(l => {

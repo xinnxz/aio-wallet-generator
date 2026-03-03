@@ -244,134 +244,94 @@
 
   </div>
 
-  <!-- RESULTS LAYOUT (3-column) -->
-  <div class="results-layout" id="results-layout" style="display:none">
+  <!-- RESULTS (full-width, no sidebars) -->
+  <section class="results-wrap" id="results-layout" style="display:none">
 
-    <!-- LEFT SIDEBAR: Chain Info -->
-    <aside class="sidebar sidebar--left" id="sidebar-left">
-      <div class="sidebar-card">
-        <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-blockchain-06"></i> Chain Info
-        </h4>
-        <div class="sidebar-field">
-          <span class="sidebar-label">Chain</span>
-          <span class="sidebar-value" id="info-chain">EVM</span>
-        </div>
-        <div class="sidebar-field">
-          <span class="sidebar-label">Curve</span>
-          <span class="sidebar-value" id="info-curve">secp256k1</span>
-        </div>
-        <div class="sidebar-field">
-          <span class="sidebar-label">Address Format</span>
-          <span class="sidebar-value" id="info-format">0x... (42 chars)</span>
-        </div>
-        <div class="sidebar-field">
-          <span class="sidebar-label">Derivation</span>
-          <span class="sidebar-value" id="info-path">m/44'/60'/0'/0</span>
-        </div>
-        <div class="sidebar-field">
-          <span class="sidebar-label">Networks</span>
-          <span class="sidebar-value" id="info-networks">22 networks</span>
-        </div>
-      </div>
+    <!-- Chain Info Bar (compact horizontal) -->
+    <div class="chain-info-bar" id="chain-info-bar">
+      <div class="chain-info-pill"><span class="cib-label">Chain</span><span class="cib-value" id="info-chain">EVM</span></div>
+      <div class="chain-info-pill"><span class="cib-label">Curve</span><span class="cib-value" id="info-curve">secp256k1</span></div>
+      <div class="chain-info-pill"><span class="cib-label">Format</span><span class="cib-value" id="info-format">0x...</span></div>
+      <div class="chain-info-pill"><span class="cib-label">Path</span><span class="cib-value" id="info-path">m/44'/60'/0'/0</span></div>
+      <div class="chain-info-pill"><span class="cib-label">Networks</span><span class="cib-value" id="info-networks">22</span></div>
+    </div>
 
-      <div class="sidebar-card sidebar-card--tip">
-        <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-shield-check"></i> Security
-        </h4>
-        <ul class="sidebar-tips">
-          <li>Keys are generated locally</li>
-          <li>Never share your private key</li>
-          <li>Store mnemonics offline</li>
-          <li>Use encrypted export for backups</li>
-        </ul>
-      </div>
-    </aside>
-
-    <!-- CENTER: Table -->
-    <main class="results-main">
-      <section class="results-section" id="results-section">
-        <div class="results-header">
-          <div class="results-title">
-            <h2>Results</h2>
-            <span class="badge" id="result-count">0</span>
+    <!-- Results Header Toolbar -->
+    <section class="results-section" id="results-section">
+      <div class="results-header">
+        <div class="results-title">
+          <h2>Results</h2>
+          <span class="badge" id="result-count">0</span>
+        </div>
+        <div class="results-actions">
+          <div class="search-box">
+            <i class="hgi-stroke hgi-search-01"></i>
+            <input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
           </div>
-          <div class="results-actions">
-            <div class="search-box">
-              <i class="hgi-stroke hgi-search-01"></i>
-              <input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
-            </div>
-            <button class="btn-ghost" id="toggle-keys">
-              <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
-              <span id="toggle-text">Show keys</span>
-            </button>
-            <button class="btn-ghost" id="copy-all-btn">
-              <i class="hgi-stroke hgi-copy-01"></i>
-              Copy all
-            </button>
-            <button class="btn-ghost" id="clear-btn">
-              <i class="hgi-stroke hgi-delete-02"></i>
-              Clear
-            </button>
-          </div>
-        </div>
-
-        <div class="table-wrap">
-          <table class="table" id="wallet-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Chain</th>
-                <th>Address</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="wallet-tbody"></tbody>
-          </table>
-        </div>
-
-        <div class="pagination" id="pagination">
-          <button class="btn-ghost" id="prev-page" disabled>
-            <i class="hgi-stroke hgi-arrow-left-01"></i> Prev
+          <div class="toolbar-divider"></div>
+          <button class="btn-ghost" id="toggle-keys">
+            <i class="hgi-stroke hgi-view-off-slash" id="toggle-icon"></i>
+            <span id="toggle-text">Show keys</span>
           </button>
-          <span class="page-info" id="page-info">Page 1</span>
-          <button class="btn-ghost" id="next-page">
-            Next <i class="hgi-stroke hgi-arrow-right-01"></i>
+          <button class="btn-ghost" id="copy-all-btn">
+            <i class="hgi-stroke hgi-copy-01"></i> Copy all
           </button>
-        </div>
-      </section>
-    </main>
-
-    <!-- RIGHT SIDEBAR: Export & History -->
-    <aside class="sidebar sidebar--right" id="sidebar-right">
-      <div class="sidebar-card" id="export-section">
-        <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-file-export"></i> Export
-        </h4>
-        <div class="sidebar-actions">
-          <button class="btn-sidebar" id="export-csv">
-            <i class="hgi-stroke hgi-file-02"></i> Export CSV
+          <div class="toolbar-divider"></div>
+          <button class="btn-ghost" id="export-csv">
+            <i class="hgi-stroke hgi-file-02"></i> CSV
           </button>
-          <button class="btn-sidebar" id="export-json">
-            <i class="hgi-stroke hgi-source-code"></i> Export JSON
+          <button class="btn-ghost" id="export-json">
+            <i class="hgi-stroke hgi-source-code"></i> JSON
           </button>
-          <button class="btn-sidebar" id="export-txt">
-            <i class="hgi-stroke hgi-text-font"></i> Export TXT
+          <button class="btn-ghost" id="export-txt">
+            <i class="hgi-stroke hgi-text-font"></i> TXT
+          </button>
+          <div class="toolbar-divider"></div>
+          <button class="btn-ghost btn-ghost--danger" id="clear-btn">
+            <i class="hgi-stroke hgi-delete-02"></i> Clear
           </button>
         </div>
       </div>
 
-      <div class="sidebar-card" id="history-section" style="display:none">
-        <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-clock-02"></i> History
-        </h4>
-        <div id="history-list" class="history-list"></div>
-        <button class="btn-sidebar btn-sidebar--danger" id="clear-history" style="margin-top:8px">
-          <i class="hgi-stroke hgi-delete-02"></i> Clear History
+      <!-- Table -->
+      <div class="table-wrap">
+        <table class="table" id="wallet-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Chain</th>
+              <th>Address</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="wallet-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <button class="btn-ghost" id="prev-page" disabled>
+          <i class="hgi-stroke hgi-arrow-left-01"></i> Prev
+        </button>
+        <span class="page-info" id="page-info">Page 1</span>
+        <button class="btn-ghost" id="next-page">
+          Next <i class="hgi-stroke hgi-arrow-right-01"></i>
         </button>
       </div>
-    </aside>
-  </div>
+    </section>
+
+    <!-- History (below table) -->
+    <div class="history-bar" id="history-section" style="display:none">
+      <div class="history-header">
+        <h4><i class="hgi-stroke hgi-clock-02"></i> Recent History</h4>
+        <button class="btn-ghost btn-ghost--danger" id="clear-history">
+          <i class="hgi-stroke hgi-delete-02"></i> Clear
+        </button>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </div>
+
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer">

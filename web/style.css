@@ -558,23 +558,83 @@ body {
 }
 
 /* ============================
-   3-COLUMN RESULTS LAYOUT
+   RESULTS WRAP (full-width)
    ============================ */
-.results-layout {
-  display: grid;
-  grid-template-columns: 220px 1fr 220px;
-  gap: 20px;
-  max-width: 1320px;
+.results-wrap {
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 20px 40px;
-  align-items: start;
 }
 
-/* -- Sidebars -- */
-.sidebar {
-  position: sticky;
-  top: 72px;
+/* Chain info bar */
+.chain-info-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
 }
+.chain-info-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--gray-50);
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.cib-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--gray-400);
+}
+.cib-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+/* Toolbar divider */
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--gray-200);
+  flex-shrink: 0;
+}
+
+/* Danger button variant */
+.btn-ghost--danger { color: var(--red); }
+.btn-ghost--danger:hover { background: #fef2f2; }
+
+/* History bar */
+.history-bar {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+}
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.history-header h4 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+.history-header h4 i { color: var(--blue); }
 .sidebar-card {
   background: var(--white);
   border: 1px solid var(--gray-200);

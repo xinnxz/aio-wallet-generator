@@ -333,7 +333,7 @@ dom.generateBtn.addEventListener('click', async () => {
   state.query = '';
   state.page = 1;
   dom.searchInput.value = '';
-  dom.resultsLayout.style.display = 'grid';
+  dom.resultsLayout.style.display = 'block';
 
   // Populate sidebar chain info
   const meta = chainMeta[state.chain] || chainMeta.evm;
@@ -476,7 +476,7 @@ document.addEventListener('click', e => {
   state.page = 1;
   state.query = '';
   dom.searchInput.value = '';
-  dom.resultsLayout.style.display = 'grid';
+  dom.resultsLayout.style.display = 'block';
 
   // Populate sidebar chain info
   const meta = chainMeta[entry.chain] || chainMeta.evm;

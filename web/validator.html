@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Validate Address — Web3 Wallet Generator</title>
+  <title>AIO Chain — Validate Wallet Addresses</title>
+  <meta name="description" content="Validate cryptocurrency wallet addresses across 30+ chains. Auto-detect chain, checksum verification, batch validation.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,77 +13,94 @@
 </head>
 <body>
 
+  <!-- NAV -->
   <nav class="nav" id="main-nav"></nav>
 
-  <section class="hero">
+  <!-- HERO (compact for subpages) -->
+  <section class="hero hero--compact" id="hero">
     <div class="hero-bg"></div>
-    <div class="hero-content">
-      <h1>Validate Wallet Address</h1>
-      <p>Check if a wallet address is valid for any supported chain.</p>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>Validate Wallet Addresses</h1>
+      <p>Auto-detect chain, verify format & checksum, batch validate — 100% client-side.</p>
     </div>
   </section>
 
-  <section class="form-section">
-    <div class="form-card">
-      <div class="form-header">
-        <h2>Paste an address</h2>
-      </div>
-      <div class="form-body">
-        <label class="form-label" for="address-input">Address</label>
-        <input type="text" id="address-input" class="input" placeholder="0x... / bc1... / T... / cosmos1...">
+  <!-- VALIDATOR -->
+  <section class="validator-section">
+    <div class="validator-inner">
 
-        <div style="margin-top:16px">
-          <button class="btn-primary" id="validate-btn">
-            <i class="hgi-stroke hgi-checkmark-circle-02"></i> Validate
+      <!-- Mode Toggle -->
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="single">
+          <i class="hgi-stroke hgi-cursor-01"></i> Single
+        </button>
+        <button class="mode-btn" data-mode="batch">
+          <i class="hgi-stroke hgi-text-wrap"></i> Batch
+        </button>
+      </div>
+
+      <!-- Single Mode -->
+      <div class="validator-card" id="single-mode">
+        <label class="validator-label">Wallet Address</label>
+        <div class="validator-input-wrap">
+          <input type="text" class="input validator-input" id="address-input"
+                 placeholder="Paste any address (0x..., bc1..., T..., cosmos1...)"
+                 autocomplete="off" spellcheck="false">
+          <button class="paste-btn" id="paste-btn" title="Paste from clipboard">
+            <i class="hgi-stroke hgi-clipboard-01"></i>
           </button>
         </div>
-
-        <div id="result" style="display:none; margin-top:16px; padding:16px; border-radius:8px; font-size:14px;"></div>
+        <button class="btn-primary validator-submit" id="validate-btn">
+          <i class="hgi-stroke hgi-checkmark-circle-02"></i> Validate
+        </button>
       </div>
+
+      <!-- Batch Mode -->
+      <div class="validator-card" id="batch-mode" style="display:none">
+        <label class="validator-label">
+          Paste Multiple Addresses
+          <span class="validator-hint">(one per line)</span>
+        </label>
+        <textarea class="input validator-textarea" id="batch-input" rows="8"
+                  placeholder="0x4aE804a94d9c05Ae00bDeB50817499&#10;TJYkNPrr3B8vKbx2EWZH&#10;cosmos1qp8z6d6x9naf&#10;bc1qxy2kgdygjrsq"></textarea>
+        <div class="validator-batch-actions">
+          <span class="batch-count" id="batch-count">0 addresses</span>
+          <button class="btn-primary validator-submit" id="batch-validate-btn">
+            <i class="hgi-stroke hgi-checkmark-circle-02"></i> Validate All
+          </button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="validator-results" id="results" style="display:none">
+        <div class="validator-results-header">
+          <h3>Results</h3>
+          <div class="validator-stats">
+            <span class="vstat vstat--valid">
+              <i class="hgi-stroke hgi-checkmark-circle-02"></i>
+              <span id="count-valid">0</span> Valid
+            </span>
+            <span class="vstat vstat--invalid">
+              <i class="hgi-stroke hgi-cancel-circle"></i>
+              <span id="count-invalid">0</span> Invalid
+            </span>
+          </div>
+        </div>
+        <div class="validator-result-list" id="result-list"></div>
+      </div>
+
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="footer">
     <p>All validation is performed client-side. Nothing is sent to any server.</p>
   </footer>
 
+  <!-- Toast -->
+  <div class="toast-wrap" id="toast-wrap"></div>
+
   <script src="nav.js"></script>
-  <script>
-    const input = document.querySelector('#address-input');
-    const btn = document.querySelector('#validate-btn');
-    const result = document.querySelector('#result');
-
-    const patterns = {
-      evm:     { re: /^0x[0-9a-fA-F]{40}$/, name: 'EVM (Ethereum, BSC, Polygon, etc.)' },
-      bitcoin_native: { re: /^bc1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{25,90}$/, name: 'Bitcoin (Native SegWit)' },
-      bitcoin_legacy: { re: /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/, name: 'Bitcoin (Legacy/SegWit)' },
-      solana:  { re: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/, name: 'Solana' },
-      tron:    { re: /^T[1-9A-HJ-NP-Za-km-z]{33}$/, name: 'Tron' },
-      cosmos:  { re: /^(cosmos|osmo|celestia|sei|inj|juno|evmos|kava|stride|akash|stars|regen)1[a-z0-9]{38}$/, name: 'Cosmos (IBC)' },
-      sui:     { re: /^0x[0-9a-fA-F]{64}$/, name: 'Sui / Aptos / Starknet' },
-      ton:     { re: /^(EQ|UQ)[A-Za-z0-9_-]{46}$/, name: 'TON' },
-    };
-
-    btn.addEventListener('click', () => {
-      const addr = input.value.trim();
-      if (!addr) { showResult('Enter an address to validate.', 'error'); return; }
-
-      for (const [key, p] of Object.entries(patterns)) {
-        if (p.re.test(addr)) {
-          showResult(`Valid ${p.name} address`, 'success');
-          return;
-        }
-      }
-      showResult('Address does not match any known chain format.', 'error');
-    });
-
-    function showResult(msg, type) {
-      result.style.display = 'block';
-      result.textContent = msg;
-      result.style.background = type === 'success' ? 'var(--blue-light)' : '#fef2f2';
-      result.style.color = type === 'success' ? 'var(--blue)' : '#dc2626';
-      result.style.border = type === 'success' ? '1px solid var(--blue)' : '1px solid #fca5a5';
-    }
-  </script>
+  <script src="validator.js"></script>
 </body>
 </html>

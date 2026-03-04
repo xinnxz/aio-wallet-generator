@@ -38,6 +38,10 @@
         }).join('')}
       </div>
       <div class="nav-right">
+        <div class="lang-switch">
+          <button class="lang-btn ${(localStorage.getItem('lang') || 'en') === 'en' ? 'active' : ''}" data-lang="en" onclick="switchLang('en')">EN</button>
+          <button class="lang-btn ${(localStorage.getItem('lang') || 'en') === 'id' ? 'active' : ''}" data-lang="id" onclick="switchLang('id')">ID</button>
+        </div>
         <button class="nav-toggle" id="dark-toggle" title="Toggle dark mode">
           <i class="hgi-stroke ${isDark ? 'hgi-sun-03' : 'hgi-moon-02'}" id="dark-icon"></i>
         </button>

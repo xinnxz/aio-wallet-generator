@@ -1,0 +1,85 @@
+{
+    "nav": {
+        "generate": "GENERATE",
+        "validate": "VALIDATE",
+        "convert": "CONVERT",
+        "encrypt": "ENCRYPT",
+        "qrcode": "QR CODE",
+        "hdwallet": "HD WALLET",
+        "bulk": "BULK",
+        "paper": "PAPER",
+        "chains": "CHAINS"
+    },
+    "hero": {
+        "title": "Web3 Wallet Generator",
+        "subtitle": "Generate secure wallets across 30+ blockchain networks — 100% client-side",
+        "generate_btn": "Generate Wallets",
+        "chains_label": "Supported Chains"
+    },
+    "generator": {
+        "chain_label": "Select Chain",
+        "count_label": "Number of Wallets",
+        "generate": "Generate",
+        "generating": "Generating...",
+        "export_csv": "Export CSV",
+        "export_json": "Export JSON",
+        "export_txt": "Export TXT"
+    },
+    "table": {
+        "chain": "Chain",
+        "address": "Address",
+        "private_key": "Private Key",
+        "mnemonic": "Mnemonic",
+        "actions": "Actions",
+        "copy_address": "Copy Address",
+        "copy_key": "Copy Key",
+        "copy_mnemonic": "Copy Mnemonic"
+    },
+    "validate": {
+        "title": "Address Validator",
+        "subtitle": "Check if a wallet address is valid — supports 9 chain formats",
+        "single": "Single",
+        "batch": "Batch",
+        "input_label": "Wallet Address",
+        "validate_btn": "Validate",
+        "valid": "Valid",
+        "invalid": "Invalid",
+        "detected_chain": "Detected Chain"
+    },
+    "convert": {
+        "title": "Format Converter",
+        "subtitle": "Convert between Hex, Base58, Bech32, and mnemonic formats"
+    },
+    "encrypt": {
+        "title": "Encrypt & Decrypt",
+        "subtitle": "Protect your wallet data with AES-256-GCM encryption — 100% client-side",
+        "encrypt_mode": "Encrypt",
+        "decrypt_mode": "Decrypt",
+        "password": "Password",
+        "encrypt_btn": "Encrypt & Download",
+        "decrypt_btn": "Decrypt"
+    },
+    "qr": {
+        "title": "QR Code Generator",
+        "subtitle": "Generate QR codes for any wallet address — single or bulk"
+    },
+    "hd": {
+        "title": "HD Wallet Explorer",
+        "subtitle": "Derive multiple accounts from a single mnemonic across chains"
+    },
+    "chains": {
+        "title": "Supported Chains",
+        "subtitle": "9 ecosystems · 30+ networks · click a row to see details"
+    },
+    "footer": {
+        "text": "All wallets are generated client-side. Private keys never leave your browser."
+    },
+    "common": {
+        "copy": "Copy",
+        "copied": "Copied!",
+        "download": "Download",
+        "paste": "Paste",
+        "reset": "Reset",
+        "loading": "Loading..."
+    }
+}

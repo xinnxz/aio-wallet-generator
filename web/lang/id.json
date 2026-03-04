@@ -1,0 +1,85 @@
+{
+    "nav": {
+        "generate": "BUAT",
+        "validate": "VALIDASI",
+        "convert": "KONVERSI",
+        "encrypt": "ENKRIPSI",
+        "qrcode": "QR CODE",
+        "hdwallet": "HD WALLET",
+        "bulk": "MASSAL",
+        "paper": "KERTAS",
+        "chains": "RANTAI"
+    },
+    "hero": {
+        "title": "Generator Wallet Web3",
+        "subtitle": "Buat dompet kripto aman untuk 30+ jaringan blockchain — 100% di perangkat",
+        "generate_btn": "Buat Wallet",
+        "chains_label": "Jaringan yang Didukung"
+    },
+    "generator": {
+        "chain_label": "Pilih Jaringan",
+        "count_label": "Jumlah Wallet",
+        "generate": "Buat",
+        "generating": "Membuat...",
+        "export_csv": "Ekspor CSV",
+        "export_json": "Ekspor JSON",
+        "export_txt": "Ekspor TXT"
+    },
+    "table": {
+        "chain": "Jaringan",
+        "address": "Alamat",
+        "private_key": "Kunci Privat",
+        "mnemonic": "Mnemonic",
+        "actions": "Aksi",
+        "copy_address": "Salin Alamat",
+        "copy_key": "Salin Kunci",
+        "copy_mnemonic": "Salin Mnemonic"
+    },
+    "validate": {
+        "title": "Validator Alamat",
+        "subtitle": "Periksa apakah alamat wallet valid — mendukung 9 format jaringan",
+        "single": "Tunggal",
+        "batch": "Massal",
+        "input_label": "Alamat Wallet",
+        "validate_btn": "Validasi",
+        "valid": "Valid",
+        "invalid": "Tidak Valid",
+        "detected_chain": "Jaringan Terdeteksi"
+    },
+    "convert": {
+        "title": "Konverter Format",
+        "subtitle": "Konversi antara Hex, Base58, Bech32, dan format mnemonic"
+    },
+    "encrypt": {
+        "title": "Enkripsi & Dekripsi",
+        "subtitle": "Lindungi data wallet dengan enkripsi AES-256-GCM — 100% di perangkat",
+        "encrypt_mode": "Enkripsi",
+        "decrypt_mode": "Dekripsi",
+        "password": "Kata Sandi",
+        "encrypt_btn": "Enkripsi & Unduh",
+        "decrypt_btn": "Dekripsi"
+    },
+    "qr": {
+        "title": "Generator QR Code",
+        "subtitle": "Buat QR code untuk alamat wallet — tunggal atau massal"
+    },
+    "hd": {
+        "title": "Penjelajah HD Wallet",
+        "subtitle": "Turunkan banyak akun dari satu mnemonic untuk berbagai jaringan"
+    },
+    "chains": {
+        "title": "Jaringan yang Didukung",
+        "subtitle": "9 ekosistem · 30+ jaringan · klik baris untuk melihat detail"
+    },
+    "footer": {
+        "text": "Semua wallet dibuat di perangkat. Kunci privat tidak pernah meninggalkan browser."
+    },
+    "common": {
+        "copy": "Salin",
+        "copied": "Tersalin!",
+        "download": "Unduh",
+        "paste": "Tempel",
+        "reset": "Reset",
+        "loading": "Memuat..."
+    }
+}

@@ -949,6 +949,14 @@ body {
 .copy-btn:hover { background: var(--gray-50); }
 .copy-btn:active { transform: scale(0.9); }
 .copy-btn.copied { color: var(--green); border-color: var(--green); }
+.copy-btn--icon {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+}
+.copy-btn--icon i { font-size: 13px; }
 
 /* -- Pagination -- */
 .pagination {

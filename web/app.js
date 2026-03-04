@@ -204,14 +204,14 @@ function render() {
       <td data-label="Private Key" class="key-cell col-key ${keyHidden}" title="${w.privateKey || ''}">${w.privateKey || ''}</td>
       <td data-label="Mnemonic" class="key-cell col-key ${keyHidden}" title="${w.mnemonic || ''}">${w.mnemonic || '-'}</td>
       <td data-label="Actions">
-        <button class="copy-btn" data-val="${esc(w.address)}" data-label="Copy Address" title="Copy address">
-          <i class="hgi-stroke hgi-copy-01"></i> Copy Address
+        <button class="copy-btn copy-btn--icon" data-val="${esc(w.address)}" data-label="Copy Address" title="Copy Address">
+          <i class="hgi-stroke hgi-copy-01"></i>
         </button>
-        ${w.privateKey ? `<button class="copy-btn" data-val="${esc(w.privateKey)}" data-label="Copy Key" title="Copy private key">
-          <i class="hgi-stroke hgi-lock-key"></i> Copy Key
+        ${w.privateKey ? `<button class="copy-btn copy-btn--icon" data-val="${esc(w.privateKey)}" data-label="Copy Key" title="Copy Private Key">
+          <i class="hgi-stroke hgi-lock-key"></i>
         </button>` : ''}
-        ${w.mnemonic && w.mnemonic !== '-' ? `<button class="copy-btn" data-val="${esc(w.mnemonic)}" data-label="Copy Mnemonic" title="Copy mnemonic phrase">
-          <i class="hgi-stroke hgi-text-wrap"></i> Copy Mnemonic
+        ${w.mnemonic && w.mnemonic !== '-' ? `<button class="copy-btn copy-btn--icon" data-val="${esc(w.mnemonic)}" data-label="Copy Mnemonic" title="Copy Mnemonic">
+          <i class="hgi-stroke hgi-text-wrap"></i>
         </button>` : ''}
       </td>`;
     dom.tbody.appendChild(tr);

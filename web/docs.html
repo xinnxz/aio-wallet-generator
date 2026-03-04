@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIO Chain — Documentation</title>
+  <meta name="description" content="Complete documentation for AIO Chain: CLI reference, Web API, Extension guide, and security model.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="icon" href="images/icon-192.png">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero hero--compact" id="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>Documentation</h1>
+      <p class="hero-sub">Everything you need to use AIO Chain — CLI, Web, Extension, and API.</p>
+    </div>
+  </section>
+
+  <main class="container" style="padding-bottom:40px">
+
+    <!-- Quick Nav -->
+    <div class="docs-nav">
+      <a href="#getting-started" class="docs-nav-item">Getting Started</a>
+      <a href="#cli" class="docs-nav-item">CLI Reference</a>
+      <a href="#web" class="docs-nav-item">Web App</a>
+      <a href="#extension" class="docs-nav-item">Extension</a>
+      <a href="#security" class="docs-nav-item">Security</a>
+      <a href="#chains" class="docs-nav-item">Chains</a>
+    </div>
+
+    <!-- Getting Started -->
+    <section class="docs-section" id="getting-started">
+      <h2><i class="hgi-stroke hgi-play"></i> Getting Started</h2>
+      <p>AIO Chain is an all-in-one Web3 wallet toolkit. 100% client-side, open source, works offline. Available as:</p>
+      <div class="docs-grid">
+        <div class="docs-card">
+          <h3>Web App</h3>
+          <p>Open-source web dashboard with 9 tools. No installation required.</p>
+          <code>https://aio-wallet-generator.vercel.app</code>
+        </div>
+        <div class="docs-card">
+          <h3>CLI</h3>
+          <p>Command-line tool for bulk generation and automation.</p>
+          <code>npx aio-chain generate --chain evm --count 10</code>
+        </div>
+        <div class="docs-card">
+          <h3>Extension</h3>
+          <p>Chrome extension with address scanner and encrypted vault.</p>
+          <code>chrome://extensions → Load unpacked → extension/</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLI Reference -->
+    <section class="docs-section" id="cli">
+      <h2><i class="hgi-stroke hgi-terminal"></i> CLI Reference</h2>
+      <p>Install globally or run with <code>npx</code>:</p>
+      <pre class="docs-code">npm install -g web3-wallet-toolkit
+# or
+npx aio-chain &lt;command&gt;</pre>
+
+      <h3>generate</h3>
+      <p>Generate wallets for any supported chain.</p>
+      <pre class="docs-code">aio-chain generate [options]
+
+Options:
+  -c, --chain &lt;chains&gt;    Chain name(s), comma-separated        (default: "evm")
+  -n, --count &lt;number&gt;    Number of wallets to generate         (default: 10)
+  --hd                    Use HD wallet mode (single mnemonic)
+  -o, --output &lt;format&gt;   Auto-export: csv, json, xlsx, encrypted
+  -f, --file &lt;path&gt;       Output file path
+  -p, --password &lt;pass&gt;   Password for encrypted export
+  --show-keys             Show private keys in terminal
+
+# Examples
+aio-chain generate -c evm -n 100
+aio-chain generate -c solana,bitcoin -n 50 -o csv
+aio-chain generate -c evm -n 10000 --hd
+aio-chain generate -c all -n 5 -o json -f wallets.json</pre>
+
+      <h3>validate</h3>
+      <p>Validate crypto addresses with auto-detection.</p>
+      <pre class="docs-code">aio-chain validate [addresses...] [options]
+
+Options:
+  -f, --file &lt;path&gt;             Read from file (one per line)
+  --batch &lt;addresses&gt;           Comma-separated addresses
+
+# Examples
+aio-chain validate 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28
+aio-chain validate --batch "0x742d...,5eykt...,bc1q..."
+aio-chain validate --file addresses.txt</pre>
+
+      <h3>convert</h3>
+      <p>Convert address formats (EVM checksum, lowercase, hex).</p>
+      <pre class="docs-code">aio-chain convert &lt;address&gt; [options]
+
+Options:
+  -t, --to &lt;format&gt;    checksum, lowercase, uppercase, hex
+
+# Examples
+aio-chain convert 0x742d35cc... --to checksum
+aio-chain convert 0x742d35cc...  # shows all formats</pre>
+
+      <h3>export</h3>
+      <p>Export wallet data to various formats.</p>
+      <pre class="docs-code">aio-chain export [options]
+
+Options:
+  -f, --format &lt;format&gt;    csv, json, xlsx, encrypted  (default: "json")
+  -o, --file &lt;path&gt;        Output file path
+  -i, --input &lt;path&gt;       Input wallet JSON file
+  -p, --password &lt;pass&gt;    Password for encrypted</pre>
+
+      <h3>decrypt</h3>
+      <p>Decrypt .encrypted wallet files.</p>
+      <pre class="docs-code">aio-chain decrypt -f wallets.encrypted -p "your-password"
+aio-chain decrypt -f wallets.encrypted -p "pass" -o csv</pre>
+
+      <h3>info</h3>
+      <p>Show supported chains and their details.</p>
+      <pre class="docs-code">aio-chain info
+aio-chain info -c evm</pre>
+    </section>
+
+    <!-- Web App -->
+    <section class="docs-section" id="web">
+      <h2><i class="hgi-stroke hgi-browser"></i> Web App Guide</h2>
+      <p>The web app has 9 tools accessible from the navigation bar:</p>
+
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr><th>Page</th><th>Description</th><th>Key Features</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Generate</strong></td><td>Generate wallets for any chain</td><td>Bulk (1-10K), mnemonic, copy/export</td></tr>
+            <tr><td><strong>Validate</strong></td><td>Validate address format</td><td>Auto-detect chain, batch mode</td></tr>
+            <tr><td><strong>Convert</strong></td><td>Address format conversion</td><td>Checksum, uppercase, lowercase, hex</td></tr>
+            <tr><td><strong>Encrypt</strong></td><td>Encrypt/decrypt wallet data</td><td>AES-256-GCM, password-based</td></tr>
+            <tr><td><strong>QR Code</strong></td><td>Generate QR codes for addresses</td><td>Single/bulk, custom colors, PNG download</td></tr>
+            <tr><td><strong>HD Wallet</strong></td><td>Derive wallets from mnemonic</td><td>BIP39/BIP44, derivation paths</td></tr>
+            <tr><td><strong>Bulk Tools</strong></td><td>Batch processing utilities</td><td>Airdrop formatter, duplicate detector</td></tr>
+            <tr><td><strong>Paper Wallet</strong></td><td>Printable wallet cards</td><td>Dual QR, fold line, print-ready</td></tr>
+            <tr><td><strong>Chains</strong></td><td>Chain information reference</td><td>30+ networks, address formats</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Extension -->
+    <section class="docs-section" id="extension">
+      <h2><i class="hgi-stroke hgi-puzzle"></i> Browser Extension</h2>
+      <p>Chrome/Edge/Brave extension with 5 core features:</p>
+
+      <div class="docs-grid">
+        <div class="docs-card">
+          <h3>Vault-First Security</h3>
+          <p>Must create a master password before accessing any features. AES-256-GCM + PBKDF2 100K iterations.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Bulk Generate</h3>
+          <p>Generate up to 500 wallets at once. Progress bar, save all, copy all, export CSV.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Address Scanner</h3>
+          <p>Scan any webpage for crypto addresses. Colored highlights by chain, click to copy.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Context Menu</h3>
+          <p>Right-click → "Validate Address" or "Generate QR" for any selected text.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Omnibox</h3>
+          <p>Type <code>aio</code> in address bar → <code>aio val 0x...</code> or <code>aio gen</code></p>
+        </div>
+        <div class="docs-card">
+          <h3>Installation</h3>
+          <p><code>chrome://extensions</code> → Developer Mode → Load unpacked → select <code>extension/</code></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security -->
+    <section class="docs-section" id="security">
+      <h2><i class="hgi-stroke hgi-shield-check"></i> Security Model</h2>
+      <p>AIO Chain is designed with security as the top priority:</p>
+
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr><th>Aspect</th><th>Implementation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Architecture</strong></td><td>100% client-side. Zero server calls. Works offline.</td></tr>
+            <tr><td><strong>Key Generation</strong></td><td><code>crypto.getRandomValues()</code> — OS-level CSPRNG</td></tr>
+            <tr><td><strong>EVM Wallets</strong></td><td><code>ethers.js v6</code> — audited, industry standard</td></tr>
+            <tr><td><strong>Bitcoin</strong></td><td><code>bitcoinjs-lib v6</code> + <code>tiny-secp256k1</code></td></tr>
+            <tr><td><strong>Solana</strong></td><td><code>@solana/web3.js</code> + <code>tweetnacl</code> Ed25519</td></tr>
+            <tr><td><strong>Encryption</strong></td><td>AES-256-GCM + PBKDF2 (100,000 iterations, SHA-256)</td></tr>
+            <tr><td><strong>HD Wallets</strong></td><td>BIP39 mnemonic + BIP32/BIP44 derivation</td></tr>
+            <tr><td><strong>Data Storage</strong></td><td>Nothing stored. Generate → copy → gone. Vault encrypted locally.</td></tr>
+            <tr><td><strong>Open Source</strong></td><td>Every line auditable on <a href="https://github.com/xinnxz/aio-wallet-generator" target="_blank">GitHub</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Best Practices</h3>
+      <ul class="docs-list">
+        <li>Never share private keys or mnemonics</li>
+        <li>Use HD mode for deterministic backup (1 mnemonic = many wallets)</li>
+        <li>Export encrypted files with a strong password</li>
+        <li>Verify checksums of downloaded exports</li>
+        <li>Use the validator to confirm address integrity</li>
+      </ul>
+    </section>
+
+    <!-- Supported Chains -->
+    <section class="docs-section" id="chains">
+      <h2><i class="hgi-stroke hgi-blockchain-06"></i> Supported Chains</h2>
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr><th>Chain</th><th>CLI Flag</th><th>Address Format</th><th>Key Type</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>EVM</strong></td><td><code>evm</code></td><td>0x + 40 hex chars</td><td>secp256k1</td></tr>
+            <tr><td><strong>Solana</strong></td><td><code>solana</code></td><td>Base58, 32-44 chars</td><td>Ed25519</td></tr>
+            <tr><td><strong>Bitcoin</strong></td><td><code>bitcoin</code></td><td>1.., 3.., bc1..</td><td>secp256k1</td></tr>
+            <tr><td><strong>Tron</strong></td><td><code>tron</code></td><td>T + 33 Base58 chars</td><td>secp256k1</td></tr>
+            <tr><td><strong>Sui</strong></td><td><code>sui</code></td><td>0x + 64 hex chars</td><td>Ed25519</td></tr>
+            <tr><td><strong>Aptos</strong></td><td><code>aptos</code></td><td>0x + 64 hex chars</td><td>Ed25519</td></tr>
+            <tr><td><strong>Cosmos</strong></td><td><code>cosmos</code></td><td>cosmos1.. bech32</td><td>secp256k1</td></tr>
+            <tr><td><strong>TON</strong></td><td><code>ton</code></td><td>EQ/UQ + 46 chars</td><td>Ed25519</td></tr>
+            <tr><td><strong>Starknet</strong></td><td><code>starknet</code></td><td>0x0 + 63 hex chars</td><td>STARK curve</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>EVM includes: Ethereum, BSC, Polygon, Arbitrum, Avalanche, Optimism, Base, zkSync, and 20+ more networks (same address format).</p>
+    </section>
+
+  </main>
+
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')</script>
+  <script src="i18n.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

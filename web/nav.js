@@ -16,6 +16,7 @@
     { href: '/bulktools.html', label: 'BULK',      icon: 'hgi-layers-01',           match: ['bulktools.html'] },
     { href: '/paperwallet.html',label:'PAPER',     icon: 'hgi-printer',             match: ['paperwallet.html'] },
     { href: '/chains.html',    label: 'CHAINS',    icon: 'hgi-blockchain-06',       match: ['chains.html'] },
+    { href: '/docs.html',      label: 'DOCS',      icon: 'hgi-book-open-02',        match: ['docs.html'] },
   ];
 
   const nav = document.getElementById('main-nav');

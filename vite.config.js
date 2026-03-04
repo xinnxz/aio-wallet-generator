@@ -32,6 +32,7 @@ export default defineConfig({
         bulktools:   resolve(__dirname, 'web/bulktools.html'),
         paperwallet: resolve(__dirname, 'web/paperwallet.html'),
         chains:      resolve(__dirname, 'web/chains.html'),
+        docs:        resolve(__dirname, 'web/docs.html'),
       },
     },
   },

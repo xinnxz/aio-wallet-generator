@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <img src="../icons/icon-48.png" width="20" height="20">
+        <span>AIO Chain</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="vault-btn" title="Vault">🔐</button>
+        <button class="icon-btn" id="scanner-toggle" title="Toggle Scanner">🔍</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="generate">Generate</button>
+      <button class="tab" data-tab="validate">Validate</button>
+      <button class="tab" data-tab="vault">Vault</button>
+    </div>
+
+    <!-- GENERATE TAB -->
+    <div class="tab-content active" id="tab-generate">
+      <div class="field">
+        <label>Chain</label>
+        <select id="gen-chain">
+          <option value="evm">EVM (Ethereum)</option>
+          <option value="solana">Solana</option>
+          <option value="bitcoin">Bitcoin</option>
+          <option value="tron">Tron</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Count</label>
+        <select id="gen-count">
+          <option value="1" selected>1</option>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <button class="btn-primary" id="gen-btn">⚡ Generate</button>
+
+      <div class="results" id="gen-results"></div>
+    </div>
+
+    <!-- VALIDATE TAB -->
+    <div class="tab-content" id="tab-validate">
+      <div class="field">
+        <label>Address</label>
+        <input type="text" id="val-input" placeholder="0x... / bc1... / 5..." spellcheck="false">
+      </div>
+      <button class="btn-primary" id="val-btn">✓ Validate</button>
+      <div class="val-result" id="val-result"></div>
+    </div>
+
+    <!-- VAULT TAB -->
+    <div class="tab-content" id="tab-vault">
+      <!-- Locked state -->
+      <div id="vault-locked">
+        <div class="vault-lock-icon">🔒</div>
+        <p class="vault-msg">Vault is locked</p>
+        <div class="field">
+          <input type="password" id="vault-pass" placeholder="Enter password">
+        </div>
+        <div class="vault-btns">
+          <button class="btn-primary" id="vault-unlock">Unlock</button>
+          <button class="btn-secondary" id="vault-create">Create New</button>
+        </div>
+      </div>
+      <!-- Unlocked state -->
+      <div id="vault-unlocked" style="display:none">
+        <div class="vault-header">
+          <span id="vault-count">0 wallets</span>
+          <div>
+            <button class="icon-btn" id="vault-export" title="Export">📥</button>
+            <button class="icon-btn" id="vault-lock" title="Lock">🔒</button>
+          </div>
+        </div>
+        <div class="vault-list" id="vault-list"></div>
+        <p class="vault-hint">Generate wallets and click 💾 to save here</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../lib/chains.js"></script>
+  <script src="../vault/vault.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

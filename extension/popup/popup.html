@@ -12,142 +12,177 @@
       <a href="https://aio-wallet-generator.vercel.app" target="_blank" class="logo">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7"/>
-          <circle cx="18" cy="18" r="3"/>
-          <path d="M18 15v3h3"/>
+          <circle cx="18" cy="18" r="3"/><path d="M18 15v3h3"/>
           <line x1="7" y1="12" x2="7" y2="12.01"/>
         </svg>
         <span>AIO Chain</span>
       </a>
       <div class="header-actions">
         <button class="hdr-btn" id="scanner-toggle" title="Scan page for addresses">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
-        <button class="hdr-btn" id="settings-btn" title="Settings">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-          </svg>
+        <button class="hdr-btn hdr-btn--danger" id="vault-lock-btn" title="Lock vault" style="display:none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </button>
       </div>
     </header>
 
-    <!-- Tabs -->
-    <nav class="tabs">
-      <button class="tab active" data-tab="generate">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Generate
-      </button>
-      <button class="tab" data-tab="validate">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Validate
-      </button>
-      <button class="tab" data-tab="vault">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Vault
-      </button>
-    </nav>
-
-    <!-- ═══════════════════════════════ -->
-    <!-- GENERATE TAB                    -->
-    <!-- ═══════════════════════════════ -->
-    <section class="panel active" id="tab-generate">
-
-      <!-- Chain Input (free-form with autocomplete) -->
-      <div class="input-group">
-        <label>Chain</label>
-        <div class="combo-wrap">
-          <input type="text" id="gen-chain" class="combo-input" placeholder="Type: eth, sol, btc, tron..." autocomplete="off" spellcheck="false" value="evm">
-          <div class="combo-dropdown" id="chain-dropdown"></div>
-        </div>
+    <!-- ═══════════════════════════════════ -->
+    <!-- VAULT GATE (shown first)           -->
+    <!-- ═══════════════════════════════════ -->
+    <section class="vault-gate" id="vault-gate">
+      <div class="vault-hero">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          <circle cx="12" cy="16" r="1"/>
+        </svg>
+        <h2>AIO Chain Vault</h2>
+        <p>Secure your wallets with AES-256-GCM encryption</p>
+        <span class="vault-spec">PBKDF2 · 100K iterations · Web Crypto API</span>
       </div>
 
-      <!-- Count Input (free-form number) -->
-      <div class="input-group">
-        <label>Wallets</label>
-        <input type="number" id="gen-count" class="mono-input" value="1" min="1" max="100" placeholder="1-100">
-      </div>
-
-      <button class="action-btn" id="gen-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Generate
-      </button>
-
-      <!-- Results Container -->
-      <div class="results" id="gen-results"></div>
-    </section>
-
-    <!-- ═══════════════════════════════ -->
-    <!-- VALIDATE TAB                    -->
-    <!-- ═══════════════════════════════ -->
-    <section class="panel" id="tab-validate">
-      <div class="input-group">
-        <label>Address</label>
-        <div class="validated-input-wrap">
-          <input type="text" id="val-input" class="mono-input" placeholder="Paste any address..." spellcheck="false">
-          <button class="inline-btn" id="val-paste" title="Paste from clipboard">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <button class="action-btn action-btn--secondary" id="val-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Validate
-      </button>
-
-      <div id="val-result"></div>
-    </section>
-
-    <!-- ═══════════════════════════════ -->
-    <!-- VAULT TAB                       -->
-    <!-- ═══════════════════════════════ -->
-    <section class="panel" id="tab-vault">
-
-      <!-- Locked State -->
-      <div id="vault-locked">
-        <div class="vault-hero">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <rect x="3" y="11" width="18" height="11" rx="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            <circle cx="12" cy="16" r="1"/>
-          </svg>
-          <p>Encrypted Vault</p>
-          <span>AES-256-GCM · PBKDF2 100K</span>
-        </div>
+      <div class="vault-form">
         <div class="input-group">
+          <label>Master Password</label>
           <div class="pass-wrap">
-            <input type="password" id="vault-pass" class="mono-input" placeholder="Master password" autocomplete="off">
+            <input type="password" id="vault-pass" class="mono-input" placeholder="Enter master password" autocomplete="off">
             <button class="inline-btn" id="toggle-vault-pass" title="Show password">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
         </div>
-        <div class="vault-duo-btn">
-          <button class="action-btn" id="vault-unlock">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
-            Unlock
-          </button>
-          <button class="action-btn action-btn--ghost" id="vault-create">New Vault</button>
+
+        <button class="action-btn" id="vault-unlock-btn" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+          Unlock Vault
+        </button>
+        <button class="action-btn action-btn--green" id="vault-create-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create Vault
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- MAIN APP (hidden until unlocked)   -->
+    <!-- ═══════════════════════════════════ -->
+    <section class="main-app" id="main-app" style="display:none">
+
+      <!-- Tabs -->
+      <nav class="tabs">
+        <button class="tab active" data-tab="generate">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Generate
+        </button>
+        <button class="tab" data-tab="validate">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Validate
+        </button>
+        <button class="tab" data-tab="wallet-list">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+          Saved
+        </button>
+      </nav>
+
+      <!-- ── GENERATE TAB ── -->
+      <div class="panel active" id="tab-generate">
+
+        <!-- Chain -->
+        <div class="input-group">
+          <label>Chain</label>
+          <div class="combo-wrap">
+            <input type="text" id="gen-chain" class="combo-input" placeholder="Type: eth, sol, btc, tron..." autocomplete="off" spellcheck="false" value="evm">
+            <div class="combo-dropdown" id="chain-dropdown"></div>
+          </div>
         </div>
+
+        <!-- Count -->
+        <div class="input-group">
+          <label>Number of Wallets</label>
+          <input type="number" id="gen-count" class="mono-input" value="5" min="1" max="500" placeholder="1 — 500">
+        </div>
+
+        <!-- Generate Button -->
+        <button class="action-btn" id="gen-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Generate Wallets
+        </button>
+
+        <!-- Progress -->
+        <div class="progress-wrap" id="gen-progress" style="display:none">
+          <div class="progress-bar"><div class="progress-fill" id="gen-progress-fill"></div></div>
+          <span class="progress-label" id="gen-progress-label">0 / 0</span>
+        </div>
+
+        <!-- Bulk Actions -->
+        <div class="bulk-actions" id="bulk-actions" style="display:none">
+          <span class="bulk-count" id="bulk-count">0 wallets</span>
+          <div class="bulk-btns">
+            <button class="small-btn" id="save-all-btn" title="Save all to vault">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+              Save All
+            </button>
+            <button class="small-btn" id="copy-all-btn" title="Copy all addresses">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy All
+            </button>
+            <button class="small-btn" id="export-csv-btn" title="Export CSV">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="results-table" id="gen-results"></div>
       </div>
 
-      <!-- Unlocked State -->
-      <div id="vault-unlocked" style="display:none">
+      <!-- ── VALIDATE TAB ── -->
+      <div class="panel" id="tab-validate">
+        <div class="input-group">
+          <label>Address</label>
+          <div class="validated-input-wrap">
+            <input type="text" id="val-input" class="mono-input" placeholder="Paste any address..." spellcheck="false">
+            <button class="inline-btn" id="val-paste" title="Paste from clipboard">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="action-btn action-btn--secondary" id="val-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Validate
+        </button>
+
+        <!-- Batch validate -->
+        <div class="input-group" style="margin-top:16px">
+          <label>Batch Validate (one per line)</label>
+          <textarea id="val-batch" class="mono-input textarea-input" rows="5" placeholder="0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28&#10;5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKucrNbAqEEL1&#10;bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq" spellcheck="false"></textarea>
+        </div>
+        <button class="action-btn action-btn--secondary" id="val-batch-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Validate All
+        </button>
+
+        <div id="val-result"></div>
+      </div>
+
+      <!-- ── SAVED WALLETS TAB ── -->
+      <div class="panel" id="tab-wallet-list">
         <div class="vault-toolbar">
           <span class="vault-badge" id="vault-count">0</span>
           <div class="vault-toolbar-actions">
-            <button class="hdr-btn" id="vault-export" title="Export wallets">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            </button>
-            <button class="hdr-btn hdr-btn--danger" id="vault-lock" title="Lock vault">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <button class="small-btn" id="vault-export-btn" title="Export">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
             </button>
           </div>
         </div>
         <div class="vault-list" id="vault-list"></div>
-        <p class="vault-empty" id="vault-empty">Generate wallets → click save icon to store here</p>
+        <p class="vault-empty" id="vault-empty">No wallets saved yet. Generate wallets and click "Save All".</p>
       </div>
+
     </section>
 
     <!-- Toast -->

@@ -1,0 +1,29 @@
+{
+    "name": "AIO Chain — Web3 Wallet Toolkit",
+    "short_name": "AIO Chain",
+    "description": "Generate, validate, convert, encrypt wallets across 30+ blockchain networks. 100% client-side.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#3b82f6",
+    "orientation": "any",
+    "categories": [
+        "finance",
+        "utilities",
+        "productivity"
+    ],
+    "icons": [
+        {
+            "src": "images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

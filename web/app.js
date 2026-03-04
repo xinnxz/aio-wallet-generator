@@ -198,12 +198,12 @@ function render() {
   for (const w of slice) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td style="color:#9ca3af;font-size:12px">${w.index}</td>
-      <td><span class="chain-tag">${w.chain.toUpperCase()}</span></td>
-      <td class="address-cell" title="${w.address}">${w.address}</td>
-      <td class="key-cell col-key ${keyHidden}" title="${w.privateKey || ''}">${w.privateKey || ''}</td>
-      <td class="key-cell col-key ${keyHidden}" title="${w.mnemonic || ''}">${w.mnemonic || '-'}</td>
-      <td>
+      <td data-label="#" style="color:#9ca3af;font-size:12px">${w.index}</td>
+      <td data-label="Chain"><span class="chain-tag">${w.chain.toUpperCase()}</span></td>
+      <td data-label="Address" class="address-cell" title="${w.address}">${w.address}</td>
+      <td data-label="Private Key" class="key-cell col-key ${keyHidden}" title="${w.privateKey || ''}">${w.privateKey || ''}</td>
+      <td data-label="Mnemonic" class="key-cell col-key ${keyHidden}" title="${w.mnemonic || ''}">${w.mnemonic || '-'}</td>
+      <td data-label="Actions">
         <button class="copy-btn" data-val="${esc(w.address)}" data-label="Copy Address" title="Copy address">
           <i class="hgi-stroke hgi-copy-01"></i> Copy Address
         </button>

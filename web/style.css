@@ -1240,10 +1240,68 @@ body {
   .search-box { flex: 1; min-width: 140px; }
   .toolbar-divider { display: none; }
 
-  /* Table: horizontal scroll */
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .table { min-width: 600px; }
-  .address-cell { max-width: 180px; }
+  /* Table → Card layout on mobile */
+  .table-wrap { overflow-x: visible; }
+  .table { min-width: 0; }
+  .table thead { display: none; }
+  .table tbody tr {
+    display: block;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  .table tbody td {
+    display: block;
+    padding: 3px 0;
+    text-align: left;
+    border: none;
+    font-size: 12px;
+  }
+  .table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+  .table tbody td[data-label="#"] {
+    display: inline-block;
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  .table tbody td[data-label="#"]::before { display: inline; margin-right: 2px; }
+  .table tbody td[data-label="Chain"] {
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .table tbody td[data-label="Chain"]::before { display: none; }
+  .address-cell,
+  .key-cell {
+    max-width: 100% !important;
+    word-break: break-all;
+    font-size: 11px;
+    font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    line-height: 1.4;
+  }
+  .table tbody td[data-label="Actions"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .table tbody td[data-label="Actions"]::before { display: none; }
+  .table tbody td[data-label="Actions"] .copy-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 11px;
+  }
 
   /* Pagination */
   .pagination { padding: 10px 12px; }

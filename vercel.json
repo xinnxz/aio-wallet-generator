@@ -1,5 +1,9 @@
 {
-    "buildCommand": "npx vite build",
-    "outputDirectory": "dist",
-    "framework": "vite"
+    "outputDirectory": "web",
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/$1"
+        }
+    ]
 }

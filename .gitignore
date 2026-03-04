@@ -29,3 +29,5 @@ test-output.*
 
 # Docs
 docs/
+.vercel
+.env*.local

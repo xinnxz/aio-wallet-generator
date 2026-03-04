@@ -33,6 +33,8 @@ export default defineConfig({
         paperwallet: resolve(__dirname, 'web/paperwallet.html'),
         chains:      resolve(__dirname, 'web/chains.html'),
         docs:        resolve(__dirname, 'web/docs.html'),
+        security:    resolve(__dirname, 'web/security.html'),
+        plugins:     resolve(__dirname, 'web/plugins.html'),
       },
     },
   },

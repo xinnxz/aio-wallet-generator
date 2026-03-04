@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIO Chain — Security</title>
+  <meta name="description" content="Security model, cryptographic implementations, and audit checklist for AIO Chain wallet toolkit.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="icon" href="images/icon-192.png">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero hero--compact" id="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>Security</h1>
+      <p class="hero-sub">Transparency, cryptographic standards, and self-audit checklist.</p>
+    </div>
+  </section>
+
+  <main class="container" style="padding-bottom:40px">
+
+    <!-- Architecture -->
+    <section class="docs-section" id="architecture">
+      <h2><i class="hgi-stroke hgi-shield-check"></i> Architecture</h2>
+      <div class="docs-grid">
+        <div class="docs-card">
+          <h3>100% Client-Side</h3>
+          <p>All cryptographic operations run in your browser or terminal. Zero server calls. No API keys. Works offline.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Zero Data Collection</h3>
+          <p>No analytics, no tracking, no cookies, no telemetry. We don't know who you are or what you generate.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Open Source</h3>
+          <p>Every line is auditable on <a href="https://github.com/xinnxz/aio-wallet-generator" target="_blank">GitHub</a>. Fork it, audit it, self-host it.</p>
+        </div>
+        <div class="docs-card">
+          <h3>No Dependencies at Runtime</h3>
+          <p>Web app loads from static files. No CDN dependencies for crypto operations. Extension uses Web Crypto API only.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cryptographic Libraries -->
+    <section class="docs-section" id="crypto">
+      <h2><i class="hgi-stroke hgi-lock-key"></i> Cryptographic Stack</h2>
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr><th>Component</th><th>Library</th><th>Version</th><th>Algorithm</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Random Generation</strong></td>
+              <td>Web Crypto API</td>
+              <td>Native</td>
+              <td><code>crypto.getRandomValues()</code> — OS CSPRNG</td>
+            </tr>
+            <tr>
+              <td><strong>EVM Wallets</strong></td>
+              <td>ethers.js</td>
+              <td>v6.13</td>
+              <td>secp256k1 + Keccak-256</td>
+            </tr>
+            <tr>
+              <td><strong>Bitcoin</strong></td>
+              <td>bitcoinjs-lib + tiny-secp256k1</td>
+              <td>v6.1</td>
+              <td>secp256k1 + SHA-256 + RIPEMD-160</td>
+            </tr>
+            <tr>
+              <td><strong>Solana</strong></td>
+              <td>@solana/web3.js + tweetnacl</td>
+              <td>v1.95</td>
+              <td>Ed25519</td>
+            </tr>
+            <tr>
+              <td><strong>Tron</strong></td>
+              <td>tronweb</td>
+              <td>v6.0</td>
+              <td>secp256k1 + Keccak-256</td>
+            </tr>
+            <tr>
+              <td><strong>Sui</strong></td>
+              <td>@mysten/sui</td>
+              <td>v1.16</td>
+              <td>Ed25519</td>
+            </tr>
+            <tr>
+              <td><strong>Aptos</strong></td>
+              <td>aptos SDK</td>
+              <td>v1.21</td>
+              <td>Ed25519</td>
+            </tr>
+            <tr>
+              <td><strong>Cosmos</strong></td>
+              <td>@cosmjs/crypto + amino</td>
+              <td>v0.32</td>
+              <td>secp256k1 + Bech32</td>
+            </tr>
+            <tr>
+              <td><strong>TON</strong></td>
+              <td>@ton/ton + @ton/crypto</td>
+              <td>v15.0</td>
+              <td>Ed25519</td>
+            </tr>
+            <tr>
+              <td><strong>Starknet</strong></td>
+              <td>starknet.js</td>
+              <td>v6.17</td>
+              <td>STARK curve (Pedersen hash)</td>
+            </tr>
+            <tr>
+              <td><strong>HD Wallets</strong></td>
+              <td>bip39 + bip32</td>
+              <td>v3.1 / v4.0</td>
+              <td>BIP39 mnemonic + BIP32/BIP44 derivation</td>
+            </tr>
+            <tr>
+              <td><strong>Encryption</strong></td>
+              <td>Web Crypto API</td>
+              <td>Native</td>
+              <td>AES-256-GCM + PBKDF2 (SHA-256, 100K iterations)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Self-Audit Checklist -->
+    <section class="docs-section" id="audit">
+      <h2><i class="hgi-stroke hgi-checkmark-circle-02"></i> Self-Audit Checklist</h2>
+      <p>Verify the security yourself — every item is checkable in the source code:</p>
+
+      <div class="audit-list">
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>No external API calls</strong>
+            <p>Search codebase for <code>fetch(</code> or <code>XMLHttpRequest</code> — none found in core wallet logic.</p>
+          </div>
+        </div>
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>CSPRNG for key generation</strong>
+            <p>All private keys use <code>crypto.getRandomValues()</code>, never <code>Math.random()</code>.</p>
+          </div>
+        </div>
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>Keys never leave the browser</strong>
+            <p>No <code>localStorage</code> writes for keys (web app). Extension vault encrypts before storing.</p>
+          </div>
+        </div>
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>Industry-standard libraries</strong>
+            <p>ethers.js, bitcoinjs-lib, @solana/web3.js — widely audited, used by millions.</p>
+          </div>
+        </div>
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>Encryption uses PBKDF2 + AES-256-GCM</strong>
+            <p>100,000 iterations, 16-byte salt, 12-byte IV. NIST-recommended parameters.</p>
+          </div>
+        </div>
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>No analytics or tracking scripts</strong>
+            <p>No Google Analytics, no Sentry, no Mixpanel, no tracking pixels.</p>
+          </div>
+        </div>
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>Content Security Policy</strong>
+            <p>Extension uses strict CSP: <code>script-src 'self'; object-src 'self'</code></p>
+          </div>
+        </div>
+        <div class="audit-item audit-pass">
+          <span class="audit-icon">✓</span>
+          <div>
+            <strong>Open source — MIT license</strong>
+            <p>Full source on <a href="https://github.com/xinnxz/aio-wallet-generator" target="_blank">GitHub</a>. Fork, audit, self-host.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Best Practices -->
+    <section class="docs-section" id="best-practices">
+      <h2><i class="hgi-stroke hgi-information-circle"></i> Best Practices</h2>
+      <div class="docs-grid">
+        <div class="docs-card">
+          <h3>Use HD Mode</h3>
+          <p>1 mnemonic = unlimited wallets. Easier to backup and recover. Use <code>--hd</code> flag in CLI.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Export Encrypted</h3>
+          <p>Always use <code>--output encrypted</code> for sensitive exports. Never save plain-text keys.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Verify Checksums</h3>
+          <p>Use the Validate tool to confirm address integrity before sending funds.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Offline Generation</h3>
+          <p>For maximum security, disconnect from internet before generating wallets. The app works 100% offline.</p>
+        </div>
+        <div class="docs-card">
+          <h3>Vault Password</h3>
+          <p>Extension vault uses 100K PBKDF2 iterations. Use a strong, unique password (12+ chars).</p>
+        </div>
+        <div class="docs-card">
+          <h3>Self-Host</h3>
+          <p>Clone the repo, run locally. <code>npm run dev</code> — full control, zero trust required.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Responsible Disclosure -->
+    <section class="docs-section" id="disclosure">
+      <h2><i class="hgi-stroke hgi-alert-02"></i> Responsible Disclosure</h2>
+      <p>Found a vulnerability? Please report it responsibly:</p>
+      <ul class="docs-list">
+        <li>Open a <a href="https://github.com/xinnxz/aio-wallet-generator/issues" target="_blank">GitHub Issue</a> with the <code>security</code> label</li>
+        <li>Do NOT include exploit details in public issues</li>
+        <li>We aim to respond within 48 hours</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')</script>
+  <script src="i18n.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

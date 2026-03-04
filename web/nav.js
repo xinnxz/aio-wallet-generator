@@ -17,6 +17,8 @@
     { href: '/paperwallet.html',label:'PAPER',     icon: 'hgi-printer',             match: ['paperwallet.html'] },
     { href: '/chains.html',    label: 'CHAINS',    icon: 'hgi-blockchain-06',       match: ['chains.html'] },
     { href: '/docs.html',      label: 'DOCS',      icon: 'hgi-book-open-02',        match: ['docs.html'] },
+    { href: '/security.html',  label: 'SECURITY',  icon: 'hgi-shield-check',        match: ['security.html'] },
+    { href: '/plugins.html',   label: 'PLUGINS',   icon: 'hgi-puzzle',              match: ['plugins.html'] },
   ];
 
   const nav = document.getElementById('main-nav');

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIO Chain — Plugin System</title>
+  <meta name="description" content="AIO Chain plugin architecture: add custom chains, export formats, and validators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="icon" href="images/icon-192.png">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero hero--compact" id="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>Plugin System</h1>
+      <p class="hero-sub">Extend AIO Chain with custom chains, exports, and validators.</p>
+    </div>
+  </section>
+
+  <main class="container" style="padding-bottom:40px">
+
+    <!-- Overview -->
+    <section class="docs-section" id="overview">
+      <h2><i class="hgi-stroke hgi-puzzle"></i> Overview</h2>
+      <p>AIO Chain's plugin system lets you add custom blockchain support, export formats, and validation logic without modifying core code.</p>
+      <div class="docs-grid">
+        <div class="docs-card">
+          <h3>Chain Plugins</h3>
+          <p>Add any blockchain — just implement the generator interface.</p>
+          <code>generateWallet() → { address, privateKey }</code>
+        </div>
+        <div class="docs-card">
+          <h3>Export Plugins</h3>
+          <p>Custom export formats beyond CSV/JSON/XLSX.</p>
+          <code>exportWallets(wallets, options) → file</code>
+        </div>
+        <div class="docs-card">
+          <h3>Validator Plugins</h3>
+          <p>Custom address validation rules per chain.</p>
+          <code>validate(address) → { valid, chain }</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chain Plugin Interface -->
+    <section class="docs-section" id="chain-plugin">
+      <h2><i class="hgi-stroke hgi-blockchain-06"></i> Chain Plugin Interface</h2>
+      <p>To add a new blockchain, create a module that exports these functions:</p>
+
+      <pre class="docs-code">// plugins/my-custom-chain.js
+
+export const chainConfig = {
+  id: 'mychain',              // Unique identifier
+  name: 'MyChain',            // Display name
+  symbol: 'MYC',              // Token symbol
+  addressPrefix: 'myc1',      // Address prefix
+  keyType: 'Ed25519',         // Key algorithm
+  networks: ['mainnet', 'testnet'],
+};
+
+/**
+ * Generate a single wallet
+ * @returns {{ address: string, privateKey: string, mnemonic?: string }}
+ */
+export async function generateWallet() {
+  // Use crypto.getRandomValues() for key generation
+  const privateKeyBytes = crypto.getRandomValues(new Uint8Array(32));
+  const privateKey = '0x' + [...privateKeyBytes]
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+
+  // Derive address from private key (chain-specific logic)
+  const address = deriveAddress(privateKeyBytes);
+
+  return { address, privateKey };
+}
+
+/**
+ * Validate an address
+ * @param {string} address
+ * @returns {boolean}
+ */
+export function validateAddress(address) {
+  return /^myc1[a-z0-9]{38}$/.test(address);
+}
+
+/**
+ * Address regex for page scanner
+ * @returns {RegExp}
+ */
+export function getScanPattern() {
+  return /\bmyc1[a-z0-9]{38}\b/g;
+}</pre>
+    </section>
+
+    <!-- Export Plugin Interface -->
+    <section class="docs-section" id="export-plugin">
+      <h2><i class="hgi-stroke hgi-file-export"></i> Export Plugin Interface</h2>
+      <pre class="docs-code">// plugins/export-markdown.js
+
+export const exportConfig = {
+  id: 'markdown',
+  name: 'Markdown Table',
+  extension: '.md',
+  mimeType: 'text/markdown',
+};
+
+/**
+ * Export wallets to custom format
+ * @param {Array} wallets - Array of wallet objects
+ * @param {Object} options - { file, password }
+ * @returns {string|Buffer} - File content
+ */
+export function exportWallets(wallets, options = {}) {
+  let md = '| # | Chain | Address | Private Key |\n';
+  md += '|---|---|---|---|\n';
+
+  wallets.forEach((w, i) => {
+    md += `| ${i + 1} | ${w.chain} | \`${w.address}\` | \`${w.privateKey}\` |\n`;
+  });
+
+  return md;
+}</pre>
+    </section>
+
+    <!-- Registration -->
+    <section class="docs-section" id="registration">
+      <h2><i class="hgi-stroke hgi-settings-02"></i> Registering Plugins</h2>
+      <p>Plugins are registered in the core configuration:</p>
+
+      <pre class="docs-code">// src/core/plugin-registry.js
+
+import { chainConfig, generateWallet, validateAddress }
+  from '../plugins/my-custom-chain.js';
+
+// Register chain plugin
+registerChain({
+  ...chainConfig,
+  generate: generateWallet,
+  validate: validateAddress,
+});
+
+// Register export plugin
+registerExport({
+  id: 'markdown',
+  name: 'Markdown Table',
+  handler: exportWallets,
+});</pre>
+
+      <h3>CLI Usage After Registration</h3>
+      <pre class="docs-code"># Generate with custom chain
+aio-chain generate --chain mychain --count 10
+
+# Export with custom format
+aio-chain generate --chain evm --count 5 --output markdown</pre>
+    </section>
+
+    <!-- Built-in Plugins -->
+    <section class="docs-section" id="built-in">
+      <h2><i class="hgi-stroke hgi-layers-01"></i> Built-in Plugins</h2>
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr><th>Type</th><th>Plugin</th><th>File</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chain</td><td>EVM (Ethereum)</td><td><code>src/core/chains/evm.js</code></td></tr>
+            <tr><td>Chain</td><td>Solana</td><td><code>src/core/chains/solana.js</code></td></tr>
+            <tr><td>Chain</td><td>Bitcoin</td><td><code>src/core/chains/bitcoin.js</code></td></tr>
+            <tr><td>Chain</td><td>Tron</td><td><code>src/core/chains/tron.js</code></td></tr>
+            <tr><td>Chain</td><td>Sui</td><td><code>src/core/chains/sui.js</code></td></tr>
+            <tr><td>Chain</td><td>Aptos</td><td><code>src/core/chains/aptos.js</code></td></tr>
+            <tr><td>Chain</td><td>Cosmos</td><td><code>src/core/chains/cosmos.js</code></td></tr>
+            <tr><td>Chain</td><td>TON</td><td><code>src/core/chains/ton.js</code></td></tr>
+            <tr><td>Chain</td><td>Starknet</td><td><code>src/core/chains/starknet.js</code></td></tr>
+            <tr><td>Export</td><td>CSV</td><td><code>src/export/csv.js</code></td></tr>
+            <tr><td>Export</td><td>JSON</td><td><code>src/export/json-export.js</code></td></tr>
+            <tr><td>Export</td><td>Excel (XLSX)</td><td><code>src/export/excel.js</code></td></tr>
+            <tr><td>Export</td><td>Encrypted</td><td><code>src/export/encrypted.js</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')</script>
+  <script src="i18n.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

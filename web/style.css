@@ -2199,6 +2199,21 @@ body {
   .ct-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .ct-table { min-width: 680px; }
 
+  /* QR grid */
+  .qr-grid { grid-template-columns: repeat(2, 1fr); }
+  .qr-options { flex-wrap: wrap; }
+
+  /* HD Wallet */
+  .hd-options { flex-direction: column; }
+  .hd-options .qr-opt { width: 100%; }
+
+  /* Paper Wallet */
+  .pw-row { flex-direction: column; }
+  .pw-fold { width: 100%; height: 24px;
+    background: repeating-linear-gradient(90deg, transparent, transparent 4px, #cbd5e1 4px, #cbd5e1 5px);
+  }
+  .pw-fold span { writing-mode: horizontal-tb; }
+
   /* Stats */
   .stats-inner { grid-template-columns: repeat(2, 1fr); }
 

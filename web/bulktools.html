@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIO Chain — Bulk Tools</title>
+  <meta name="description" content="Bulk wallet tools: airdrop list formatter, duplicate address detector, and wallet label manager.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero hero--compact" id="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>Bulk Tools</h1>
+      <p>Airdrop formatter · Duplicate detector · Address utilities</p>
+    </div>
+  </section>
+
+  <section class="bulk-section">
+
+    <!-- Tool 1: Airdrop Formatter -->
+    <div class="bulk-card">
+      <div class="converter-card-header">
+        <i class="hgi-stroke hgi-airdrop"></i>
+        <h3>Airdrop List Formatter</h3>
+      </div>
+      <p class="bulk-desc">Paste addresses and amounts → get formatted CSV ready for airdrop contracts.</p>
+
+      <div class="converter-field">
+        <label class="converter-label">Input <span class="converter-hint">(address,amount — one per line)</span></label>
+        <textarea class="input mono" id="airdrop-input" rows="6" placeholder="0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28,100
+0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,250
+5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKucrNbAqEEL1,500" spellcheck="false"></textarea>
+      </div>
+
+      <div class="bulk-actions">
+        <button class="btn-convert" id="airdrop-format"><i class="hgi-stroke hgi-checkmark-circle-02"></i> Validate & Format</button>
+        <button class="btn-convert" id="airdrop-download"><i class="hgi-stroke hgi-download-04"></i> Download CSV</button>
+      </div>
+
+      <div class="bulk-output" id="airdrop-output" style="display:none">
+        <div class="bulk-output-header">
+          <span id="airdrop-stats">0 valid, 0 invalid</span>
+        </div>
+        <pre class="decrypt-pre" id="airdrop-result"></pre>
+      </div>
+    </div>
+
+    <!-- Tool 2: Duplicate Detector -->
+    <div class="bulk-card">
+      <div class="converter-card-header">
+        <i class="hgi-stroke hgi-search-02"></i>
+        <h3>Duplicate Address Detector</h3>
+      </div>
+      <p class="bulk-desc">Find duplicate addresses in a large list. Paste addresses one per line.</p>
+
+      <div class="converter-field">
+        <label class="converter-label">Addresses <span class="converter-hint">(one per line)</span></label>
+        <textarea class="input mono" id="dup-input" rows="6" placeholder="0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28
+0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
+0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28" spellcheck="false"></textarea>
+      </div>
+
+      <button class="btn-convert" id="dup-detect"><i class="hgi-stroke hgi-search-02"></i> Detect Duplicates</button>
+
+      <div class="bulk-output" id="dup-output" style="display:none">
+        <div class="bulk-output-header">
+          <span id="dup-stats">0 duplicates found</span>
+        </div>
+        <div id="dup-result"></div>
+      </div>
+    </div>
+
+    <!-- Tool 3: Checksum Batch -->
+    <div class="bulk-card">
+      <div class="converter-card-header">
+        <i class="hgi-stroke hgi-text-check"></i>
+        <h3>Batch Checksum Converter</h3>
+      </div>
+      <p class="bulk-desc">Convert a list of EVM addresses to checksummed format (EIP-55).</p>
+
+      <div class="converter-field">
+        <label class="converter-label">EVM Addresses <span class="converter-hint">(one per line, lowercase ok)</span></label>
+        <textarea class="input mono" id="checksum-input" rows="5" placeholder="0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+0x742d35cc6634c0532925a3b844bc9e7595f2bd28" spellcheck="false"></textarea>
+      </div>
+
+      <div class="bulk-actions">
+        <button class="btn-convert" id="checksum-convert"><i class="hgi-stroke hgi-checkmark-circle-02"></i> Checksum All</button>
+        <button class="btn-convert" id="checksum-copy"><i class="hgi-stroke hgi-copy-01"></i> Copy Result</button>
+      </div>
+
+      <div class="bulk-output" id="checksum-output" style="display:none">
+        <pre class="decrypt-pre" id="checksum-result"></pre>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>All processing is client-side. Nothing leaves your browser.</p>
+  </footer>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+  <script src="nav.js"></script>
+  <script src="bulktools.js"></script>
+</body>
+</html>

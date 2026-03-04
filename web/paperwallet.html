@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIO Chain — Paper Wallet</title>
+  <meta name="description" content="Generate printable paper wallets with QR codes for cold storage. Address + Private Key on a single card.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero hero--compact" id="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>Paper Wallet</h1>
+      <p>Generate printable cold storage wallets with QR codes</p>
+    </div>
+  </section>
+
+  <section class="paper-section">
+
+    <div class="paper-card">
+      <div class="converter-card-header">
+        <i class="hgi-stroke hgi-printer"></i>
+        <h3>Generate Paper Wallet</h3>
+      </div>
+
+      <div class="paper-options">
+        <div class="qr-opt">
+          <label class="converter-label">Chain</label>
+          <select class="input" id="paper-chain">
+            <option value="evm">EVM (Ethereum)</option>
+          </select>
+        </div>
+        <div class="qr-opt">
+          <label class="converter-label">Quantity</label>
+          <select class="input" id="paper-count">
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="bulk-desc">Or paste existing wallet data:</p>
+
+      <div class="converter-field">
+        <label class="converter-label">Address</label>
+        <input type="text" class="input mono" id="paper-addr" placeholder="0x..." autocomplete="off" spellcheck="false">
+      </div>
+      <div class="converter-field">
+        <label class="converter-label">Private Key</label>
+        <input type="text" class="input mono" id="paper-key" placeholder="0x..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="bulk-actions">
+        <button class="btn-primary" id="paper-generate" style="flex:1">
+          <i class="hgi-stroke hgi-add-circle"></i> Generate New
+        </button>
+        <button class="btn-convert" id="paper-use-input">
+          <i class="hgi-stroke hgi-arrow-right-01"></i> Use Above
+        </button>
+      </div>
+    </div>
+
+    <!-- Print Preview -->
+    <div id="paper-preview" style="display:none">
+      <div class="paper-preview-actions">
+        <button class="btn-primary" id="paper-print">
+          <i class="hgi-stroke hgi-printer"></i> Print
+        </button>
+      </div>
+      <div id="paper-cards"></div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>Paper wallets are generated 100% client-side. Print and store securely offline.</p>
+  </footer>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script src="nav.js"></script>
+  <script src="paperwallet.js"></script>
+</body>
+</html>

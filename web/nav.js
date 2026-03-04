@@ -13,6 +13,8 @@
     { href: '/encrypt.html',   label: 'ENCRYPT',   icon: 'hgi-lock-key',            match: ['encrypt.html'] },
     { href: '/qrcode.html',    label: 'QR CODE',   icon: 'hgi-qr-code',             match: ['qrcode.html'] },
     { href: '/hdwallet.html',  label: 'HD WALLET', icon: 'hgi-tree-06',             match: ['hdwallet.html'] },
+    { href: '/bulktools.html', label: 'BULK',      icon: 'hgi-layers-01',           match: ['bulktools.html'] },
+    { href: '/paperwallet.html',label:'PAPER',     icon: 'hgi-printer',             match: ['paperwallet.html'] },
     { href: '/chains.html',    label: 'CHAINS',    icon: 'hgi-blockchain-06',       match: ['chains.html'] },
   ];
 

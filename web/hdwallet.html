@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIO Chain — HD Wallet Explorer</title>
+  <meta name="description" content="Derive multiple accounts from a BIP39 mnemonic. Explore HD wallet tree for EVM, Bitcoin, Solana, and Cosmos chains.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero hero--compact" id="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>HD Wallet Explorer</h1>
+      <p>Derive multiple accounts from a single mnemonic across chains</p>
+    </div>
+  </section>
+
+  <section class="hd-section">
+
+    <!-- Input Card -->
+    <div class="hd-card">
+      <div class="converter-card-header">
+        <i class="hgi-stroke hgi-tree-06"></i>
+        <h3>Mnemonic Seed</h3>
+      </div>
+
+      <div class="converter-field">
+        <label class="converter-label">BIP39 Mnemonic <span class="converter-hint">(12 or 24 words)</span></label>
+        <textarea class="input mono" id="hd-mnemonic" rows="2" placeholder="abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about" spellcheck="false"></textarea>
+      </div>
+
+      <div class="hd-options">
+        <div class="qr-opt">
+          <label class="converter-label">Chain</label>
+          <select class="input" id="hd-chain">
+            <option value="evm">EVM (Ethereum)</option>
+            <option value="btc">Bitcoin</option>
+          </select>
+        </div>
+        <div class="qr-opt">
+          <label class="converter-label">Accounts</label>
+          <select class="input" id="hd-count">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        <div class="qr-opt" style="flex:1">
+          <label class="converter-label">Derivation Path</label>
+          <input type="text" class="input mono" id="hd-path" value="m/44'/60'/0'/0" placeholder="m/44'/60'/0'/0" spellcheck="false">
+        </div>
+      </div>
+
+      <button class="btn-primary validator-submit" id="hd-derive">
+        <i class="hgi-stroke hgi-tree-06"></i> Derive Accounts
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div class="hd-results" id="hd-results" style="display:none">
+      <div class="hd-results-header">
+        <span id="hd-results-label">0 accounts derived</span>
+        <button class="btn-convert" id="hd-export">
+          <i class="hgi-stroke hgi-download-04"></i> Export CSV
+        </button>
+      </div>
+      <div class="ct-wrap">
+        <table class="ct-table">
+          <thead>
+            <tr>
+              <th style="width:40px">#</th>
+              <th>Path</th>
+              <th>Address</th>
+              <th>Private Key</th>
+              <th style="width:40px"></th>
+            </tr>
+          </thead>
+          <tbody id="hd-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>All derivation is performed client-side using ethers.js. Your mnemonic never leaves the browser.</p>
+  </footer>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+  <script src="nav.js"></script>
+  <script src="hdwallet.js"></script>
+</body>
+</html>

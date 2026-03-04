@@ -1952,6 +1952,48 @@ body {
 }
 
 /* ============================
+   HD WALLET EXPLORER
+   ============================ */
+.hd-section {
+  max-width: 900px;
+  margin: -20px auto 40px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.hd-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.hd-options {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.hd-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hd-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+}
+
+/* ============================
    RESPONSIVE — TABLET (≤1024px)
    ============================ */
 @media (max-width: 1024px) {

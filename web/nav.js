@@ -11,6 +11,8 @@
     { href: '/validator.html', label: 'VALIDATE',  icon: 'hgi-checkmark-circle-02', match: ['validator.html'] },
     { href: '/converter.html', label: 'CONVERT',   icon: 'hgi-exchange-01',         match: ['converter.html'] },
     { href: '/encrypt.html',   label: 'ENCRYPT',   icon: 'hgi-lock-key',            match: ['encrypt.html'] },
+    { href: '/qrcode.html',    label: 'QR CODE',   icon: 'hgi-qr-code',             match: ['qrcode.html'] },
+    { href: '/hdwallet.html',  label: 'HD WALLET', icon: 'hgi-tree-06',             match: ['hdwallet.html'] },
     { href: '/chains.html',    label: 'CHAINS',    icon: 'hgi-blockchain-06',       match: ['chains.html'] },
   ];
 

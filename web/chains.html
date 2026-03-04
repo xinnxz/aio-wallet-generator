@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AIO Chain — Supported Chains & Networks</title>
-  <meta name="description" content="Detailed information on all 30+ blockchain networks supported by AIO Chain. EVM, Solana, Bitcoin, Tron, Sui, Aptos, Cosmos, TON, Starknet.">
+  <meta name="description" content="All 30+ blockchain networks supported by AIO Chain. EVM, Solana, Bitcoin, Tron, Sui, Aptos, Cosmos, TON, Starknet.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,41 +15,31 @@
 
   <nav class="nav" id="main-nav"></nav>
 
-  <!-- HERO -->
   <section class="hero hero--compact" id="hero">
     <div class="hero-bg"></div>
     <div style="position:relative;z-index:1;text-align:center">
       <h1>Supported Chains</h1>
-      <p>9 ecosystems · 30+ networks · all generated 100% client-side</p>
+      <p>9 ecosystems · <span id="total-nets">30+</span> networks · click a row to see details</p>
     </div>
   </section>
 
-  <!-- CHAIN DIRECTORY -->
   <section class="chains-section">
-
-    <!-- Stats bar -->
-    <div class="chains-stats">
-      <div class="chains-stat">
-        <span class="chains-stat-num">9</span>
-        <span class="chains-stat-label">Ecosystems</span>
-      </div>
-      <div class="chains-stat">
-        <span class="chains-stat-num">30+</span>
-        <span class="chains-stat-label">Networks</span>
-      </div>
-      <div class="chains-stat">
-        <span class="chains-stat-num">4</span>
-        <span class="chains-stat-label">Curves</span>
-      </div>
-      <div class="chains-stat">
-        <span class="chains-stat-num">100%</span>
-        <span class="chains-stat-label">Client-side</span>
-      </div>
+    <div class="ct-wrap">
+      <table class="ct-table">
+        <thead>
+          <tr>
+            <th class="ct-th-rank">#</th>
+            <th class="ct-th-chain">Chain</th>
+            <th>Curve</th>
+            <th>Encoding</th>
+            <th>Addr Length</th>
+            <th>Derivation</th>
+            <th>BIP39</th>
+          </tr>
+        </thead>
+        <tbody id="chains-tbody"></tbody>
+      </table>
     </div>
-
-    <!-- Chain Grid -->
-    <div class="chains-grid" id="chains-grid"></div>
-
   </section>
 
   <footer class="footer">

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Converter — Web3 Wallet Generator</title>
+  <title>AIO Chain — Format Converter</title>
+  <meta name="description" content="Convert between Hex, Base58, Bech32, EVM checksum, and derive keys from mnemonic — all client-side.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,140 +13,121 @@
 </head>
 <body>
 
+  <!-- NAV -->
   <nav class="nav" id="main-nav"></nav>
 
-  <section class="hero">
+  <!-- HERO -->
+  <section class="hero hero--compact" id="hero">
     <div class="hero-bg"></div>
-    <div class="hero-content">
+    <div style="position:relative;z-index:1;text-align:center">
       <h1>Format Converter</h1>
-      <p>Convert between hex, Base58, Bech32, and other formats.</p>
+      <p>Convert between Hex, Base58, checksum formats, and derive keys from mnemonic.</p>
     </div>
   </section>
 
-  <section style="max-width:600px;margin:0 auto;padding:0 20px 40px;">
+  <!-- CONVERTER -->
+  <section class="converter-section">
+    <div class="converter-inner">
 
-    <div class="form-card" style="margin-bottom:24px">
-      <div class="form-header"><h2>Hex ↔ Base58</h2></div>
-      <div class="form-body">
-        <label class="form-label">Hex</label>
-        <input type="text" id="hex-input" class="input" placeholder="0a1b2c3d..." style="font-family:monospace;font-size:12px">
-        <div style="display:flex;gap:8px;margin:12px 0">
-          <button class="btn-outline" id="hex-to-b58">Hex → Base58</button>
-          <button class="btn-outline" id="b58-to-hex">Base58 → Hex</button>
+      <!-- Tool 1: Hex ↔ Base58 -->
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <i class="hgi-stroke hgi-exchange-01"></i>
+          <h3>Hex ↔ Base58</h3>
         </div>
-        <label class="form-label">Base58</label>
-        <input type="text" id="b58-input" class="input" placeholder="5Kd3..." style="font-family:monospace;font-size:12px">
+        <div class="converter-row">
+          <div class="converter-field">
+            <label class="converter-label">Hex</label>
+            <input type="text" class="input mono" id="hex-input" placeholder="0a1b2c3d4e5f..." autocomplete="off" spellcheck="false">
+          </div>
+          <div class="converter-swap">
+            <button class="swap-btn" id="swap-hex-b58" title="Swap">
+              <i class="hgi-stroke hgi-arrow-data-transfer-vertical"></i>
+            </button>
+          </div>
+          <div class="converter-field">
+            <label class="converter-label">Base58</label>
+            <input type="text" class="input mono" id="b58-input" placeholder="5Kd3Nbu..." autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="converter-actions">
+          <button class="btn-convert" id="hex-to-b58"><i class="hgi-stroke hgi-arrow-down-01"></i> Hex → Base58</button>
+          <button class="btn-convert" id="b58-to-hex"><i class="hgi-stroke hgi-arrow-up-01"></i> Base58 → Hex</button>
+        </div>
       </div>
-    </div>
 
-    <div class="form-card" style="margin-bottom:24px">
-      <div class="form-header"><h2>Checksum Address</h2></div>
-      <div class="form-body">
-        <label class="form-label">EVM Address (lowercase or mixed)</label>
-        <input type="text" id="checksum-input" class="input" placeholder="0xd8da6bf26964af9d7eed9e03e53415d37aa96045" style="font-family:monospace;font-size:12px">
-        <button class="btn-primary" id="checksum-btn" style="margin-top:12px">
-          <i class="hgi-stroke hgi-checkmark-circle-02"></i> Checksummed
+      <!-- Tool 2: EVM Checksum -->
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <i class="hgi-stroke hgi-checkmark-circle-02"></i>
+          <h3>EVM Checksum (EIP-55)</h3>
+        </div>
+        <div class="converter-field">
+          <label class="converter-label">EVM Address (lowercase or mixed)</label>
+          <input type="text" class="input mono" id="checksum-input" placeholder="0xd8da6bf26964af9d7eed9e03e53415d37aa96045" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btn-convert" id="checksum-btn" style="margin-top:12px">
+          <i class="hgi-stroke hgi-checkmark-circle-02"></i> Convert to Checksummed
         </button>
-        <div id="checksum-result" style="display:none;margin-top:12px;padding:12px;background:var(--blue-light);border-radius:8px;font-family:monospace;font-size:12px;word-break:break-all;color:var(--blue)"></div>
+        <div class="converter-output" id="checksum-result" style="display:none"></div>
       </div>
-    </div>
 
-    <div class="form-card">
-      <div class="form-header"><h2>Mnemonic ↔ Seed</h2></div>
-      <div class="form-body">
-        <label class="form-label">BIP39 Mnemonic (12 or 24 words)</label>
-        <textarea id="mnemonic-input" class="input" rows="2" placeholder="abandon abandon abandon ..." style="resize:vertical;font-size:13px"></textarea>
-        <button class="btn-primary" id="mnemonic-btn" style="margin-top:12px">
-          <i class="hgi-stroke hgi-exchange-01"></i> Generate Seed
+      <!-- Tool 3: Mnemonic → Keys -->
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <i class="hgi-stroke hgi-key-01"></i>
+          <h3>Mnemonic → Keys</h3>
+        </div>
+        <div class="converter-field">
+          <label class="converter-label">BIP39 Mnemonic <span class="converter-hint">(12 or 24 words)</span></label>
+          <textarea class="input mono" id="mnemonic-input" rows="2" placeholder="abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about" spellcheck="false"></textarea>
+        </div>
+        <button class="btn-convert" id="mnemonic-btn" style="margin-top:12px">
+          <i class="hgi-stroke hgi-key-01"></i> Derive Keys
         </button>
-        <div id="seed-result" style="display:none;margin-top:12px;padding:12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;font-family:monospace;font-size:11px;word-break:break-all"></div>
+        <div class="converter-output" id="seed-result" style="display:none"></div>
       </div>
-    </div>
 
+      <!-- Tool 4: Text ↔ Hex -->
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <i class="hgi-stroke hgi-text-font"></i>
+          <h3>Text ↔ Hex</h3>
+        </div>
+        <div class="converter-row">
+          <div class="converter-field">
+            <label class="converter-label">Text (UTF-8)</label>
+            <input type="text" class="input" id="text-input" placeholder="Hello World" autocomplete="off">
+          </div>
+          <div class="converter-swap">
+            <button class="swap-btn" id="swap-text-hex" title="Swap">
+              <i class="hgi-stroke hgi-arrow-data-transfer-vertical"></i>
+            </button>
+          </div>
+          <div class="converter-field">
+            <label class="converter-label">Hex</label>
+            <input type="text" class="input mono" id="text-hex-input" placeholder="48656c6c6f..." autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="converter-actions">
+          <button class="btn-convert" id="text-to-hex"><i class="hgi-stroke hgi-arrow-down-01"></i> Text → Hex</button>
+          <button class="btn-convert" id="hex-to-text"><i class="hgi-stroke hgi-arrow-up-01"></i> Hex → Text</button>
+        </div>
+      </div>
+
+    </div>
   </section>
 
+  <!-- Footer -->
   <footer class="footer">
     <p>All conversions are processed client-side. Nothing leaves your browser.</p>
   </footer>
 
+  <!-- Toast -->
+  <div class="toast-wrap" id="toast-wrap"></div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
   <script src="nav.js"></script>
-  <script>
-    // Base58 alphabet
-    const ALPHA = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-
-    function hexToBytes(hex) {
-      hex = hex.replace(/^0x/, '');
-      const bytes = [];
-      for (let i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
-      return new Uint8Array(bytes);
-    }
-
-    function bytesToHex(bytes) {
-      return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    function encodeBase58(bytes) {
-      let num = BigInt('0x' + bytesToHex(bytes));
-      let result = '';
-      while (num > 0n) { result = ALPHA[Number(num % 58n)] + result; num /= 58n; }
-      for (const b of bytes) { if (b === 0) result = '1' + result; else break; }
-      return result || '1';
-    }
-
-    function decodeBase58(str) {
-      let num = 0n;
-      for (const c of str) {
-        const i = ALPHA.indexOf(c);
-        if (i === -1) throw new Error('Invalid Base58 char: ' + c);
-        num = num * 58n + BigInt(i);
-      }
-      let hex = num.toString(16);
-      if (hex.length % 2) hex = '0' + hex;
-      const bytes = [];
-      for (let i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
-      for (const c of str) { if (c === '1') bytes.unshift(0); else break; }
-      return new Uint8Array(bytes);
-    }
-
-    // Hex → Base58
-    document.querySelector('#hex-to-b58').addEventListener('click', () => {
-      try {
-        const hex = document.querySelector('#hex-input').value.trim();
-        document.querySelector('#b58-input').value = encodeBase58(hexToBytes(hex));
-      } catch (e) { alert('Invalid hex: ' + e.message); }
-    });
-
-    // Base58 → Hex
-    document.querySelector('#b58-to-hex').addEventListener('click', () => {
-      try {
-        const b58 = document.querySelector('#b58-input').value.trim();
-        document.querySelector('#hex-input').value = bytesToHex(decodeBase58(b58));
-      } catch (e) { alert('Invalid Base58: ' + e.message); }
-    });
-
-    // Checksum
-    document.querySelector('#checksum-btn').addEventListener('click', () => {
-      const addr = document.querySelector('#checksum-input').value.trim();
-      try {
-        const checksummed = ethers.getAddress(addr);
-        const r = document.querySelector('#checksum-result');
-        r.style.display = 'block';
-        r.textContent = checksummed;
-      } catch { alert('Invalid EVM address'); }
-    });
-
-    // Mnemonic → Seed
-    document.querySelector('#mnemonic-btn').addEventListener('click', () => {
-      const mn = document.querySelector('#mnemonic-input').value.trim();
-      if (!mn) return alert('Enter a mnemonic');
-      try {
-        const wallet = ethers.Wallet.fromPhrase(mn);
-        const r = document.querySelector('#seed-result');
-        r.style.display = 'block';
-        r.innerHTML = `<strong>Address:</strong> ${wallet.address}<br><strong>Private Key:</strong> ${wallet.privateKey}`;
-      } catch (e) { alert('Invalid mnemonic: ' + e.message); }
-    });
-  </script>
+  <script src="converter.js"></script>
 </body>
 </html>

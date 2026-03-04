@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "AIO Chain",
+    "slug": "aio-chain",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "aiochain",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0c1220"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aiochain.wallet"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0c1220",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png"
+      },
+      "package": "com.aiochain.wallet"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}

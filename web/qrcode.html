@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIO Chain — QR Code Generator</title>
+  <meta name="description" content="Generate QR codes for wallet addresses. Single or bulk mode, customizable colors, download as PNG or bulk ZIP.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav" id="main-nav"></nav>
+
+  <section class="hero hero--compact" id="hero">
+    <div class="hero-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>QR Code Generator</h1>
+      <p>Generate QR codes for any wallet address — single or bulk</p>
+    </div>
+  </section>
+
+  <section class="qr-section">
+
+    <!-- Mode Toggle -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" data-mode="single">
+        <i class="hgi-stroke hgi-qr-code"></i> Single
+      </button>
+      <button class="mode-btn" data-mode="bulk">
+        <i class="hgi-stroke hgi-layers-01"></i> Bulk
+      </button>
+    </div>
+
+    <!-- Single Mode -->
+    <div id="single-mode">
+      <div class="qr-card">
+        <div class="converter-field">
+          <label class="converter-label">Wallet Address or any text</label>
+          <div class="validator-input-wrap">
+            <input type="text" class="input mono" id="qr-input" placeholder="0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28" autocomplete="off" spellcheck="false">
+            <button class="paste-btn" id="qr-paste" title="Paste"><i class="hgi-stroke hgi-clipboard"></i></button>
+          </div>
+        </div>
+
+        <!-- Customization -->
+        <div class="qr-options">
+          <div class="qr-opt">
+            <label class="converter-label">Size</label>
+            <select class="input" id="qr-size">
+              <option value="200">200px</option>
+              <option value="300" selected>300px</option>
+              <option value="400">400px</option>
+              <option value="512">512px</option>
+            </select>
+          </div>
+          <div class="qr-opt">
+            <label class="converter-label">Foreground</label>
+            <input type="color" class="input-color" id="qr-fg" value="#000000">
+          </div>
+          <div class="qr-opt">
+            <label class="converter-label">Background</label>
+            <input type="color" class="input-color" id="qr-bg" value="#ffffff">
+          </div>
+        </div>
+
+        <button class="btn-primary validator-submit" id="qr-generate">
+          <i class="hgi-stroke hgi-qr-code"></i> Generate QR
+        </button>
+      </div>
+
+      <!-- QR Result -->
+      <div class="qr-result" id="qr-result" style="display:none">
+        <div class="qr-preview" id="qr-preview"></div>
+        <div class="qr-result-actions">
+          <button class="btn-convert" id="qr-download">
+            <i class="hgi-stroke hgi-download-04"></i> Download PNG
+          </button>
+          <button class="btn-convert" id="qr-copy-img">
+            <i class="hgi-stroke hgi-copy-01"></i> Copy Image
+          </button>
+        </div>
+        <div class="qr-addr-label" id="qr-addr-label"></div>
+      </div>
+    </div>
+
+    <!-- Bulk Mode -->
+    <div id="bulk-mode" style="display:none">
+      <div class="qr-card">
+        <div class="converter-field">
+          <label class="converter-label">Paste addresses <span class="converter-hint">(one per line)</span></label>
+          <textarea class="input mono" id="bulk-input" rows="6" placeholder="0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28
+5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKucrNbAqEEL1
+bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq" spellcheck="false"></textarea>
+          <span class="batch-count" id="bulk-count">0 addresses</span>
+        </div>
+
+        <div class="qr-options">
+          <div class="qr-opt">
+            <label class="converter-label">Size</label>
+            <select class="input" id="bulk-size">
+              <option value="200">200px</option>
+              <option value="256" selected>256px</option>
+              <option value="400">400px</option>
+            </select>
+          </div>
+          <div class="qr-opt">
+            <label class="converter-label">Foreground</label>
+            <input type="color" class="input-color" id="bulk-fg" value="#000000">
+          </div>
+          <div class="qr-opt">
+            <label class="converter-label">Background</label>
+            <input type="color" class="input-color" id="bulk-bg" value="#ffffff">
+          </div>
+        </div>
+
+        <button class="btn-primary validator-submit" id="bulk-generate">
+          <i class="hgi-stroke hgi-qr-code"></i> Generate All QR Codes
+        </button>
+      </div>
+
+      <!-- Bulk Result -->
+      <div class="qr-bulk-result" id="bulk-result" style="display:none">
+        <div class="qr-bulk-header">
+          <span id="bulk-label">0 QR codes generated</span>
+          <button class="btn-convert" id="bulk-download-zip">
+            <i class="hgi-stroke hgi-download-04"></i> Download ZIP
+          </button>
+        </div>
+        <div class="qr-grid" id="qr-grid"></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p>QR codes generated client-side using qrcode.js. Nothing is sent to any server.</p>
+  </footer>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="nav.js"></script>
+  <script src="qrcode-page.js"></script>
+</body>
+</html>

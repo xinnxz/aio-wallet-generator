@@ -1182,21 +1182,18 @@ body {
   /* Stats */
   .stats-inner { grid-template-columns: repeat(2, 1fr); }
 
-  /* Chain cards: horizontal scroll with fade hint */
+  /* Chain cards: horizontal scroll */
   .tools-section {
     padding: 0 16px 20px;
-    position: relative;
   }
   .tools-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 16px;
-    width: 48px;
-    height: 100%;
-    background: linear-gradient(to right, transparent, var(--gray-50));
-    pointer-events: none;
-    z-index: 2;
+    content: '← Swipe to see all chains →';
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    color: var(--gray-400);
+    margin-top: 6px;
+    letter-spacing: 0.3px;
   }
   .tools-grid {
     overflow-x: auto;

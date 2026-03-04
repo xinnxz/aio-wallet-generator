@@ -210,6 +210,9 @@ function render() {
         ${w.privateKey ? `<button class="copy-btn" data-val="${esc(w.privateKey)}" data-label="Copy Key" title="Copy private key">
           <i class="hgi-stroke hgi-lock-key"></i> Copy Key
         </button>` : ''}
+        ${w.mnemonic && w.mnemonic !== '-' ? `<button class="copy-btn" data-val="${esc(w.mnemonic)}" data-label="Copy Mnemonic" title="Copy mnemonic phrase">
+          <i class="hgi-stroke hgi-text-wrap"></i> Copy Mnemonic
+        </button>` : ''}
       </td>`;
     dom.tbody.appendChild(tr);
   }

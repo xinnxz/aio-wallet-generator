@@ -20,219 +20,45 @@
     <div class="hero-bg"></div>
     <div style="position:relative;z-index:1;text-align:center">
       <h1>Supported Chains</h1>
-      <p>Detailed information on all 30+ blockchain networks supported by this toolkit.</p>
+      <p>9 ecosystems · 30+ networks · all generated 100% client-side</p>
     </div>
   </section>
 
-  <div class="chains-page">
+  <!-- CHAIN DIRECTORY -->
+  <section class="chains-section">
 
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/eth.png" alt="Ethereum">
-        <div class="chain-head-text">
-          <h2>EVM Chains</h2>
-          <span>Ethereum Virtual Machine compatible networks</span>
-        </div>
+    <!-- Stats bar -->
+    <div class="chains-stats">
+      <div class="chains-stat">
+        <span class="chains-stat-num">9</span>
+        <span class="chains-stat-label">Ecosystems</span>
       </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>secp256k1</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>0x... (42 chars, checksummed)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>256-bit hex</span></div>
-        <div class="chain-detail-item"><label>Networks</label><span>22 networks</span></div>
+      <div class="chains-stat">
+        <span class="chains-stat-num">30+</span>
+        <span class="chains-stat-label">Networks</span>
       </div>
-      <div class="chain-features">
-        <span class="chain-feat">Ethereum</span>
-        <span class="chain-feat">BNB Chain</span>
-        <span class="chain-feat">Polygon</span>
-        <span class="chain-feat">Arbitrum</span>
-        <span class="chain-feat">Optimism</span>
-        <span class="chain-feat">Base</span>
-        <span class="chain-feat">zkSync</span>
-        <span class="chain-feat">Avalanche</span>
-        <span class="chain-feat">Fantom</span>
-        <span class="chain-feat">Cronos</span>
-        <span class="chain-feat">Gnosis</span>
-        <span class="chain-feat">Celo</span>
-        <span class="chain-feat">Moonbeam</span>
-        <span class="chain-feat">Harmony</span>
-        <span class="chain-feat">Metis</span>
-        <span class="chain-feat">Mantle</span>
-        <span class="chain-feat">Linea</span>
-        <span class="chain-feat">Scroll</span>
-        <span class="chain-feat">Blast</span>
-        <span class="chain-feat">Mode</span>
-        <span class="chain-feat">Manta</span>
-        <span class="chain-feat">Zora</span>
+      <div class="chains-stat">
+        <span class="chains-stat-num">4</span>
+        <span class="chains-stat-label">Curves</span>
+      </div>
+      <div class="chains-stat">
+        <span class="chains-stat-num">100%</span>
+        <span class="chains-stat-label">Client-side</span>
       </div>
     </div>
 
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/sol.png" alt="Solana">
-        <div class="chain-head-text"><h2>Solana</h2><span>High-performance L1</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>Ed25519</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>Base58 (32-44 chars)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>64-byte Base58 keypair</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>BIP44 m/44'/501'/0'/0'</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">Ed25519 curve</span>
-        <span class="chain-feat">SPL Token support</span>
-        <span class="chain-feat">BIP39 mnemonic</span>
-      </div>
-    </div>
+    <!-- Chain Grid -->
+    <div class="chains-grid" id="chains-grid"></div>
 
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/btc.png" alt="Bitcoin">
-        <div class="chain-head-text"><h2>Bitcoin</h2><span>The original cryptocurrency</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>secp256k1</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>Legacy / SegWit / Native SegWit</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>WIF (Wallet Import Format)</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>BIP44 m/44'/0'/0'/0/0</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">Legacy (1...)</span>
-        <span class="chain-feat">SegWit (3...)</span>
-        <span class="chain-feat">Native SegWit (bc1q...)</span>
-        <span class="chain-feat">BIP39 mnemonic</span>
-        <span class="chain-feat">BIP44 HD wallet</span>
-      </div>
-    </div>
-
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/trx.png" alt="Tron">
-        <div class="chain-head-text"><h2>Tron</h2><span>High-throughput entertainment blockchain</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>secp256k1</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>T... (Base58Check, 34 chars)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>256-bit hex</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>BIP44 m/44'/195'/0'/0/0</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">TRC-20 tokens</span>
-        <span class="chain-feat">USDT primary chain</span>
-        <span class="chain-feat">BIP39 mnemonic</span>
-      </div>
-    </div>
-
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/sui.jpeg" alt="Sui">
-        <div class="chain-head-text"><h2>Sui</h2><span>Move-based L1 blockchain</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>Ed25519</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>0x... (66 chars)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>256-bit hex</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>Move VM</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">Move language</span>
-        <span class="chain-feat">Object-centric</span>
-        <span class="chain-feat">Parallel execution</span>
-      </div>
-    </div>
-
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/apt.png" alt="Aptos">
-        <div class="chain-head-text"><h2>Aptos</h2><span>Move-based L1 from ex-Meta</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>Ed25519</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>0x... (66 chars)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>256-bit hex</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>Aptos VM (Block-STM)</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">Move language</span>
-        <span class="chain-feat">Block-STM execution</span>
-        <span class="chain-feat">Ed25519 native</span>
-      </div>
-    </div>
-
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/atom.png" alt="Cosmos">
-        <div class="chain-head-text"><h2>Cosmos (IBC)</h2><span>Internet of Blockchains — 12 IBC chains</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>secp256k1</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>Bech32 (chain-specific prefix)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>256-bit hex</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>BIP44 m/44'/118'/0'/0/0</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">ATOM</span>
-        <span class="chain-feat">OSMO</span>
-        <span class="chain-feat">TIA</span>
-        <span class="chain-feat">SEI</span>
-        <span class="chain-feat">INJ</span>
-        <span class="chain-feat">JUNO</span>
-        <span class="chain-feat">EVMOS</span>
-        <span class="chain-feat">KAVA</span>
-        <span class="chain-feat">STRIDE</span>
-        <span class="chain-feat">AKASH</span>
-        <span class="chain-feat">STARGAZE</span>
-        <span class="chain-feat">REGEN</span>
-      </div>
-    </div>
-
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/ton.png" alt="TON">
-        <div class="chain-head-text"><h2>TON</h2><span>The Open Network (Telegram)</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>Ed25519</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>EQ... (Base64url, 48 chars)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>256-bit hex</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>TON SDK</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">Telegram integration</span>
-        <span class="chain-feat">Jetton tokens</span>
-        <span class="chain-feat">Ed25519</span>
-      </div>
-    </div>
-
-    <div class="chain-card reveal">
-      <div class="chain-head">
-        <img src="./images/strk.png" alt="Starknet">
-        <div class="chain-head-text"><h2>Starknet</h2><span>Ethereum L2 with STARK proofs</span></div>
-      </div>
-      <div class="chain-details">
-        <div class="chain-detail-item"><label>Curve</label><span>STARK curve (Pedersen hash)</span></div>
-        <div class="chain-detail-item"><label>Address Format</label><span>0x... (66 chars)</span></div>
-        <div class="chain-detail-item"><label>Key Format</label><span>252-bit STARK key</span></div>
-        <div class="chain-detail-item"><label>Standard</label><span>Cairo VM</span></div>
-      </div>
-      <div class="chain-features">
-        <span class="chain-feat">ZK-STARK proofs</span>
-        <span class="chain-feat">Cairo language</span>
-        <span class="chain-feat">Account abstraction</span>
-      </div>
-    </div>
-
-  </div>
+  </section>
 
   <footer class="footer">
     <p>All wallets are generated client-side. Private keys never leave your browser.</p>
   </footer>
 
+  <div class="toast-wrap" id="toast-wrap"></div>
+
   <script src="nav.js"></script>
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  </script>
+  <script src="chains.js"></script>
 </body>
 </html>

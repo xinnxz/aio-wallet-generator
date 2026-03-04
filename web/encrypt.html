@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Encrypt / Decrypt — Web3 Wallet Generator</title>
+  <title>AIO Chain — Encrypt & Decrypt Wallet Data</title>
+  <meta name="description" content="Encrypt wallet data with AES-256-GCM and PBKDF2 key derivation. Decrypt encrypted files — all client-side.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,110 +13,122 @@
 </head>
 <body>
 
+  <!-- NAV -->
   <nav class="nav" id="main-nav"></nav>
 
-  <section class="hero">
+  <!-- HERO -->
+  <section class="hero hero--compact" id="hero">
     <div class="hero-bg"></div>
-    <div class="hero-content">
-      <h1>Encrypt / Decrypt Wallet Files</h1>
-      <p>Protect your wallet data with AES-256-GCM encryption.</p>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h1>Encrypt & Decrypt</h1>
+      <p>Protect your wallet data with AES-256-GCM encryption — 100% client-side.</p>
     </div>
   </section>
 
-  <section style="max-width:520px;margin:0 auto;padding:0 20px 40px;">
-    <div class="form-card" style="margin-bottom:24px">
-      <div class="form-header"><h2>Encrypt</h2></div>
-      <div class="form-body">
-        <label class="form-label">Paste wallet data (JSON)</label>
-        <textarea id="encrypt-input" class="input" rows="5" placeholder='[{"address": "0x...", "privateKey": "0x..."}]' style="resize:vertical;font-family:'SF Mono',monospace;font-size:12px"></textarea>
+  <!-- ENCRYPT / DECRYPT -->
+  <section class="encrypt-section">
+    <div class="encrypt-inner">
 
-        <label class="form-label" style="margin-top:12px">Password</label>
-        <input type="password" id="encrypt-pass" class="input" placeholder="Strong password">
-
-        <button class="btn-primary" style="margin-top:16px" id="encrypt-btn">
-          <i class="hgi-stroke hgi-lock-key"></i> Encrypt & Download
+      <!-- Mode Toggle -->
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="encrypt">
+          <i class="hgi-stroke hgi-lock-key"></i> Encrypt
+        </button>
+        <button class="mode-btn" data-mode="decrypt">
+          <i class="hgi-stroke hgi-lock-unlocked-01"></i> Decrypt
         </button>
       </div>
-    </div>
 
-    <div class="form-card">
-      <div class="form-header"><h2>Decrypt</h2></div>
-      <div class="form-body">
-        <label class="form-label">Upload encrypted file</label>
-        <input type="file" id="decrypt-file" accept=".encrypted,.json,.txt" style="font-size:13px;margin-bottom:12px">
+      <!-- ENCRYPT MODE -->
+      <div class="encrypt-card" id="encrypt-mode">
+        <div class="converter-card-header">
+          <i class="hgi-stroke hgi-lock-key"></i>
+          <h3>Encrypt Wallet Data</h3>
+        </div>
 
-        <label class="form-label">Password</label>
-        <input type="password" id="decrypt-pass" class="input" placeholder="Enter password">
+        <div class="converter-field">
+          <label class="converter-label">Paste wallet data (JSON, CSV, or plain text)</label>
+          <textarea class="input mono" id="encrypt-input" rows="6" placeholder='[{"address":"0x...","privateKey":"0x..."}]' spellcheck="false"></textarea>
+        </div>
 
-        <button class="btn-primary" style="margin-top:16px" id="decrypt-btn">
+        <div class="converter-field">
+          <label class="converter-label">Password</label>
+          <div class="password-wrap">
+            <input type="password" class="input" id="encrypt-pass" placeholder="Strong password (8+ chars)" autocomplete="new-password">
+            <button class="toggle-pass-btn" id="toggle-encrypt-pass" title="Show/hide password">
+              <i class="hgi-stroke hgi-eye"></i>
+            </button>
+          </div>
+          <div class="strength-bar" id="strength-bar">
+            <div class="strength-fill" id="strength-fill"></div>
+          </div>
+          <span class="strength-label" id="strength-label"></span>
+        </div>
+
+        <button class="btn-primary validator-submit" id="encrypt-btn">
+          <i class="hgi-stroke hgi-lock-key"></i> Encrypt & Download
+        </button>
+
+        <div class="encrypt-info">
+          <i class="hgi-stroke hgi-information-circle"></i>
+          AES-256-GCM · PBKDF2 100K iterations · random salt + IV
+        </div>
+      </div>
+
+      <!-- DECRYPT MODE -->
+      <div class="encrypt-card" id="decrypt-mode" style="display:none">
+        <div class="converter-card-header">
+          <i class="hgi-stroke hgi-lock-unlocked-01"></i>
+          <h3>Decrypt File</h3>
+        </div>
+
+        <div class="converter-field">
+          <label class="converter-label">Upload encrypted file</label>
+          <div class="file-drop" id="file-drop">
+            <i class="hgi-stroke hgi-upload-03"></i>
+            <span>Drop file here or <label for="decrypt-file" class="file-browse">browse</label></span>
+            <input type="file" id="decrypt-file" accept=".encrypted,.json,.txt,.bin" hidden>
+            <span class="file-name" id="file-name"></span>
+          </div>
+        </div>
+
+        <div class="converter-field">
+          <label class="converter-label">Password</label>
+          <div class="password-wrap">
+            <input type="password" class="input" id="decrypt-pass" placeholder="Enter password" autocomplete="off">
+            <button class="toggle-pass-btn" id="toggle-decrypt-pass" title="Show/hide password">
+              <i class="hgi-stroke hgi-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn-primary validator-submit" id="decrypt-btn">
           <i class="hgi-stroke hgi-lock-unlocked-01"></i> Decrypt
         </button>
 
-        <pre id="decrypt-output" style="display:none;margin-top:16px;padding:16px;background:var(--gray-50);border-radius:8px;font-size:12px;overflow-x:auto;border:1px solid var(--gray-200)"></pre>
+        <div class="decrypt-output" id="decrypt-output" style="display:none">
+          <div class="decrypt-output-header">
+            <span>Decrypted Data</span>
+            <button class="copy-btn copy-btn--icon" id="copy-decrypted" title="Copy all">
+              <i class="hgi-stroke hgi-copy-01"></i>
+            </button>
+          </div>
+          <pre class="decrypt-pre" id="decrypt-text"></pre>
+        </div>
       </div>
+
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="footer">
-    <p>AES-256-GCM with PBKDF2 key derivation (100K iterations). All processing client-side.</p>
+    <p>AES-256-GCM with PBKDF2 key derivation (100K iterations). All processing is client-side.</p>
   </footer>
 
+  <!-- Toast -->
+  <div class="toast-wrap" id="toast-wrap"></div>
+
   <script src="nav.js"></script>
-  <script>
-    // Encrypt using Web Crypto API
-    async function deriveKey(password, salt) {
-      const enc = new TextEncoder();
-      const key = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
-      return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, key, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
-    }
-
-    document.querySelector('#encrypt-btn').addEventListener('click', async () => {
-      const data = document.querySelector('#encrypt-input').value.trim();
-      const pass = document.querySelector('#encrypt-pass').value;
-      if (!data || !pass) return alert('Provide data and password');
-
-      const salt = crypto.getRandomValues(new Uint8Array(16));
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const key = await deriveKey(pass, salt);
-      const enc = new TextEncoder();
-      const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(data));
-
-      // Pack: salt(16) + iv(12) + ciphertext
-      const packed = new Uint8Array(salt.length + iv.length + ciphertext.byteLength);
-      packed.set(salt, 0);
-      packed.set(iv, 16);
-      packed.set(new Uint8Array(ciphertext), 28);
-
-      const blob = new Blob([packed], { type: 'application/octet-stream' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `wallets-${Date.now()}.encrypted`;
-      a.click();
-    });
-
-    document.querySelector('#decrypt-btn').addEventListener('click', async () => {
-      const file = document.querySelector('#decrypt-file').files[0];
-      const pass = document.querySelector('#decrypt-pass').value;
-      if (!file || !pass) return alert('Provide file and password');
-
-      const buf = await file.arrayBuffer();
-      const arr = new Uint8Array(buf);
-      const salt = arr.slice(0, 16);
-      const iv = arr.slice(16, 28);
-      const ciphertext = arr.slice(28);
-
-      try {
-        const key = await deriveKey(pass, salt);
-        const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
-        const text = new TextDecoder().decode(dec);
-        const output = document.querySelector('#decrypt-output');
-        output.style.display = 'block';
-        try { output.textContent = JSON.stringify(JSON.parse(text), null, 2); }
-        catch { output.textContent = text; }
-      } catch {
-        alert('Decryption failed. Wrong password?');
-      }
-    });
-  </script>
+  <script src="encrypt.js"></script>
 </body>
 </html>

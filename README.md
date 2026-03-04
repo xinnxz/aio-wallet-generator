@@ -1,165 +1,175 @@
-# 🔐 Web3 Wallet Generator
+# ⚡ AIO Chain — All-in-One Web3 Wallet Toolkit
 
-> Generate cryptocurrency wallets at scale across **30+ blockchain chains** — from CLI or a clean web dashboard.
+> Generate, validate, convert, and secure crypto wallets across **9 chains / 30+ networks** — from **Web**, **CLI**, **Browser Extension**, or **Mobile App**.
 
-All wallets are generated **client-side** (browser) or **locally** (Node.js). No data is ever sent to any server.
+100% **client-side**. Zero tracking. Open source.
+
+- 🌐 **Live**: [aio-wallet-generator.vercel.app](https://aio-wallet-generator.vercel.app)
+- 📦 **npm**: `npx aio-chain generate --chain evm --count 10`
+- 🧩 **Extension**: Chrome / Edge / Brave
+- 📱 **Mobile**: iOS & Android (Expo)
 
 ---
 
-## Features
+## Platforms
 
-- **30+ chains** — EVM (22 networks), Solana, Bitcoin (3 address types), Tron, Sui, Aptos, Cosmos (12 IBC), TON, Starknet
-- **Batch generation** — up to 100,000 wallets in one run
-- **HD wallets** — BIP39/BIP44 derivation (1 mnemonic → many wallets)
-- **4 export formats** — CSV, JSON, Excel (.xlsx), Encrypted (.encrypted)
-- **AES-256-GCM encryption** — password-protect your wallet files
-- **CLI** — 4 commands with colored output, spinners, and tables
-- **Web Dashboard** — clean UI with parallax, motion, real chain logos, search, pagination
-- **Multi-chain address validation** — format + checksum verification
+| Platform | Stack | Status |
+|---|---|---|
+| **Web** | Vanilla JS + Vite | ✅ 12 pages, PWA, i18n (EN/ID) |
+| **CLI** | Node.js + Commander.js | ✅ 6 commands |
+| **Extension** | Chrome MV3 | ✅ Vault + Scanner |
+| **Mobile** | React Native + Expo (TypeScript) | ✅ 10 screens, biometric |
+
+---
 
 ## Supported Chains
 
 | Chain | Networks | Curve | Address Format |
-|-------|----------|-------|----------------|
-| EVM | Ethereum, BSC, Polygon, Arbitrum, Optimism, Base, zkSync, Avalanche, Fantom, Cronos, Gnosis, Celo, Moonbeam, Harmony, Metis, Mantle, Linea, Scroll, Blast, Mode, Manta, Zora | secp256k1 | 0x... (42 chars) |
-| Solana | Solana | Ed25519 | Base58 (32-44 chars) |
-| Bitcoin | Bitcoin | secp256k1 | Legacy/SegWit/Native SegWit |
-| Tron | Tron | secp256k1 | T... (Base58Check) |
-| Sui | Sui | Ed25519 | 0x... (66 chars) |
-| Aptos | Aptos | Ed25519 | 0x... (66 chars) |
-| Cosmos | ATOM, OSMO, TIA, SEI, INJ, JUNO, EVMOS, KAVA, STRIDE, AKASH, STARGAZE, REGEN | secp256k1 | Bech32 (chain prefix) |
-| TON | TON | Ed25519 | EQ... (Base64url) |
-| Starknet | Starknet | STARK | 0x... (66 chars) |
+|---|---|---|---|
+| **EVM** | Ethereum, BSC, Polygon, Arbitrum, Optimism, Base, zkSync, Avalanche +14 more | secp256k1 | `0x...` (42 chars) |
+| **Solana** | Solana | Ed25519 | Base58 (32-44 chars) |
+| **Bitcoin** | Bitcoin | secp256k1 | Legacy / SegWit / Native SegWit |
+| **Tron** | Tron | secp256k1 | `T...` (Base58Check) |
+| **Sui** | Sui | Ed25519 | `0x...` (66 chars) |
+| **Aptos** | Aptos | Ed25519 | `0x...` (66 chars) |
+| **Cosmos** | ATOM, OSMO, TIA, SEI, INJ +7 IBC chains | secp256k1 | Bech32 |
+| **TON** | TON | Ed25519 | `EQ...` (Base64url) |
+| **Starknet** | Starknet | STARK | `0x0...` (66 chars) |
+
+---
 
 ## Quick Start
 
-### Install
+### Web App
 
 ```bash
-git clone https://github.com/your-username/aio-wallet-generator.git
+git clone https://github.com/xinnxz/aio-wallet-generator.git
 cd aio-wallet-generator
 npm install
+npm run dev    # → http://localhost:5173
 ```
 
-### CLI Usage
+### CLI
 
 ```bash
 # Generate 10 EVM wallets
-node src/index.js generate --chain evm --count 10
+npx aio-chain generate --chain evm --count 10
 
-# Generate 100 Solana wallets, export to CSV
-node src/index.js generate --chain solana --count 100 --output csv
+# Bulk generate, export to CSV
+npx aio-chain generate --chain solana --count 1000 --output csv
 
-# Multi-chain generation
-node src/index.js generate --chain evm,solana,cosmos --count 50
+# Multi-chain
+npx aio-chain generate --chain evm,solana,bitcoin --count 50
 
-# HD wallet mode (1 mnemonic → many wallets)
-node src/index.js generate --chain evm --count 100 --hd
+# HD wallet (1 mnemonic → many wallets)
+npx aio-chain generate --chain evm --count 100 --hd
 
-# Export to different formats
-node src/index.js export --format xlsx --file ./output/wallets-latest.json
+# Validate an address
+npx aio-chain validate --address 0x742d35Cc...
 
-# Show all supported chains
-node src/index.js info
+# Convert address format
+npx aio-chain convert --address 0x742d35Cc... --to lowercase
 
-# Show specific chain details
-node src/index.js info --chain cosmos
+# All supported chains
+npx aio-chain info
 
 # Decrypt an encrypted file
-node src/index.js decrypt --file ./wallets.encrypted --password "mypass"
+npx aio-chain decrypt --file ./wallets.encrypted
 ```
 
-### Web Dashboard
+### Mobile App
 
 ```bash
-npx vite web --port 5173
-# Open http://localhost:5173
+cd mobile
+npm install
+npx expo start    # Scan QR with Expo Go
 ```
+
+### Browser Extension
+
+1. Go to `chrome://extensions`
+2. Enable "Developer mode"
+3. Click "Load unpacked" → select `extension/` folder
+
+---
 
 ## CLI Commands
 
-### `generate`
+| Command | Description |
+|---|---|
+| `generate` | Bulk wallet generation (all 9 chains, HD mode, 4 export formats) |
+| `validate` | Address validation (single, batch, file input, auto-detect chain) |
+| `convert` | Address format conversion (checksum, lowercase, hex) |
+| `export` | Re-export wallet files (CSV, JSON, XLSX, Encrypted) |
+| `info` | Show chain details and supported networks |
+| `decrypt` | Decrypt `.encrypted` wallet files |
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--chain <chains>` | Chain(s) to generate, comma-separated | `evm` |
-| `--count <n>` | Number of wallets per chain | `10` |
-| `--output <format>` | Auto-export: `csv`, `json`, `xlsx`, `encrypted` | none |
-| `--hd` | HD wallet mode (BIP44 derivation) | `false` |
-| `--password <pass>` | Password for encrypted export | prompted |
+---
 
-### `export`
+## Web Pages
 
-| Flag | Description |
-|------|-------------|
-| `--format <fmt>` | Export format: `csv`, `json`, `xlsx`, `encrypted` |
-| `--file <path>` | Input JSON file to export |
+| Page | URL | Description |
+|---|---|---|
+| Dashboard | `/` | Multi-chain wallet generator with batch, export, and history |
+| Validator | `/validator.html` | Address validation (single + batch + CSV upload) |
+| Converter | `/converter.html` | Address format converter (hex, base58, checksum) |
+| Encrypt | `/encrypt.html` | AES-256-GCM file encryption / decryption |
+| Chains | `/chains.html` | Chain info table with real logos |
+| QR Code | `/qrcode.html` | QR generator for addresses (custom colors, bulk ZIP) |
+| HD Wallet | `/hdwallet.html` | BIP39/BIP44 derivation explorer |
+| Paper Wallet | `/paperwallet.html` | Printable paper wallet cards |
+| Bulk Tools | `/bulktools.html` | Airdrop formatter, duplicate detector, batch checksum |
+| Docs | `/docs.html` | Full documentation (CLI, Web, Extension) |
+| Security | `/security.html` | Security model, crypto stack, self-audit |
+| Plugins | `/plugins.html` | Plugin system architecture |
 
-### `info`
-
-| Flag | Description |
-|------|-------------|
-| `--chain <name>` | Show details for a specific chain |
-
-### `decrypt`
-
-| Flag | Description |
-|------|-------------|
-| `--file <path>` | Path to `.encrypted` file |
-| `--password <pass>` | Decryption password |
-| `--export <format>` | Re-export after decryption |
+---
 
 ## Project Structure
 
 ```
 aio-wallet-generator/
-├── src/
-│   ├── index.js              # CLI entry point
-│   ├── cli/
-│   │   ├── ui.js             # Banner, spinner, tables
-│   │   └── commands/
-│   │       ├── generate.js   # Generate command
-│   │       ├── export.js     # Export command
-│   │       ├── info.js       # Chain info command
-│   │       └── decrypt.js    # Decrypt command
-│   ├── core/
-│   │   ├── generator.js      # Strategy Pattern orchestrator
-│   │   ├── batch.js          # Chunked batch processing
-│   │   ├── hd-wallet.js      # BIP39/BIP44 derivation
-│   │   └── chains/
-│   │       ├── evm.js        # 22 EVM networks
-│   │       ├── solana.js     # Solana
-│   │       ├── bitcoin.js    # Bitcoin (3 types)
-│   │       ├── tron.js       # Tron
-│   │       ├── sui.js        # Sui
-│   │       ├── aptos.js      # Aptos
-│   │       ├── cosmos.js     # Cosmos (12 IBC)
-│   │       ├── ton.js        # TON
-│   │       └── starknet.js   # Starknet
-│   ├── security/
-│   │   ├── encryption.js     # AES-256-GCM + PBKDF2
-│   │   └── validator.js      # Multi-chain address validation
-│   └── export/
-│       ├── csv.js            # CSV stream export
-│       ├── json-export.js    # JSON export
-│       ├── excel.js          # Excel export
-│       └── encrypted.js      # Encrypted export
-├── web/
-│   ├── index.html            # Dashboard
-│   ├── chains.html           # Chain info page
-│   ├── style.css             # Clean theme + motion
-│   ├── app.js                # Client-side logic
-│   └── images/               # Chain logos
+├── src/                    CLI (Node.js)
+│   ├── index.js            Entry point (6 commands)
+│   ├── cli/commands/       generate, validate, convert, export, info, decrypt
+│   ├── core/chains/        9 chain generators
+│   ├── security/           AES-256, validator
+│   └── export/             CSV, JSON, XLSX, encrypted
+├── web/                    Web App (Vite)
+│   ├── *.html              12 pages
+│   ├── style.css           Design system
+│   ├── nav.js              Navigation
+│   └── *.js                Page logic
+├── extension/              Browser Extension (MV3)
+│   ├── manifest.json
+│   ├── popup/              Popup UI (vault, generate, validate)
+│   ├── background/         Service worker (context menu, omnibox)
+│   ├── content/            Address scanner
+│   └── vault/              Encrypted storage
+├── mobile/                 Mobile App (Expo + TypeScript)
+│   ├── app/                10 screens (Expo Router)
+│   ├── lib/                Wallet generation, export, security
+│   ├── store/              Zustand state
+│   └── theme/              Design tokens
+├── docs/                   Documentation, roadmap, plans
 └── package.json
 ```
 
+---
+
 ## Security
 
-- **AES-256-GCM** encryption with authenticated ciphertext
-- **PBKDF2** key derivation (100,000 iterations) — resistant to brute force
-- Random **salt** and **IV** per encryption — no two ciphertexts are the same
-- Private keys generated **locally** — never transmitted
-- `.gitignore` excludes `output/` and `*.encrypted` files
+| Feature | Implementation |
+|---|---|
+| **Encryption** | AES-256-GCM + PBKDF2 (100K iterations) |
+| **Key Generation** | CSPRNG (crypto.getRandomValues) |
+| **Storage** | Keychain (iOS) / Keystore (Android) / chrome.storage |
+| **Biometric** | Face ID / Fingerprint (mobile) |
+| **Privacy** | Zero network calls, no analytics, no tracking |
+| **Clipboard** | Auto-clear after 60 seconds |
+| **Open Source** | Every line auditable on GitHub |
+
+---
 
 ## License
 

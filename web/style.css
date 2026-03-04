@@ -1182,8 +1182,22 @@ body {
   /* Stats */
   .stats-inner { grid-template-columns: repeat(2, 1fr); }
 
-  /* Chain cards: horizontal scroll */
-  .tools-section { padding: 0 16px 20px; }
+  /* Chain cards: horizontal scroll with fade hint */
+  .tools-section {
+    padding: 0 16px 20px;
+    position: relative;
+  }
+  .tools-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 16px;
+    width: 48px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, var(--gray-50));
+    pointer-events: none;
+    z-index: 2;
+  }
   .tools-grid {
     overflow-x: auto;
     justify-content: flex-start;

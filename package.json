@@ -1,10 +1,11 @@
 {
   "name": "web3-wallet-toolkit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "All-in-One Web3 Wallet Generator - Generate, manage & export 10K+ wallets across 30+ chains",
   "main": "src/index.js",
   "type": "module",
   "bin": {
+    "aio-chain": "src/index.js",
     "web3-wallet": "src/index.js"
   },
   "scripts": {
@@ -22,7 +23,9 @@
     "airdrop",
     "crypto",
     "bulk",
-    "batch"
+    "batch",
+    "validate",
+    "convert"
   ],
   "author": "",
   "license": "MIT",

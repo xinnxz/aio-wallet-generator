@@ -201,7 +201,7 @@ body {
 }
 .mono-input::placeholder, .combo-input::placeholder { color: var(--text-muted); font-family: var(--font); }
 .textarea-input { resize: vertical; min-height: 80px; line-height: 1.5; }
-.mono-input[type="number"] { -moz-appearance: textfield; }
+.mono-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
 /* Combo (chain autocomplete) */
 .combo-wrap { position: relative; }

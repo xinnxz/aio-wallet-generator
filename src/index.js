@@ -31,6 +31,8 @@ import { handleGenerate } from './cli/commands/generate.js';
 import { handleExport } from './cli/commands/export.js';
 import { handleInfo } from './cli/commands/info.js';
 import { handleDecrypt } from './cli/commands/decrypt.js';
+import { handleValidate } from './cli/commands/validate.js';
+import { handleConvert } from './cli/commands/convert.js';
 import { setVerbose } from './utils/logger.js';
 
 // Buat program CLI
@@ -38,9 +40,9 @@ const program = new Command();
 
 // Metadata program
 program
-  .name('web3-wallet')
-  .description('🔐 All-in-One Web3 Wallet Generator — Generate, manage & export wallets across 30+ chains')
-  .version('1.0.0')
+  .name('aio-chain')
+  .description('All-in-One Web3 Wallet Toolkit — Generate, validate, convert & export wallets across 9 chains')
+  .version('1.1.0')
   .option('-v, --verbose', 'Enable verbose/debug output');
 
 // ============================================================
@@ -111,6 +113,35 @@ program
     showBanner();
     if (program.opts().verbose) setVerbose(true);
     await handleDecrypt(options);
+  });
+
+// ============================================================
+// COMMAND: validate
+// Validate alamat crypto (single, batch, atau dari file)
+// ============================================================
+program
+  .command('validate [addresses...]')
+  .description('Validate crypto addresses (auto-detect chain)')
+  .option('-f, --file <path>', 'Read addresses from file (one per line)')
+  .option('--batch <addresses>', 'Comma-separated list of addresses')
+  .action(async (args, options) => {
+    showBanner();
+    if (program.opts().verbose) setVerbose(true);
+    await handleValidate(args, options);
+  });
+
+// ============================================================
+// COMMAND: convert
+// Convert format alamat (checksum, lowercase, hex)
+// ============================================================
+program
+  .command('convert [address]')
+  .description('Convert address format (EVM checksum, lowercase, hex)')
+  .option('-t, --to <format>', 'Target format: checksum, lowercase, uppercase, hex')
+  .action(async (address, options) => {
+    showBanner();
+    if (program.opts().verbose) setVerbose(true);
+    await handleConvert(address ? [address] : [], options);
   });
 
 // ============================================================

@@ -592,7 +592,7 @@ body {
   gap: 6px;
   justify-content: center;
 }
-.tool-card {
+.tools-grid .tool-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -608,15 +608,15 @@ body {
   font-family: inherit;
   position: relative;
 }
-.tool-card:hover {
+.tools-grid .tool-card:hover {
   border-color: var(--gray-300);
   box-shadow: var(--shadow);
 }
-.tool-card.active {
+.tools-grid .tool-card.active {
   background: var(--blue-light);
   border-color: var(--blue);
 }
-.tool-card.active::after {
+.tools-grid .tool-card.active::after {
   content: '';
   position: absolute;
   bottom: -1px;
@@ -626,8 +626,8 @@ body {
   background: var(--blue);
   border-radius: 3px 3px 0 0;
 }
-.tool-card.active .tool-label { color: var(--blue); }
-.tool-card.active .tool-sub { color: var(--blue); opacity: 0.7; }
+.tools-grid .tool-card.active .tool-label { color: var(--blue); }
+.tools-grid .tool-card.active .tool-sub { color: var(--blue); opacity: 0.7; }
 .tool-icon {
   width: 44px;
   height: 44px;
@@ -1272,7 +1272,7 @@ body {
 @media (max-width: 640px) {
   .hero h1 { font-size: 22px; }
   .tools-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .tool-card { padding: 14px 6px 12px; }
+  .tools-grid .tool-card { padding: 14px 6px 12px; }
   .tool-icon { width: 36px; height: 36px; }
   .tool-icon img { width: 24px; height: 24px; }
   .results-header { flex-direction: column; align-items: flex-start; }
@@ -2411,7 +2411,7 @@ body {
     scrollbar-width: none;
   }
   .tools-grid::-webkit-scrollbar { display: none; }
-  .tool-card {
+  .tools-grid .tool-card {
     width: 72px;
     height: 72px;
     min-width: 72px;
@@ -2530,7 +2530,7 @@ body {
 
   .trust-grid { grid-template-columns: 1fr; }
 
-  .tool-card { width: 64px; height: 64px; min-width: 64px; gap: 4px; }
+  .tools-grid .tool-card { width: 64px; height: 64px; min-width: 64px; gap: 4px; }
   .tool-icon { width: 30px; height: 30px; }
   .tool-icon img { width: 20px; height: 20px; }
   .tool-label { font-size: 9px; }

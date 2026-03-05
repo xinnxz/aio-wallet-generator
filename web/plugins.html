@@ -4,193 +4,290 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AIO Chain — Plugin System</title>
-  <meta name="description" content="AIO Chain plugin architecture: add custom chains, export formats, and validators.">
+  <meta name="description" content="Plugin architecture for extending AIO Chain with custom chains, export formats, and validators.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="icon" href="images/icon-192.png">
+  <style>
+    /* ─── Plugins Page Premium Styles ─── */
+    .plug-hero {
+      position: relative; padding: 80px 20px 60px; text-align: center; overflow: hidden;
+    }
+    .plug-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 60% at 50% 0%, rgba(139,92,246,0.12) 0%, transparent 70%);
+    }
+    .plug-hero .plug-icon {
+      width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.15));
+      border: 1px solid rgba(139,92,246,0.2); display: flex; align-items: center;
+      justify-content: center; font-size: 28px;
+    }
+    .plug-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+      background: linear-gradient(135deg, #e2e8f0, #8b5cf6 50%, #3b82f6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -1.5px; margin-bottom: 12px;
+    }
+    .plug-hero p { color: var(--text-dim); font-size: 1rem; max-width: 480px; margin: 0 auto; }
+
+    .plug-container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+
+    /* Section title */
+    .plug-title {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.3rem; font-weight: 700; color: var(--text);
+      margin: 48px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .plug-title:first-of-type { margin-top: 0; }
+    .plug-title .ico {
+      width: 30px; height: 30px; border-radius: 8px; display: flex;
+      align-items: center; justify-content: center; font-size: 14px;
+    }
+
+    /* Interface Code Blocks */
+    .iface-block {
+      border-radius: 14px; border: 1px solid var(--border); overflow: hidden; margin: 16px 0;
+      background: #0d1117;
+    }
+    .iface-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .iface-dots { display: flex; gap: 6px; }
+    .iface-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .iface-dots span:nth-child(1) { background: #ff5f57; }
+    .iface-dots span:nth-child(2) { background: #febc2e; }
+    .iface-dots span:nth-child(3) { background: #28c840; }
+    .iface-label {
+      font-size: 0.72rem; color: rgba(255,255,255,0.4);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .iface-block pre {
+      padding: 20px; margin: 0; overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+      line-height: 1.8; color: #e6edf3;
+    }
+    .iface-block .kw { color: #ff7b72; }
+    .iface-block .type { color: #79c0ff; }
+    .iface-block .str { color: #a5d6ff; }
+    .iface-block .fn { color: #d2a8ff; }
+    .iface-block .comment { color: #6e7681; }
+    .iface-block .prop { color: #ffa657; }
+
+    /* Plugin Type Cards */
+    .ptype-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
+    .ptype-card {
+      position: relative; padding: 24px 20px; border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--surface); transition: all 0.3s;
+    }
+    .ptype-card:hover { border-color: rgba(139,92,246,0.3); transform: translateY(-2px); }
+    .ptype-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .ptype-card:nth-child(1)::before { background: linear-gradient(90deg, #8b5cf6, #6366f1); }
+    .ptype-card:nth-child(2)::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
+    .ptype-card:nth-child(3)::before { background: linear-gradient(90deg, #10b981, #14b8a6); }
+    .ptype-card .ptype-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.8px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .ptype-card:nth-child(1) .ptype-label { color: #8b5cf6; }
+    .ptype-card:nth-child(2) .ptype-label { color: #3b82f6; }
+    .ptype-card:nth-child(3) .ptype-label { color: #10b981; }
+    .ptype-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .ptype-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+    /* Built-in Table */
+    .built-table {
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 20px 0;
+    }
+    .built-table thead th {
+      background: var(--surface); text-align: left; padding: 12px 16px;
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 1px solid var(--border);
+    }
+    .built-table td {
+      padding: 10px 16px; font-size: 0.82rem; color: var(--text-dim);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .built-table tr:last-child td { border-bottom: none; }
+    .built-table tr:hover { background: rgba(59,130,246,0.03); }
+    .built-table code {
+      background: rgba(139,92,246,0.08); color: #a78bfa; padding: 2px 8px;
+      border-radius: 4px; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .built-table .type-tag {
+      display: inline-block; padding: 2px 8px; border-radius: 100px;
+      font-size: 0.68rem; font-weight: 600;
+    }
+    .tag-chain { background: rgba(139,92,246,0.08); color: #a78bfa; }
+    .tag-export { background: rgba(59,130,246,0.08); color: #60a5fa; }
+    .tag-validator { background: rgba(16,185,129,0.08); color: #34d399; }
+
+    @media (max-width: 768px) {
+      .ptype-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
   <nav class="nav" id="main-nav"></nav>
 
-  <section class="hero hero--compact" id="hero">
-    <div class="hero-bg"></div>
-    <div style="position:relative;z-index:1;text-align:center">
-      <h1>Plugin System</h1>
-      <p class="hero-sub">Extend AIO Chain with custom chains, exports, and validators.</p>
+  <div class="plug-hero">
+    <div class="plug-icon">🧩</div>
+    <h1>Plugin System</h1>
+    <p>Extend AIO Chain with custom chains, export formats, and validators.</p>
+  </div>
+
+  <div class="plug-container">
+
+    <!-- Plugin Types -->
+    <div class="plug-title" style="margin-top:0">
+      <span class="ico" style="background:rgba(139,92,246,0.1);color:#8b5cf6">◆</span>
+      Plugin Types
     </div>
-  </section>
 
-  <main class="container" style="padding-bottom:40px">
-
-    <!-- Overview -->
-    <section class="docs-section" id="overview">
-      <h2><i class="hgi-stroke hgi-puzzle"></i> Overview</h2>
-      <p>AIO Chain's plugin system lets you add custom blockchain support, export formats, and validation logic without modifying core code.</p>
-      <div class="docs-grid">
-        <div class="docs-card">
-          <h3>Chain Plugins</h3>
-          <p>Add any blockchain — just implement the generator interface.</p>
-          <code>generateWallet() → { address, privateKey }</code>
-        </div>
-        <div class="docs-card">
-          <h3>Export Plugins</h3>
-          <p>Custom export formats beyond CSV/JSON/XLSX.</p>
-          <code>exportWallets(wallets, options) → file</code>
-        </div>
-        <div class="docs-card">
-          <h3>Validator Plugins</h3>
-          <p>Custom address validation rules per chain.</p>
-          <code>validate(address) → { valid, chain }</code>
-        </div>
+    <div class="ptype-grid">
+      <div class="ptype-card">
+        <div class="ptype-label">Chain Plugin</div>
+        <h3>Custom Blockchains</h3>
+        <p>Add new chains with wallet generation, address validation, and scanner patterns.</p>
       </div>
-    </section>
+      <div class="ptype-card">
+        <div class="ptype-label">Export Plugin</div>
+        <h3>Custom Formats</h3>
+        <p>Add export formats beyond CSV, JSON, XLSX — like PDF, YAML, or database connectors.</p>
+      </div>
+      <div class="ptype-card">
+        <div class="ptype-label">Validator Plugin</div>
+        <h3>Custom Rules</h3>
+        <p>Add validation rules: checksum algorithms, prefix checks, or chain-specific logic.</p>
+      </div>
+    </div>
 
     <!-- Chain Plugin Interface -->
-    <section class="docs-section" id="chain-plugin">
-      <h2><i class="hgi-stroke hgi-blockchain-06"></i> Chain Plugin Interface</h2>
-      <p>To add a new blockchain, create a module that exports these functions:</p>
+    <div class="plug-title">
+      <span class="ico" style="background:rgba(139,92,246,0.1);color:#8b5cf6">⛓</span>
+      Chain Plugin Interface
+    </div>
+    <div class="iface-block">
+      <div class="iface-header">
+        <div class="iface-dots"><span></span><span></span><span></span></div>
+        <span class="iface-label">chain-plugin.ts</span>
+      </div>
+      <pre><span class="kw">interface</span> <span class="type">ChainPlugin</span> {
+  <span class="prop">id</span>: <span class="type">string</span>;          <span class="comment">// unique identifier</span>
+  <span class="prop">name</span>: <span class="type">string</span>;        <span class="comment">// display name</span>
+  <span class="prop">symbol</span>: <span class="type">string</span>;      <span class="comment">// ticker symbol</span>
+  <span class="prop">color</span>: <span class="type">string</span>;       <span class="comment">// brand hex color</span>
 
-      <pre class="docs-code">// plugins/my-custom-chain.js
-
-export const chainConfig = {
-  id: 'mychain',              // Unique identifier
-  name: 'MyChain',            // Display name
-  symbol: 'MYC',              // Token symbol
-  addressPrefix: 'myc1',      // Address prefix
-  keyType: 'Ed25519',         // Key algorithm
-  networks: ['mainnet', 'testnet'],
-};
-
-/**
- * Generate a single wallet
- * @returns {{ address: string, privateKey: string, mnemonic?: string }}
- */
-export async function generateWallet() {
-  // Use crypto.getRandomValues() for key generation
-  const privateKeyBytes = crypto.getRandomValues(new Uint8Array(32));
-  const privateKey = '0x' + [...privateKeyBytes]
-    .map(b => b.toString(16).padStart(2, '0')).join('');
-
-  // Derive address from private key (chain-specific logic)
-  const address = deriveAddress(privateKeyBytes);
-
-  return { address, privateKey };
-}
-
-/**
- * Validate an address
- * @param {string} address
- * @returns {boolean}
- */
-export function validateAddress(address) {
-  return /^myc1[a-z0-9]{38}$/.test(address);
-}
-
-/**
- * Address regex for page scanner
- * @returns {RegExp}
- */
-export function getScanPattern() {
-  return /\bmyc1[a-z0-9]{38}\b/g;
+  <span class="fn">generateWallet</span>(): <span class="type">Promise</span>&lt;<span class="type">Wallet</span>&gt;;
+  <span class="fn">validateAddress</span>(<span class="prop">addr</span>: <span class="type">string</span>): <span class="type">boolean</span>;
+  <span class="fn">getScanPattern</span>(): <span class="type">RegExp</span>;
 }</pre>
-    </section>
+    </div>
 
     <!-- Export Plugin Interface -->
-    <section class="docs-section" id="export-plugin">
-      <h2><i class="hgi-stroke hgi-file-export"></i> Export Plugin Interface</h2>
-      <pre class="docs-code">// plugins/export-markdown.js
+    <div class="plug-title">
+      <span class="ico" style="background:rgba(59,130,246,0.1);color:#3b82f6">📦</span>
+      Export Plugin Interface
+    </div>
+    <div class="iface-block">
+      <div class="iface-header">
+        <div class="iface-dots"><span></span><span></span><span></span></div>
+        <span class="iface-label">export-plugin.ts</span>
+      </div>
+      <pre><span class="kw">interface</span> <span class="type">ExportPlugin</span> {
+  <span class="prop">id</span>: <span class="type">string</span>;          <span class="comment">// e.g. "pdf", "yaml"</span>
+  <span class="prop">name</span>: <span class="type">string</span>;        <span class="comment">// e.g. "PDF Export"</span>
+  <span class="prop">extension</span>: <span class="type">string</span>;   <span class="comment">// file extension</span>
 
-export const exportConfig = {
-  id: 'markdown',
-  name: 'Markdown Table',
-  extension: '.md',
-  mimeType: 'text/markdown',
-};
-
-/**
- * Export wallets to custom format
- * @param {Array} wallets - Array of wallet objects
- * @param {Object} options - { file, password }
- * @returns {string|Buffer} - File content
- */
-export function exportWallets(wallets, options = {}) {
-  let md = '| # | Chain | Address | Private Key |\n';
-  md += '|---|---|---|---|\n';
-
-  wallets.forEach((w, i) => {
-    md += `| ${i + 1} | ${w.chain} | \`${w.address}\` | \`${w.privateKey}\` |\n`;
-  });
-
-  return md;
+  <span class="fn">exportWallets</span>(
+    <span class="prop">wallets</span>: <span class="type">Wallet</span>[],
+    <span class="prop">options</span>?: <span class="type">ExportOptions</span>
+  ): <span class="type">Promise</span>&lt;<span class="type">Blob</span> | <span class="type">string</span>&gt;;
 }</pre>
-    </section>
+    </div>
+
+    <!-- Validator Plugin Interface -->
+    <div class="plug-title">
+      <span class="ico" style="background:rgba(16,185,129,0.1);color:#10b981">✓</span>
+      Validator Plugin Interface
+    </div>
+    <div class="iface-block">
+      <div class="iface-header">
+        <div class="iface-dots"><span></span><span></span><span></span></div>
+        <span class="iface-label">validator-plugin.ts</span>
+      </div>
+      <pre><span class="kw">interface</span> <span class="type">ValidatorPlugin</span> {
+  <span class="prop">id</span>: <span class="type">string</span>;
+  <span class="prop">name</span>: <span class="type">string</span>;
+  <span class="prop">chains</span>: <span class="type">string</span>[];     <span class="comment">// chains this validator applies to</span>
+
+  <span class="fn">validate</span>(<span class="prop">address</span>: <span class="type">string</span>): <span class="type">ValidationResult</span>;
+}
+
+<span class="kw">interface</span> <span class="type">ValidationResult</span> {
+  <span class="prop">valid</span>: <span class="type">boolean</span>;
+  <span class="prop">chain</span>?: <span class="type">string</span>;
+  <span class="prop">checksumValid</span>?: <span class="type">boolean</span>;
+  <span class="prop">details</span>?: <span class="type">string</span>;
+}</pre>
+    </div>
 
     <!-- Registration -->
-    <section class="docs-section" id="registration">
-      <h2><i class="hgi-stroke hgi-settings-02"></i> Registering Plugins</h2>
-      <p>Plugins are registered in the core configuration:</p>
+    <div class="plug-title">
+      <span class="ico" style="background:rgba(245,158,11,0.1);color:#f59e0b">⚡</span>
+      Plugin Registration
+    </div>
+    <div class="iface-block">
+      <div class="iface-header">
+        <div class="iface-dots"><span></span><span></span><span></span></div>
+        <span class="iface-label">register.ts</span>
+      </div>
+      <pre><span class="kw">import</span> { <span class="fn">registerChain</span> } <span class="kw">from</span> <span class="str">'aio-chain/plugins'</span>;
+<span class="kw">import</span> { <span class="type">MyChainPlugin</span> } <span class="kw">from</span> <span class="str">'./my-chain'</span>;
 
-      <pre class="docs-code">// src/core/plugin-registry.js
+<span class="comment">// Register at startup</span>
+<span class="fn">registerChain</span>(<span class="kw">new</span> <span class="type">MyChainPlugin</span>());
 
-import { chainConfig, generateWallet, validateAddress }
-  from '../plugins/my-custom-chain.js';
-
-// Register chain plugin
-registerChain({
-  ...chainConfig,
-  generate: generateWallet,
-  validate: validateAddress,
-});
-
-// Register export plugin
-registerExport({
-  id: 'markdown',
-  name: 'Markdown Table',
-  handler: exportWallets,
-});</pre>
-
-      <h3>CLI Usage After Registration</h3>
-      <pre class="docs-code"># Generate with custom chain
-aio-chain generate --chain mychain --count 10
-
-# Export with custom format
-aio-chain generate --chain evm --count 5 --output markdown</pre>
-    </section>
+<span class="comment">// Now available via CLI:</span>
+<span class="comment">// aio-chain generate -c mychain -n 10</span></pre>
+    </div>
 
     <!-- Built-in Plugins -->
-    <section class="docs-section" id="built-in">
-      <h2><i class="hgi-stroke hgi-layers-01"></i> Built-in Plugins</h2>
-      <div class="docs-table-wrap">
-        <table class="docs-table">
-          <thead>
-            <tr><th>Type</th><th>Plugin</th><th>File</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Chain</td><td>EVM (Ethereum)</td><td><code>src/core/chains/evm.js</code></td></tr>
-            <tr><td>Chain</td><td>Solana</td><td><code>src/core/chains/solana.js</code></td></tr>
-            <tr><td>Chain</td><td>Bitcoin</td><td><code>src/core/chains/bitcoin.js</code></td></tr>
-            <tr><td>Chain</td><td>Tron</td><td><code>src/core/chains/tron.js</code></td></tr>
-            <tr><td>Chain</td><td>Sui</td><td><code>src/core/chains/sui.js</code></td></tr>
-            <tr><td>Chain</td><td>Aptos</td><td><code>src/core/chains/aptos.js</code></td></tr>
-            <tr><td>Chain</td><td>Cosmos</td><td><code>src/core/chains/cosmos.js</code></td></tr>
-            <tr><td>Chain</td><td>TON</td><td><code>src/core/chains/ton.js</code></td></tr>
-            <tr><td>Chain</td><td>Starknet</td><td><code>src/core/chains/starknet.js</code></td></tr>
-            <tr><td>Export</td><td>CSV</td><td><code>src/export/csv.js</code></td></tr>
-            <tr><td>Export</td><td>JSON</td><td><code>src/export/json-export.js</code></td></tr>
-            <tr><td>Export</td><td>Excel (XLSX)</td><td><code>src/export/excel.js</code></td></tr>
-            <tr><td>Export</td><td>Encrypted</td><td><code>src/export/encrypted.js</code></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <div class="plug-title">
+      <span class="ico" style="background:rgba(236,121,107,0.1);color:#ec796b">📋</span>
+      Built-in Plugins
+    </div>
+    <table class="built-table">
+      <thead>
+        <tr><th>Plugin</th><th>Type</th><th>ID</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>EVM</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>evm</code></td><td>22 EVM networks (Ethereum, BSC, Polygon...)</td></tr>
+        <tr><td><strong>Solana</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>solana</code></td><td>Solana mainnet</td></tr>
+        <tr><td><strong>Bitcoin</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>bitcoin</code></td><td>Legacy, SegWit, Native SegWit</td></tr>
+        <tr><td><strong>Tron</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>tron</code></td><td>Tron mainnet</td></tr>
+        <tr><td><strong>Sui</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>sui</code></td><td>Sui mainnet</td></tr>
+        <tr><td><strong>Aptos</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>aptos</code></td><td>Aptos mainnet</td></tr>
+        <tr><td><strong>Cosmos</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>cosmos</code></td><td>12 IBC chains</td></tr>
+        <tr><td><strong>TON</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>ton</code></td><td>TON mainnet</td></tr>
+        <tr><td><strong>Starknet</strong></td><td><span class="type-tag tag-chain">chain</span></td><td><code>starknet</code></td><td>Starknet mainnet</td></tr>
+        <tr><td><strong>CSV</strong></td><td><span class="type-tag tag-export">export</span></td><td><code>csv</code></td><td>Spreadsheet-compatible</td></tr>
+        <tr><td><strong>JSON</strong></td><td><span class="type-tag tag-export">export</span></td><td><code>json</code></td><td>Structured data</td></tr>
+        <tr><td><strong>Excel</strong></td><td><span class="type-tag tag-export">export</span></td><td><code>xlsx</code></td><td>Microsoft Excel format</td></tr>
+        <tr><td><strong>Encrypted</strong></td><td><span class="type-tag tag-export">export</span></td><td><code>encrypted</code></td><td>AES-256-GCM encrypted</td></tr>
+      </tbody>
+    </table>
 
-  </main>
+  </div>
 
   <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')</script>
   <script src="i18n.js"></script>

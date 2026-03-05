@@ -4,247 +4,310 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AIO Chain — Security</title>
-  <meta name="description" content="Security model, cryptographic implementations, and audit checklist for AIO Chain wallet toolkit.">
+  <meta name="description" content="Security model, cryptographic stack, and self-audit checklist for AIO Chain.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="icon" href="images/icon-192.png">
+  <style>
+    /* ─── Security Page Premium Styles ─── */
+    .sec-hero {
+      position: relative; padding: 80px 20px 60px; text-align: center; overflow: hidden;
+    }
+    .sec-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 60% at 50% 0%, rgba(16,185,129,0.12) 0%, transparent 70%);
+    }
+    .sec-hero .shield-icon {
+      width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(59,130,246,0.15));
+      border: 1px solid rgba(16,185,129,0.2); display: flex; align-items: center;
+      justify-content: center; font-size: 28px;
+    }
+    .sec-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+      background: linear-gradient(135deg, #e2e8f0, #10b981 50%, #3b82f6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -1.5px; margin-bottom: 12px;
+    }
+    .sec-hero p { color: var(--text-dim); font-size: 1rem; max-width: 480px; margin: 0 auto; }
+
+    .sec-container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+
+    /* Trust Pillars */
+    .trust-pillars {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 32px 0;
+    }
+    .trust-pill {
+      text-align: center; padding: 24px 16px; border-radius: 14px; border: 1px solid var(--border);
+      background: var(--surface); position: relative; overflow: hidden;
+    }
+    .trust-pill::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #10b981, transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .trust-pill:hover::after { opacity: 1; }
+    .trust-pill .pill-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+    .trust-pill .pill-title { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .trust-pill .pill-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* Crypto Stack */
+    .crypto-table {
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 20px 0;
+    }
+    .crypto-table thead th {
+      background: var(--surface); text-align: left; padding: 12px 16px;
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 1px solid var(--border);
+    }
+    .crypto-table tbody td {
+      padding: 12px 16px; font-size: 0.82rem; color: var(--text-dim);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .crypto-table tbody tr:last-child td { border-bottom: none; }
+    .crypto-table tbody tr:hover { background: rgba(59,130,246,0.03); }
+    .crypto-table code {
+      background: rgba(59,130,246,0.08); color: var(--accent); padding: 2px 8px;
+      border-radius: 4px; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace;
+    }
+    .crypto-table .lib-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+      background: rgba(16,185,129,0.08); color: #10b981;
+    }
+
+    /* Audit Checklist */
+    .audit-list { display: flex; flex-direction: column; gap: 6px; margin: 20px 0; }
+    .audit-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); transition: border-color 0.2s;
+    }
+    .audit-item:hover { border-color: rgba(16,185,129,0.3); }
+    .audit-check {
+      width: 24px; height: 24px; border-radius: 7px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+    }
+    .audit-check.pass { background: rgba(16,185,129,0.12); color: #10b981; }
+    .audit-title { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+
+    /* Best Practices */
+    .bp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
+    .bp-card {
+      padding: 20px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--surface); transition: border-color 0.2s;
+    }
+    .bp-card:hover { border-color: rgba(59,130,246,0.2); }
+    .bp-card .bp-title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .bp-card .bp-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* Section Titles */
+    .sec-title {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.3rem; font-weight: 700; color: var(--text);
+      margin: 48px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .sec-title .title-icon {
+      width: 30px; height: 30px; border-radius: 8px; display: flex;
+      align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+    }
+    .sec-title:first-of-type { margin-top: 0; }
+
+    /* Disclosure */
+    .disclosure-box {
+      margin-top: 48px; padding: 28px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06));
+      border: 1px solid rgba(59,130,246,0.15); text-align: center;
+    }
+    .disclosure-box h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .disclosure-box p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    .disclosure-box a { color: var(--accent); text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .trust-pillars { grid-template-columns: repeat(2, 1fr); }
+      .bp-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
   <nav class="nav" id="main-nav"></nav>
 
-  <section class="hero hero--compact" id="hero">
-    <div class="hero-bg"></div>
-    <div style="position:relative;z-index:1;text-align:center">
-      <h1>Security</h1>
-      <p class="hero-sub">Transparency, cryptographic standards, and self-audit checklist.</p>
+  <div class="sec-hero">
+    <div class="shield-icon">🛡</div>
+    <h1>Security Model</h1>
+    <p>How AIO Chain protects your keys, your data, and your privacy.</p>
+  </div>
+
+  <div class="sec-container">
+
+    <!-- Trust Pillars -->
+    <div class="sec-title" style="margin-top:0">
+      <span class="title-icon" style="background:rgba(16,185,129,0.1);color:#10b981">◆</span>
+      Architecture Principles
     </div>
-  </section>
-
-  <main class="container" style="padding-bottom:40px">
-
-    <!-- Architecture -->
-    <section class="docs-section" id="architecture">
-      <h2><i class="hgi-stroke hgi-shield-check"></i> Architecture</h2>
-      <div class="docs-grid">
-        <div class="docs-card">
-          <h3>100% Client-Side</h3>
-          <p>All cryptographic operations run in your browser or terminal. Zero server calls. No API keys. Works offline.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Zero Data Collection</h3>
-          <p>No analytics, no tracking, no cookies, no telemetry. We don't know who you are or what you generate.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Open Source</h3>
-          <p>Every line is auditable on <a href="https://github.com/xinnxz/aio-wallet-generator" target="_blank">GitHub</a>. Fork it, audit it, self-host it.</p>
-        </div>
-        <div class="docs-card">
-          <h3>No Dependencies at Runtime</h3>
-          <p>Web app loads from static files. No CDN dependencies for crypto operations. Extension uses Web Crypto API only.</p>
-        </div>
+    <div class="trust-pillars">
+      <div class="trust-pill">
+        <span class="pill-icon">🔒</span>
+        <div class="pill-title">Client-Side</div>
+        <div class="pill-desc">All crypto operations happen locally. Zero server calls.</div>
       </div>
-    </section>
-
-    <!-- Cryptographic Libraries -->
-    <section class="docs-section" id="crypto">
-      <h2><i class="hgi-stroke hgi-lock-key"></i> Cryptographic Stack</h2>
-      <div class="docs-table-wrap">
-        <table class="docs-table">
-          <thead>
-            <tr><th>Component</th><th>Library</th><th>Version</th><th>Algorithm</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Random Generation</strong></td>
-              <td>Web Crypto API</td>
-              <td>Native</td>
-              <td><code>crypto.getRandomValues()</code> — OS CSPRNG</td>
-            </tr>
-            <tr>
-              <td><strong>EVM Wallets</strong></td>
-              <td>ethers.js</td>
-              <td>v6.13</td>
-              <td>secp256k1 + Keccak-256</td>
-            </tr>
-            <tr>
-              <td><strong>Bitcoin</strong></td>
-              <td>bitcoinjs-lib + tiny-secp256k1</td>
-              <td>v6.1</td>
-              <td>secp256k1 + SHA-256 + RIPEMD-160</td>
-            </tr>
-            <tr>
-              <td><strong>Solana</strong></td>
-              <td>@solana/web3.js + tweetnacl</td>
-              <td>v1.95</td>
-              <td>Ed25519</td>
-            </tr>
-            <tr>
-              <td><strong>Tron</strong></td>
-              <td>tronweb</td>
-              <td>v6.0</td>
-              <td>secp256k1 + Keccak-256</td>
-            </tr>
-            <tr>
-              <td><strong>Sui</strong></td>
-              <td>@mysten/sui</td>
-              <td>v1.16</td>
-              <td>Ed25519</td>
-            </tr>
-            <tr>
-              <td><strong>Aptos</strong></td>
-              <td>aptos SDK</td>
-              <td>v1.21</td>
-              <td>Ed25519</td>
-            </tr>
-            <tr>
-              <td><strong>Cosmos</strong></td>
-              <td>@cosmjs/crypto + amino</td>
-              <td>v0.32</td>
-              <td>secp256k1 + Bech32</td>
-            </tr>
-            <tr>
-              <td><strong>TON</strong></td>
-              <td>@ton/ton + @ton/crypto</td>
-              <td>v15.0</td>
-              <td>Ed25519</td>
-            </tr>
-            <tr>
-              <td><strong>Starknet</strong></td>
-              <td>starknet.js</td>
-              <td>v6.17</td>
-              <td>STARK curve (Pedersen hash)</td>
-            </tr>
-            <tr>
-              <td><strong>HD Wallets</strong></td>
-              <td>bip39 + bip32</td>
-              <td>v3.1 / v4.0</td>
-              <td>BIP39 mnemonic + BIP32/BIP44 derivation</td>
-            </tr>
-            <tr>
-              <td><strong>Encryption</strong></td>
-              <td>Web Crypto API</td>
-              <td>Native</td>
-              <td>AES-256-GCM + PBKDF2 (SHA-256, 100K iterations)</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="trust-pill">
+        <span class="pill-icon">👁‍🗨</span>
+        <div class="pill-title">Zero Data</div>
+        <div class="pill-desc">No analytics, no tracking, no telemetry. Ever.</div>
       </div>
-    </section>
+      <div class="trust-pill">
+        <span class="pill-icon">📖</span>
+        <div class="pill-title">Open Source</div>
+        <div class="pill-desc">Every line auditable. MIT license on GitHub.</div>
+      </div>
+      <div class="trust-pill">
+        <span class="pill-icon">✈️</span>
+        <div class="pill-title">Offline</div>
+        <div class="pill-desc">Works without internet. Air-gap capable.</div>
+      </div>
+    </div>
+
+    <!-- Crypto Stack -->
+    <div class="sec-title">
+      <span class="title-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6">⚙</span>
+      Cryptographic Stack
+    </div>
+    <table class="crypto-table">
+      <thead>
+        <tr><th>Component</th><th>Library</th><th>Algorithm</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RNG</strong></td>
+          <td><span class="lib-badge">Web Crypto API</span></td>
+          <td><code>crypto.getRandomValues()</code> — OS CSPRNG</td>
+        </tr>
+        <tr>
+          <td><strong>EVM</strong></td>
+          <td><span class="lib-badge">ethers.js v6</span></td>
+          <td><code>secp256k1</code> + Keccak-256</td>
+        </tr>
+        <tr>
+          <td><strong>Solana</strong></td>
+          <td><span class="lib-badge">@solana/web3.js</span></td>
+          <td><code>Ed25519</code> via tweetnacl</td>
+        </tr>
+        <tr>
+          <td><strong>Bitcoin</strong></td>
+          <td><span class="lib-badge">bitcoinjs-lib v6</span></td>
+          <td><code>secp256k1</code> + SHA-256d / RIPEMD-160</td>
+        </tr>
+        <tr>
+          <td><strong>Tron</strong></td>
+          <td><span class="lib-badge">tronweb v6</span></td>
+          <td><code>secp256k1</code> + Base58Check</td>
+        </tr>
+        <tr>
+          <td><strong>Cosmos</strong></td>
+          <td><span class="lib-badge">@cosmjs/crypto</span></td>
+          <td><code>secp256k1</code> + Bech32</td>
+        </tr>
+        <tr>
+          <td><strong>HD Wallets</strong></td>
+          <td><span class="lib-badge">bip39 + bip32</span></td>
+          <td>BIP39 mnemonics + BIP32/44 derivation</td>
+        </tr>
+        <tr>
+          <td><strong>Encryption</strong></td>
+          <td><span class="lib-badge">Web Crypto API</span></td>
+          <td><code>AES-256-GCM</code> + PBKDF2 (100K iter, SHA-256)</td>
+        </tr>
+      </tbody>
+    </table>
 
     <!-- Self-Audit Checklist -->
-    <section class="docs-section" id="audit">
-      <h2><i class="hgi-stroke hgi-checkmark-circle-02"></i> Self-Audit Checklist</h2>
-      <p>Verify the security yourself — every item is checkable in the source code:</p>
-
-      <div class="audit-list">
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>No external API calls</strong>
-            <p>Search codebase for <code>fetch(</code> or <code>XMLHttpRequest</code> — none found in core wallet logic.</p>
-          </div>
-        </div>
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>CSPRNG for key generation</strong>
-            <p>All private keys use <code>crypto.getRandomValues()</code>, never <code>Math.random()</code>.</p>
-          </div>
-        </div>
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>Keys never leave the browser</strong>
-            <p>No <code>localStorage</code> writes for keys (web app). Extension vault encrypts before storing.</p>
-          </div>
-        </div>
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>Industry-standard libraries</strong>
-            <p>ethers.js, bitcoinjs-lib, @solana/web3.js — widely audited, used by millions.</p>
-          </div>
-        </div>
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>Encryption uses PBKDF2 + AES-256-GCM</strong>
-            <p>100,000 iterations, 16-byte salt, 12-byte IV. NIST-recommended parameters.</p>
-          </div>
-        </div>
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>No analytics or tracking scripts</strong>
-            <p>No Google Analytics, no Sentry, no Mixpanel, no tracking pixels.</p>
-          </div>
-        </div>
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>Content Security Policy</strong>
-            <p>Extension uses strict CSP: <code>script-src 'self'; object-src 'self'</code></p>
-          </div>
-        </div>
-        <div class="audit-item audit-pass">
-          <span class="audit-icon">✓</span>
-          <div>
-            <strong>Open source — MIT license</strong>
-            <p>Full source on <a href="https://github.com/xinnxz/aio-wallet-generator" target="_blank">GitHub</a>. Fork, audit, self-host.</p>
-          </div>
-        </div>
+    <div class="sec-title">
+      <span class="title-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">✓</span>
+      Self-Audit Checklist
+    </div>
+    <div class="audit-list">
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">All key generation uses CSPRNG (crypto.getRandomValues)</span>
       </div>
-    </section>
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">No private keys or mnemonics are transmitted over the network</span>
+      </div>
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">No analytics, tracking scripts, or telemetry of any kind</span>
+      </div>
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">Encrypted exports use AES-256-GCM with authenticated ciphertext</span>
+      </div>
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">PBKDF2 key derivation with 100,000 iterations (SHA-256)</span>
+      </div>
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">Random salt and IV per encryption — no ciphertext reuse</span>
+      </div>
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">Extension vault uses chrome.storage.local with AES-256-GCM</span>
+      </div>
+      <div class="audit-item">
+        <div class="audit-check pass">✓</div>
+        <span class="audit-title">Service worker and CSP prevent external script injection</span>
+      </div>
+    </div>
 
     <!-- Best Practices -->
-    <section class="docs-section" id="best-practices">
-      <h2><i class="hgi-stroke hgi-information-circle"></i> Best Practices</h2>
-      <div class="docs-grid">
-        <div class="docs-card">
-          <h3>Use HD Mode</h3>
-          <p>1 mnemonic = unlimited wallets. Easier to backup and recover. Use <code>--hd</code> flag in CLI.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Export Encrypted</h3>
-          <p>Always use <code>--output encrypted</code> for sensitive exports. Never save plain-text keys.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Verify Checksums</h3>
-          <p>Use the Validate tool to confirm address integrity before sending funds.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Offline Generation</h3>
-          <p>For maximum security, disconnect from internet before generating wallets. The app works 100% offline.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Vault Password</h3>
-          <p>Extension vault uses 100K PBKDF2 iterations. Use a strong, unique password (12+ chars).</p>
-        </div>
-        <div class="docs-card">
-          <h3>Self-Host</h3>
-          <p>Clone the repo, run locally. <code>npm run dev</code> — full control, zero trust required.</p>
-        </div>
+    <div class="sec-title">
+      <span class="title-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6">💡</span>
+      Best Practices
+    </div>
+    <div class="bp-grid">
+      <div class="bp-card">
+        <div class="bp-title">Use HD Mode</div>
+        <div class="bp-desc">One mnemonic phrase backs up all wallets. Easier recovery, same security level.</div>
       </div>
-    </section>
+      <div class="bp-card">
+        <div class="bp-title">Encrypt Exports</div>
+        <div class="bp-desc">Always export with encryption enabled. Use a unique, strong password per file.</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-title">Generate Offline</div>
+        <div class="bp-desc">For maximum safety, disconnect from internet before generating wallets.</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-title">Verify Addresses</div>
+        <div class="bp-desc">Use the validator tool to confirm address checksums before sending funds.</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-title">Store Securely</div>
+        <div class="bp-desc">Keep private keys on encrypted drives or hardware. Never in plaintext files.</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-title">Audit the Source</div>
+        <div class="bp-desc">Read the code. Every line is open source. No obfuscation, no minification in source.</div>
+      </div>
+    </div>
 
     <!-- Responsible Disclosure -->
-    <section class="docs-section" id="disclosure">
-      <h2><i class="hgi-stroke hgi-alert-02"></i> Responsible Disclosure</h2>
-      <p>Found a vulnerability? Please report it responsibly:</p>
-      <ul class="docs-list">
-        <li>Open a <a href="https://github.com/xinnxz/aio-wallet-generator/issues" target="_blank">GitHub Issue</a> with the <code>security</code> label</li>
-        <li>Do NOT include exploit details in public issues</li>
-        <li>We aim to respond within 48 hours</li>
-      </ul>
-    </section>
+    <div class="disclosure-box">
+      <h3>Responsible Disclosure</h3>
+      <p>Found a vulnerability? Please report privately via <a href="https://github.com/xinnxz/aio-wallet-generator/issues" target="_blank">GitHub Issues</a> with the label <code>security</code>. We take all reports seriously.</p>
+    </div>
 
-  </main>
+  </div>
 
   <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')</script>
   <script src="i18n.js"></script>

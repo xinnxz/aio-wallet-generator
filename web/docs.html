@@ -7,253 +7,536 @@
   <meta name="description" content="Complete documentation for AIO Chain: CLI reference, Web API, Extension guide, and security model.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="icon" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
+  <style>
+    /* ─── Docs Page Premium Styles ─── */
+    .docs-hero {
+      position: relative; padding: 80px 20px 60px; text-align: center;
+      overflow: hidden;
+    }
+    .docs-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .docs-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800;
+      background: linear-gradient(135deg, #e2e8f0 0%, #3b82f6 50%, #a78bfa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -1.5px; margin-bottom: 12px;
+    }
+    .docs-hero p { color: var(--text-dim); font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
+
+    /* Sticky sidebar nav */
+    .docs-layout { display: flex; gap: 0; max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+    .docs-sidebar {
+      width: 220px; flex-shrink: 0; position: sticky; top: 80px; height: fit-content;
+      padding-right: 24px; border-right: 1px solid var(--border);
+    }
+    .docs-sidebar a {
+      display: block; padding: 8px 14px; margin-bottom: 2px; border-radius: 8px;
+      color: var(--text-muted); font-size: 0.82rem; font-weight: 500;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .docs-sidebar a:hover { color: var(--text); background: var(--surface); }
+    .docs-sidebar a.active { color: var(--accent); background: rgba(59,130,246,0.08); }
+    .docs-sidebar .sidebar-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.8px;
+      color: var(--text-muted); text-transform: uppercase; padding: 16px 14px 6px;
+    }
+    .docs-main { flex: 1; min-width: 0; padding-left: 40px; }
+
+    /* Section styles */
+    .docs-section-new { margin-bottom: 48px; scroll-margin-top: 100px; }
+    .docs-section-new h2 {
+      font-size: 1.4rem; font-weight: 700; color: var(--text);
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .docs-section-new h2 .section-icon {
+      width: 28px; height: 28px; border-radius: 8px; display: flex;
+      align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+    }
+    .docs-section-new h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin: 24px 0 8px; }
+    .docs-section-new p { color: var(--text-dim); line-height: 1.7; margin-bottom: 16px; }
+
+    /* Platform Bento Grid */
+    .bento-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0;
+    }
+    .bento-card {
+      position: relative; padding: 24px 20px; border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--surface);
+      transition: all 0.3s ease;
+    }
+    .bento-card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-2px); }
+    .bento-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .bento-card:nth-child(1)::before { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+    .bento-card:nth-child(2)::before { background: linear-gradient(90deg, #10b981, #14b8a6); }
+    .bento-card:nth-child(3)::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+    .bento-card .bento-icon {
+      width: 36px; height: 36px; border-radius: 10px; display: flex;
+      align-items: center; justify-content: center; margin-bottom: 14px;
+      font-size: 16px;
+    }
+    .bento-card:nth-child(1) .bento-icon { background: rgba(59,130,246,0.12); }
+    .bento-card:nth-child(2) .bento-icon { background: rgba(16,185,129,0.12); }
+    .bento-card:nth-child(3) .bento-icon { background: rgba(245,158,11,0.12); }
+    .bento-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .bento-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+    .bento-card code {
+      display: block; margin-top: 10px; padding: 8px 12px; border-radius: 6px;
+      background: var(--bg); font-size: 0.75rem; color: var(--accent);
+      font-family: 'JetBrains Mono', monospace; border: 1px solid var(--border);
+    }
+
+    /* CLI Command Blocks */
+    .cmd-block {
+      background: #0d1117; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden; margin: 16px 0;
+    }
+    .cmd-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 16px; background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .cmd-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .cmd-dot:nth-child(1) { background: #ff5f57; }
+    .cmd-dot:nth-child(2) { background: #febc2e; }
+    .cmd-dot:nth-child(3) { background: #28c840; }
+    .cmd-title {
+      margin-left: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.4);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .cmd-block pre {
+      padding: 16px 20px; margin: 0; overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+      line-height: 1.7; color: #e6edf3; background: transparent;
+    }
+    .cmd-block .cmd-comment { color: #6e7681; }
+    .cmd-block .cmd-flag { color: #79c0ff; }
+    .cmd-block .cmd-value { color: #a5d6ff; }
+    .cmd-block .cmd-cmd { color: #d2a8ff; }
+
+    /* Options Table */
+    .opts-table { width: 100%; border-collapse: collapse; margin: 12px 0 24px; }
+    .opts-table th {
+      text-align: left; font-size: 0.72rem; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 8px 12px; border-bottom: 1px solid var(--border);
+    }
+    .opts-table td {
+      padding: 10px 12px; font-size: 0.82rem; color: var(--text-dim);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .opts-table code {
+      background: rgba(59,130,246,0.08); color: var(--accent); padding: 2px 6px;
+      border-radius: 4px; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Web Tool Cards */
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin: 20px 0; }
+    .tool-card {
+      padding: 16px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); transition: border-color 0.2s;
+    }
+    .tool-card:hover { border-color: rgba(59,130,246,0.25); }
+    .tool-card .tool-name { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tool-card .tool-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; }
+    .tool-card .tool-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tool-card .tool-tag {
+      font-size: 0.65rem; font-weight: 600; padding: 2px 8px; border-radius: 100px;
+      background: rgba(59,130,246,0.08); color: var(--accent);
+    }
+
+    /* Extension Feature List */
+    .ext-features { display: flex; flex-direction: column; gap: 8px; margin: 20px 0; }
+    .ext-feat {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); transition: border-color 0.2s;
+    }
+    .ext-feat:hover { border-color: rgba(59,130,246,0.2); }
+    .ext-feat .feat-num {
+      width: 28px; height: 28px; border-radius: 8px; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+      background: rgba(59,130,246,0.1); color: var(--accent);
+      font-size: 0.75rem; font-weight: 700;
+    }
+    .ext-feat .feat-info { flex: 1; }
+    .ext-feat .feat-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .ext-feat .feat-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Chain Badges */
+    .chain-grid { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+    .chain-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 0.82rem; font-weight: 500;
+      color: var(--text-dim);
+    }
+    .chain-badge .chain-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .chain-badge .chain-meta { font-size: 0.7rem; color: var(--text-muted); margin-left: 4px; }
+
+    @media (max-width: 768px) {
+      .docs-layout { flex-direction: column; }
+      .docs-sidebar { width: 100%; position: relative; top: 0; padding: 16px 0; border-right: none; border-bottom: 1px solid var(--border);
+        display: flex; flex-wrap: wrap; gap: 4px;
+      }
+      .docs-sidebar .sidebar-label { display: none; }
+      .docs-main { padding-left: 0; padding-top: 20px; }
+      .bento-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
   <nav class="nav" id="main-nav"></nav>
 
-  <section class="hero hero--compact" id="hero">
-    <div class="hero-bg"></div>
-    <div style="position:relative;z-index:1;text-align:center">
-      <h1>Documentation</h1>
-      <p class="hero-sub">Everything you need to use AIO Chain — CLI, Web, Extension, and API.</p>
-    </div>
-  </section>
+  <div class="docs-hero">
+    <h1>Documentation</h1>
+    <p>Everything you need to build with AIO Chain across CLI, Web, Extension, and Mobile.</p>
+  </div>
 
-  <main class="container" style="padding-bottom:40px">
+  <div class="docs-layout">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-label">Getting Started</div>
+      <a href="#platforms" class="active">Platforms</a>
+      <div class="sidebar-label">Reference</div>
+      <a href="#cli">CLI Commands</a>
+      <a href="#generate">generate</a>
+      <a href="#validate">validate</a>
+      <a href="#convert">convert</a>
+      <a href="#export">export</a>
+      <a href="#decrypt">decrypt</a>
+      <a href="#info">info</a>
+      <div class="sidebar-label">Guides</div>
+      <a href="#web">Web App</a>
+      <a href="#extension">Extension</a>
+      <div class="sidebar-label">Reference</div>
+      <a href="#chains">Chains</a>
+      <a href="#security-overview">Security</a>
+    </aside>
 
-    <!-- Quick Nav -->
-    <div class="docs-nav">
-      <a href="#getting-started" class="docs-nav-item">Getting Started</a>
-      <a href="#cli" class="docs-nav-item">CLI Reference</a>
-      <a href="#web" class="docs-nav-item">Web App</a>
-      <a href="#extension" class="docs-nav-item">Extension</a>
-      <a href="#security" class="docs-nav-item">Security</a>
-      <a href="#chains" class="docs-nav-item">Chains</a>
-    </div>
+    <!-- Main Content -->
+    <main class="docs-main">
 
-    <!-- Getting Started -->
-    <section class="docs-section" id="getting-started">
-      <h2><i class="hgi-stroke hgi-play"></i> Getting Started</h2>
-      <p>AIO Chain is an all-in-one Web3 wallet toolkit. 100% client-side, open source, works offline. Available as:</p>
-      <div class="docs-grid">
-        <div class="docs-card">
-          <h3>Web App</h3>
-          <p>Open-source web dashboard with 9 tools. No installation required.</p>
-          <code>https://aio-wallet-generator.vercel.app</code>
+      <!-- Platforms -->
+      <section class="docs-section-new" id="platforms">
+        <h2>
+          <span class="section-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6">⚡</span>
+          Getting Started
+        </h2>
+        <p>AIO Chain is available on 3 platforms. Choose the one that fits your workflow:</p>
+
+        <div class="bento-grid">
+          <div class="bento-card">
+            <div class="bento-icon">🌐</div>
+            <h3>Web App</h3>
+            <p>12-page dashboard with generator, validator, converter, QR, HD wallet, and more.</p>
+            <code>aio-wallet-generator.vercel.app</code>
+          </div>
+          <div class="bento-card">
+            <div class="bento-icon">⌨️</div>
+            <h3>CLI Tool</h3>
+            <p>6 commands for automation and scripting. Colored output, spinners, tables.</p>
+            <code>npx aio-chain generate -c evm -n 10</code>
+          </div>
+          <div class="bento-card">
+            <div class="bento-icon">🧩</div>
+            <h3>Browser Extension</h3>
+            <p>Chrome/Edge/Brave. Vault, address scanner, context menu, omnibox.</p>
+            <code>chrome://extensions → Load unpacked</code>
+          </div>
         </div>
-        <div class="docs-card">
-          <h3>CLI</h3>
-          <p>Command-line tool for bulk generation and automation.</p>
-          <code>npx aio-chain generate --chain evm --count 10</code>
+      </section>
+
+      <!-- CLI Reference -->
+      <section class="docs-section-new" id="cli">
+        <h2>
+          <span class="section-icon" style="background:rgba(16,185,129,0.1);color:#10b981">▶</span>
+          CLI Reference
+        </h2>
+        <p>Install globally or run with <code>npx</code>:</p>
+        <div class="cmd-block">
+          <div class="cmd-header">
+            <span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-dot"></span>
+            <span class="cmd-title">terminal</span>
+          </div>
+          <pre><span class="cmd-comment"># Install globally</span>
+npm install <span class="cmd-flag">-g</span> web3-wallet-toolkit
+<span class="cmd-comment"># Or run directly</span>
+npx <span class="cmd-cmd">aio-chain</span> &lt;command&gt;</pre>
         </div>
-        <div class="docs-card">
-          <h3>Extension</h3>
-          <p>Chrome extension with address scanner and encrypted vault.</p>
-          <code>chrome://extensions → Load unpacked → extension/</code>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CLI Reference -->
-    <section class="docs-section" id="cli">
-      <h2><i class="hgi-stroke hgi-terminal"></i> CLI Reference</h2>
-      <p>Install globally or run with <code>npx</code>:</p>
-      <pre class="docs-code">npm install -g web3-wallet-toolkit
-# or
-npx aio-chain &lt;command&gt;</pre>
-
-      <h3>generate</h3>
-      <p>Generate wallets for any supported chain.</p>
-      <pre class="docs-code">aio-chain generate [options]
-
-Options:
-  -c, --chain &lt;chains&gt;    Chain name(s), comma-separated        (default: "evm")
-  -n, --count &lt;number&gt;    Number of wallets to generate         (default: 10)
-  --hd                    Use HD wallet mode (single mnemonic)
-  -o, --output &lt;format&gt;   Auto-export: csv, json, xlsx, encrypted
-  -f, --file &lt;path&gt;       Output file path
-  -p, --password &lt;pass&gt;   Password for encrypted export
-  --show-keys             Show private keys in terminal
-
-# Examples
-aio-chain generate -c evm -n 100
-aio-chain generate -c solana,bitcoin -n 50 -o csv
-aio-chain generate -c evm -n 10000 --hd
-aio-chain generate -c all -n 5 -o json -f wallets.json</pre>
-
-      <h3>validate</h3>
-      <p>Validate crypto addresses with auto-detection.</p>
-      <pre class="docs-code">aio-chain validate [addresses...] [options]
-
-Options:
-  -f, --file &lt;path&gt;             Read from file (one per line)
-  --batch &lt;addresses&gt;           Comma-separated addresses
-
-# Examples
-aio-chain validate 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28
-aio-chain validate --batch "0x742d...,5eykt...,bc1q..."
-aio-chain validate --file addresses.txt</pre>
-
-      <h3>convert</h3>
-      <p>Convert address formats (EVM checksum, lowercase, hex).</p>
-      <pre class="docs-code">aio-chain convert &lt;address&gt; [options]
-
-Options:
-  -t, --to &lt;format&gt;    checksum, lowercase, uppercase, hex
-
-# Examples
-aio-chain convert 0x742d35cc... --to checksum
-aio-chain convert 0x742d35cc...  # shows all formats</pre>
-
-      <h3>export</h3>
-      <p>Export wallet data to various formats.</p>
-      <pre class="docs-code">aio-chain export [options]
-
-Options:
-  -f, --format &lt;format&gt;    csv, json, xlsx, encrypted  (default: "json")
-  -o, --file &lt;path&gt;        Output file path
-  -i, --input &lt;path&gt;       Input wallet JSON file
-  -p, --password &lt;pass&gt;    Password for encrypted</pre>
-
-      <h3>decrypt</h3>
-      <p>Decrypt .encrypted wallet files.</p>
-      <pre class="docs-code">aio-chain decrypt -f wallets.encrypted -p "your-password"
-aio-chain decrypt -f wallets.encrypted -p "pass" -o csv</pre>
-
-      <h3>info</h3>
-      <p>Show supported chains and their details.</p>
-      <pre class="docs-code">aio-chain info
-aio-chain info -c evm</pre>
-    </section>
-
-    <!-- Web App -->
-    <section class="docs-section" id="web">
-      <h2><i class="hgi-stroke hgi-browser"></i> Web App Guide</h2>
-      <p>The web app has 9 tools accessible from the navigation bar:</p>
-
-      <div class="docs-table-wrap">
-        <table class="docs-table">
-          <thead>
-            <tr><th>Page</th><th>Description</th><th>Key Features</th></tr>
-          </thead>
+      <!-- generate -->
+      <section class="docs-section-new" id="generate">
+        <h3>generate</h3>
+        <p>Bulk wallet generation for any supported chain.</p>
+        <table class="opts-table">
+          <thead><tr><th>Option</th><th>Description</th><th>Default</th></tr></thead>
           <tbody>
-            <tr><td><strong>Generate</strong></td><td>Generate wallets for any chain</td><td>Bulk (1-10K), mnemonic, copy/export</td></tr>
-            <tr><td><strong>Validate</strong></td><td>Validate address format</td><td>Auto-detect chain, batch mode</td></tr>
-            <tr><td><strong>Convert</strong></td><td>Address format conversion</td><td>Checksum, uppercase, lowercase, hex</td></tr>
-            <tr><td><strong>Encrypt</strong></td><td>Encrypt/decrypt wallet data</td><td>AES-256-GCM, password-based</td></tr>
-            <tr><td><strong>QR Code</strong></td><td>Generate QR codes for addresses</td><td>Single/bulk, custom colors, PNG download</td></tr>
-            <tr><td><strong>HD Wallet</strong></td><td>Derive wallets from mnemonic</td><td>BIP39/BIP44, derivation paths</td></tr>
-            <tr><td><strong>Bulk Tools</strong></td><td>Batch processing utilities</td><td>Airdrop formatter, duplicate detector</td></tr>
-            <tr><td><strong>Paper Wallet</strong></td><td>Printable wallet cards</td><td>Dual QR, fold line, print-ready</td></tr>
-            <tr><td><strong>Chains</strong></td><td>Chain information reference</td><td>30+ networks, address formats</td></tr>
+            <tr><td><code>-c, --chain</code></td><td>Chain(s), comma-separated</td><td>evm</td></tr>
+            <tr><td><code>-n, --count</code></td><td>Number of wallets</td><td>10</td></tr>
+            <tr><td><code>--hd</code></td><td>HD wallet mode (BIP44)</td><td>false</td></tr>
+            <tr><td><code>-o, --output</code></td><td>Export format: csv, json, xlsx, encrypted</td><td>—</td></tr>
+            <tr><td><code>--show-keys</code></td><td>Show private keys in terminal</td><td>false</td></tr>
           </tbody>
         </table>
-      </div>
-    </section>
+        <div class="cmd-block">
+          <div class="cmd-header"><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-title">examples</span></div>
+          <pre><span class="cmd-cmd">aio-chain</span> generate <span class="cmd-flag">-c</span> <span class="cmd-value">evm</span> <span class="cmd-flag">-n</span> <span class="cmd-value">100</span>
+<span class="cmd-cmd">aio-chain</span> generate <span class="cmd-flag">-c</span> <span class="cmd-value">solana,bitcoin</span> <span class="cmd-flag">-n</span> <span class="cmd-value">50</span> <span class="cmd-flag">-o</span> <span class="cmd-value">csv</span>
+<span class="cmd-cmd">aio-chain</span> generate <span class="cmd-flag">-c</span> <span class="cmd-value">evm</span> <span class="cmd-flag">-n</span> <span class="cmd-value">10000</span> <span class="cmd-flag">--hd</span>
+<span class="cmd-cmd">aio-chain</span> generate <span class="cmd-flag">-c</span> <span class="cmd-value">all</span> <span class="cmd-flag">-n</span> <span class="cmd-value">5</span> <span class="cmd-flag">-o</span> <span class="cmd-value">json</span></pre>
+        </div>
+      </section>
 
-    <!-- Extension -->
-    <section class="docs-section" id="extension">
-      <h2><i class="hgi-stroke hgi-puzzle"></i> Browser Extension</h2>
-      <p>Chrome/Edge/Brave extension with 5 core features:</p>
-
-      <div class="docs-grid">
-        <div class="docs-card">
-          <h3>Vault-First Security</h3>
-          <p>Must create a master password before accessing any features. AES-256-GCM + PBKDF2 100K iterations.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Bulk Generate</h3>
-          <p>Generate up to 500 wallets at once. Progress bar, save all, copy all, export CSV.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Address Scanner</h3>
-          <p>Scan any webpage for crypto addresses. Colored highlights by chain, click to copy.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Context Menu</h3>
-          <p>Right-click → "Validate Address" or "Generate QR" for any selected text.</p>
-        </div>
-        <div class="docs-card">
-          <h3>Omnibox</h3>
-          <p>Type <code>aio</code> in address bar → <code>aio val 0x...</code> or <code>aio gen</code></p>
-        </div>
-        <div class="docs-card">
-          <h3>Installation</h3>
-          <p><code>chrome://extensions</code> → Developer Mode → Load unpacked → select <code>extension/</code></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Security -->
-    <section class="docs-section" id="security">
-      <h2><i class="hgi-stroke hgi-shield-check"></i> Security Model</h2>
-      <p>AIO Chain is designed with security as the top priority:</p>
-
-      <div class="docs-table-wrap">
-        <table class="docs-table">
-          <thead>
-            <tr><th>Aspect</th><th>Implementation</th></tr>
-          </thead>
+      <!-- validate -->
+      <section class="docs-section-new" id="validate">
+        <h3>validate</h3>
+        <p>Validate crypto addresses with auto-chain detection.</p>
+        <table class="opts-table">
+          <thead><tr><th>Option</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><strong>Architecture</strong></td><td>100% client-side. Zero server calls. Works offline.</td></tr>
-            <tr><td><strong>Key Generation</strong></td><td><code>crypto.getRandomValues()</code> — OS-level CSPRNG</td></tr>
-            <tr><td><strong>EVM Wallets</strong></td><td><code>ethers.js v6</code> — audited, industry standard</td></tr>
-            <tr><td><strong>Bitcoin</strong></td><td><code>bitcoinjs-lib v6</code> + <code>tiny-secp256k1</code></td></tr>
-            <tr><td><strong>Solana</strong></td><td><code>@solana/web3.js</code> + <code>tweetnacl</code> Ed25519</td></tr>
-            <tr><td><strong>Encryption</strong></td><td>AES-256-GCM + PBKDF2 (100,000 iterations, SHA-256)</td></tr>
-            <tr><td><strong>HD Wallets</strong></td><td>BIP39 mnemonic + BIP32/BIP44 derivation</td></tr>
-            <tr><td><strong>Data Storage</strong></td><td>Nothing stored. Generate → copy → gone. Vault encrypted locally.</td></tr>
-            <tr><td><strong>Open Source</strong></td><td>Every line auditable on <a href="https://github.com/xinnxz/aio-wallet-generator" target="_blank">GitHub</a></td></tr>
+            <tr><td><code>addresses...</code></td><td>One or more addresses</td></tr>
+            <tr><td><code>--batch</code></td><td>Comma-separated addresses</td></tr>
+            <tr><td><code>-f, --file</code></td><td>Read addresses from file</td></tr>
           </tbody>
         </table>
-      </div>
+        <div class="cmd-block">
+          <div class="cmd-header"><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-title">examples</span></div>
+          <pre><span class="cmd-cmd">aio-chain</span> validate <span class="cmd-value">0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28</span>
+<span class="cmd-cmd">aio-chain</span> validate <span class="cmd-flag">--batch</span> <span class="cmd-value">"0x742d...,5eykt...,bc1q..."</span>
+<span class="cmd-cmd">aio-chain</span> validate <span class="cmd-flag">-f</span> <span class="cmd-value">addresses.txt</span></pre>
+        </div>
+      </section>
 
-      <h3>Best Practices</h3>
-      <ul class="docs-list">
-        <li>Never share private keys or mnemonics</li>
-        <li>Use HD mode for deterministic backup (1 mnemonic = many wallets)</li>
-        <li>Export encrypted files with a strong password</li>
-        <li>Verify checksums of downloaded exports</li>
-        <li>Use the validator to confirm address integrity</li>
-      </ul>
-    </section>
+      <!-- convert -->
+      <section class="docs-section-new" id="convert">
+        <h3>convert</h3>
+        <p>Convert EVM address formats.</p>
+        <div class="cmd-block">
+          <div class="cmd-header"><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-title">examples</span></div>
+          <pre><span class="cmd-cmd">aio-chain</span> convert <span class="cmd-value">0x742d35cc...</span> <span class="cmd-flag">--to</span> <span class="cmd-value">checksum</span>
+<span class="cmd-cmd">aio-chain</span> convert <span class="cmd-value">0x742d35cc...</span> <span class="cmd-comment"># shows all formats</span></pre>
+        </div>
+      </section>
 
-    <!-- Supported Chains -->
-    <section class="docs-section" id="chains">
-      <h2><i class="hgi-stroke hgi-blockchain-06"></i> Supported Chains</h2>
-      <div class="docs-table-wrap">
-        <table class="docs-table">
-          <thead>
-            <tr><th>Chain</th><th>CLI Flag</th><th>Address Format</th><th>Key Type</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>EVM</strong></td><td><code>evm</code></td><td>0x + 40 hex chars</td><td>secp256k1</td></tr>
-            <tr><td><strong>Solana</strong></td><td><code>solana</code></td><td>Base58, 32-44 chars</td><td>Ed25519</td></tr>
-            <tr><td><strong>Bitcoin</strong></td><td><code>bitcoin</code></td><td>1.., 3.., bc1..</td><td>secp256k1</td></tr>
-            <tr><td><strong>Tron</strong></td><td><code>tron</code></td><td>T + 33 Base58 chars</td><td>secp256k1</td></tr>
-            <tr><td><strong>Sui</strong></td><td><code>sui</code></td><td>0x + 64 hex chars</td><td>Ed25519</td></tr>
-            <tr><td><strong>Aptos</strong></td><td><code>aptos</code></td><td>0x + 64 hex chars</td><td>Ed25519</td></tr>
-            <tr><td><strong>Cosmos</strong></td><td><code>cosmos</code></td><td>cosmos1.. bech32</td><td>secp256k1</td></tr>
-            <tr><td><strong>TON</strong></td><td><code>ton</code></td><td>EQ/UQ + 46 chars</td><td>Ed25519</td></tr>
-            <tr><td><strong>Starknet</strong></td><td><code>starknet</code></td><td>0x0 + 63 hex chars</td><td>STARK curve</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>EVM includes: Ethereum, BSC, Polygon, Arbitrum, Avalanche, Optimism, Base, zkSync, and 20+ more networks (same address format).</p>
-    </section>
+      <!-- export -->
+      <section class="docs-section-new" id="export">
+        <h3>export</h3>
+        <p>Re-export wallet files to different formats.</p>
+        <div class="cmd-block">
+          <div class="cmd-header"><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-title">examples</span></div>
+          <pre><span class="cmd-cmd">aio-chain</span> export <span class="cmd-flag">-f</span> <span class="cmd-value">xlsx</span> <span class="cmd-flag">-i</span> <span class="cmd-value">wallets.json</span>
+<span class="cmd-cmd">aio-chain</span> export <span class="cmd-flag">-f</span> <span class="cmd-value">encrypted</span> <span class="cmd-flag">-i</span> <span class="cmd-value">wallets.json</span> <span class="cmd-flag">-p</span> <span class="cmd-value">"pass"</span></pre>
+        </div>
+      </section>
 
-  </main>
+      <!-- decrypt -->
+      <section class="docs-section-new" id="decrypt">
+        <h3>decrypt</h3>
+        <p>Decrypt <code>.encrypted</code> wallet files.</p>
+        <div class="cmd-block">
+          <div class="cmd-header"><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-title">terminal</span></div>
+          <pre><span class="cmd-cmd">aio-chain</span> decrypt <span class="cmd-flag">-f</span> <span class="cmd-value">wallets.encrypted</span> <span class="cmd-flag">-p</span> <span class="cmd-value">"your-password"</span></pre>
+        </div>
+      </section>
+
+      <!-- info -->
+      <section class="docs-section-new" id="info">
+        <h3>info</h3>
+        <p>Show all supported chains or details for a specific chain.</p>
+        <div class="cmd-block">
+          <div class="cmd-header"><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-dot"></span><span class="cmd-title">terminal</span></div>
+          <pre><span class="cmd-cmd">aio-chain</span> info
+<span class="cmd-cmd">aio-chain</span> info <span class="cmd-flag">-c</span> <span class="cmd-value">cosmos</span></pre>
+        </div>
+      </section>
+
+      <!-- Web App -->
+      <section class="docs-section-new" id="web">
+        <h2>
+          <span class="section-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6">🌐</span>
+          Web App Guide
+        </h2>
+        <p>The dashboard has 9 tools accessible from the navigation:</p>
+        <div class="tool-grid">
+          <div class="tool-card">
+            <div class="tool-name">Generate</div>
+            <div class="tool-desc">Multi-chain wallet generation with batch mode</div>
+            <div class="tool-tags"><span class="tool-tag">9 chains</span><span class="tool-tag">bulk</span><span class="tool-tag">export</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">Validate</div>
+            <div class="tool-desc">Address validation with auto-chain detection</div>
+            <div class="tool-tags"><span class="tool-tag">auto-detect</span><span class="tool-tag">batch</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">Convert</div>
+            <div class="tool-desc">Address format converter (checksum, hex, base58)</div>
+            <div class="tool-tags"><span class="tool-tag">EIP-55</span><span class="tool-tag">mnemonic</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">Encrypt</div>
+            <div class="tool-desc">AES-256-GCM file encryption and decryption</div>
+            <div class="tool-tags"><span class="tool-tag">AES-256</span><span class="tool-tag">PBKDF2</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">QR Code</div>
+            <div class="tool-desc">Generate QR codes for addresses</div>
+            <div class="tool-tags"><span class="tool-tag">bulk</span><span class="tool-tag">PNG</span><span class="tool-tag">ZIP</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">HD Wallet</div>
+            <div class="tool-desc">BIP39/BIP44 mnemonic derivation explorer</div>
+            <div class="tool-tags"><span class="tool-tag">BIP39</span><span class="tool-tag">custom path</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">Bulk Tools</div>
+            <div class="tool-desc">Airdrop formatter, duplicate detector, batch checksum</div>
+            <div class="tool-tags"><span class="tool-tag">batch</span><span class="tool-tag">format</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">Paper Wallet</div>
+            <div class="tool-desc">Printable wallet cards with dual QR codes</div>
+            <div class="tool-tags"><span class="tool-tag">print</span><span class="tool-tag">fold</span></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-name">Chains</div>
+            <div class="tool-desc">Chain information with real logos and networks</div>
+            <div class="tool-tags"><span class="tool-tag">30+ networks</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Extension -->
+      <section class="docs-section-new" id="extension">
+        <h2>
+          <span class="section-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">🧩</span>
+          Browser Extension
+        </h2>
+        <p>Chrome MV3 extension with 5 power features:</p>
+        <div class="ext-features">
+          <div class="ext-feat">
+            <div class="feat-num">1</div>
+            <div class="feat-info">
+              <div class="feat-title">Vault-First Security</div>
+              <div class="feat-desc">Create a master password before accessing any features. AES-256-GCM encrypted storage.</div>
+            </div>
+          </div>
+          <div class="ext-feat">
+            <div class="feat-num">2</div>
+            <div class="feat-info">
+              <div class="feat-title">Bulk Generate</div>
+              <div class="feat-desc">Generate up to 500 wallets directly from the popup. Save, copy, or export as CSV.</div>
+            </div>
+          </div>
+          <div class="ext-feat">
+            <div class="feat-num">3</div>
+            <div class="feat-info">
+              <div class="feat-title">Address Scanner</div>
+              <div class="feat-desc">Content script that scans any webpage for crypto addresses with colored highlights.</div>
+            </div>
+          </div>
+          <div class="ext-feat">
+            <div class="feat-num">4</div>
+            <div class="feat-info">
+              <div class="feat-title">Context Menu</div>
+              <div class="feat-desc">Right-click any selected text → "Validate Address" or "Generate QR Code".</div>
+            </div>
+          </div>
+          <div class="ext-feat">
+            <div class="feat-num">5</div>
+            <div class="feat-info">
+              <div class="feat-title">Omnibox</div>
+              <div class="feat-desc">Type <code>aio</code> in the address bar for instant commands: <code>aio gen eth 5</code></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chains -->
+      <section class="docs-section-new" id="chains">
+        <h2>
+          <span class="section-icon" style="background:rgba(236,121,107,0.1);color:#ec796b">⛓</span>
+          Supported Chains
+        </h2>
+        <div class="chain-grid">
+          <div class="chain-badge"><span class="chain-dot" style="background:#627eea"></span>EVM<span class="chain-meta">secp256k1 · 0x...</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#14f195"></span>Solana<span class="chain-meta">Ed25519 · Base58</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#f7931a"></span>Bitcoin<span class="chain-meta">secp256k1 · 3 types</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#ff0013"></span>Tron<span class="chain-meta">secp256k1 · T...</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#6fbcf0"></span>Sui<span class="chain-meta">Ed25519 · 0x...</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#2dd8a7"></span>Aptos<span class="chain-meta">Ed25519 · 0x...</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#2e3148"></span>Cosmos<span class="chain-meta">secp256k1 · bech32</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#0098ea"></span>TON<span class="chain-meta">Ed25519 · EQ...</span></div>
+          <div class="chain-badge"><span class="chain-dot" style="background:#ec796b"></span>Starknet<span class="chain-meta">STARK · 0x0...</span></div>
+        </div>
+        <p>EVM includes 22+ networks: Ethereum, BSC, Polygon, Arbitrum, Avalanche, Optimism, Base, zkSync, Fantom, Cronos, and more.</p>
+      </section>
+
+      <!-- Security Overview -->
+      <section class="docs-section-new" id="security-overview">
+        <h2>
+          <span class="section-icon" style="background:rgba(16,185,129,0.1);color:#10b981">🛡</span>
+          Security Overview
+        </h2>
+        <p>For the complete security model, cryptographic stack, and self-audit checklist, see the <a href="security.html" style="color:var(--accent)">Security page →</a></p>
+        <div class="ext-features">
+          <div class="ext-feat">
+            <div class="feat-num" style="background:rgba(16,185,129,0.1);color:#10b981">✓</div>
+            <div class="feat-info">
+              <div class="feat-title">100% Client-Side</div>
+              <div class="feat-desc">Zero network calls. All crypto operations happen in your browser or device.</div>
+            </div>
+          </div>
+          <div class="ext-feat">
+            <div class="feat-num" style="background:rgba(16,185,129,0.1);color:#10b981">✓</div>
+            <div class="feat-info">
+              <div class="feat-title">Audited Libraries</div>
+              <div class="feat-desc">ethers.js, bitcoinjs-lib, @solana/web3.js — industry-standard, battle-tested.</div>
+            </div>
+          </div>
+          <div class="ext-feat">
+            <div class="feat-num" style="background:rgba(16,185,129,0.1);color:#10b981">✓</div>
+            <div class="feat-info">
+              <div class="feat-title">Open Source</div>
+              <div class="feat-desc">Every line auditable on GitHub. MIT license.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
 
   <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')</script>
   <script src="i18n.js"></script>
   <script src="nav.js"></script>
+  <script>
+    // Sidebar active state on scroll
+    const sections = document.querySelectorAll('.docs-section-new');
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+      sidebarLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>

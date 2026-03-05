@@ -40,88 +40,216 @@ body {
 
 
 /* ============================
-   NAV (iLovePDF style multi-tool)
+   NAV — Mega Dropdown (dapugiftstudio style)
    ============================ */
 .nav {
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--gray-200);
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 100;
+  transition: box-shadow 0.3s, background 0.3s;
 }
 .nav-inner {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 32px;
-  height: 56px;
+  padding: 0 24px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
+/* ── Brand ── */
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
   color: var(--gray-900);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   flex-shrink: 0;
-  width: 200px;
 }
-.nav-brand i { font-size: 20px; color: var(--blue); }
-.nav-menu {
+.nav-brand .nav-logo { color: var(--blue); }
+
+/* ── Center Menu Groups ── */
+.nav-center {
   display: flex;
+  align-items: center;
   gap: 4px;
-  flex: 1;
-  justify-content: center;
 }
-.nav-tool {
-  display: inline-flex;
+.nav-group {
+  position: relative;
+}
+.nav-group-btn {
+  display: flex;
   align-items: center;
   gap: 5px;
-  padding: 8px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: var(--gray-500);
-  text-decoration: none;
-  border-radius: 6px;
-  transition: color 0.15s, background 0.15s;
-  white-space: nowrap;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--gray-600);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
 }
-.nav-tool i { font-size: 14px; }
-.nav-tool:hover { color: var(--gray-800); background: var(--gray-100); }
-.nav-tool.active { color: var(--blue); background: var(--blue-light); }
+.nav-group-btn:hover,
+.nav-group-btn.nav-group-hover {
+  color: var(--gray-900);
+  background: var(--gray-100);
+}
+.nav-group-btn.nav-group-active {
+  color: var(--blue);
+}
+.nav-chevron {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-group-btn.nav-group-hover .nav-chevron,
+.mega-open ~ .nav-group-btn .nav-chevron {
+  transform: rotate(180deg);
+}
+/* Fix: chevron rotates when dropdown open */
+.nav-group:has(.mega-open) .nav-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Mega Dropdown ── */
+.mega-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  min-width: 520px;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--gray-200);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.04);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16,1,0.3,1),
+              transform 0.25s cubic-bezier(0.16,1,0.3,1),
+              visibility 0.25s;
+  overflow: hidden;
+}
+.mega-dropdown.mega-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.mega-dropdown.mega-mini {
+  min-width: 320px;
+}
+.mega-inner {
+  display: flex;
+  gap: 0;
+  padding: 20px;
+}
+.mega-col {
+  flex: 1;
+  min-width: 0;
+}
+.mega-col + .mega-col {
+  border-left: 1px solid var(--gray-100);
+  padding-left: 20px;
+  margin-left: 20px;
+}
+.mega-col-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gray-400);
+  padding: 4px 12px 10px;
+  text-transform: uppercase;
+}
+
+/* ── Mega Item ── */
+.mega-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+}
+.mega-item:hover {
+  background: var(--gray-50);
+  transform: translateX(2px);
+}
+.mega-item.mega-active {
+  background: rgba(59,130,246,0.06);
+}
+.mega-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--gray-50);
+  color: var(--gray-600);
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.mega-item:hover .mega-item-icon {
+  background: rgba(59,130,246,0.1);
+  color: var(--blue);
+}
+.mega-item.mega-active .mega-item-icon {
+  background: rgba(59,130,246,0.1);
+  color: var(--blue);
+}
+.mega-item-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-800);
+  line-height: 1.3;
+}
+.mega-item-desc {
+  font-size: 11px;
+  color: var(--gray-400);
+  line-height: 1.4;
+  margin-top: 1px;
+}
+
+/* ── Gradient Line at bottom ── */
+.mega-gradient-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), #8b5cf6, transparent);
+  opacity: 0.6;
+}
+
+/* ── Right Side ── */
 .nav-right {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 8px;
   flex-shrink: 0;
-  width: 200px;
 }
-.lang-switch {
+.nav-github {
   display: flex;
-  border: 1px solid var(--gray-200);
-  border-radius: 6px;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--gray-500);
+  transition: color 0.15s, background 0.15s;
 }
-.lang-btn {
-  padding: 4px 8px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  border: none;
-  background: none;
-  color: var(--gray-400);
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.15s;
+.nav-github:hover {
+  color: var(--gray-800);
+  background: var(--gray-100);
 }
-.lang-btn:hover { color: var(--gray-700); background: var(--gray-50); }
-.lang-btn.active { color: #fff; background: var(--blue); }
 .nav-toggle {
   display: flex;
   align-items: center;
@@ -133,7 +261,6 @@ body {
   background: none;
   cursor: pointer;
   color: var(--gray-500);
-  font-size: 16px;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
   font-family: inherit;
 }
@@ -142,43 +269,86 @@ body {
   border-color: var(--gray-300);
   background: var(--gray-50);
 }
+
+/* ── Hamburger (animated 3 lines → X) ── */
 .nav-hamburger {
   display: none;
-  padding: 6px 8px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  padding: 7px 6px;
   background: none;
   border: 1px solid var(--gray-200);
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  color: var(--gray-500);
-  font-size: 18px;
-  font-family: inherit;
 }
+.nav-hamburger span {
+  display: block;
+  height: 2px;
+  background: var(--gray-500);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Mobile Menu ── */
 .nav-mobile {
   display: none;
   flex-direction: column;
-  padding: 8px 20px 16px;
+  padding: 12px 20px 24px;
   border-top: 1px solid var(--gray-200);
+  max-height: 70vh;
+  overflow-y: auto;
 }
 .nav-mobile.open { display: flex; }
-.nav-mobile-link {
+.mob-group {
+  margin-bottom: 8px;
+}
+.mob-group-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gray-400);
+  padding: 12px 12px 6px;
+  text-transform: uppercase;
+}
+.mob-link {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 10px 12px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--gray-600);
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  transition: background 0.15s;
 }
-.nav-mobile-link:hover { background: var(--gray-50); }
-.nav-mobile-link.active { color: var(--blue); background: var(--blue-light); }
-.nav-mobile-link i { font-size: 16px; }
+.mob-link:hover { background: var(--gray-50); }
+.mob-link.mob-active { color: var(--blue); background: rgba(59,130,246,0.06); }
+.mob-icon {
+  display: flex;
+  align-items: center;
+  color: var(--gray-400);
+}
+.mob-active .mob-icon { color: var(--blue); }
 
 @media (max-width: 768px) {
-  .nav-menu { display: none; }
+  .nav-center { display: none; }
   .nav-hamburger { display: flex; }
+  .nav-github { display: none; }
 }
+
 
 /* ============================
    HERO with parallax

@@ -478,9 +478,20 @@
     }
 
     // Auto text-reveal on the FIRST h1 on the page
+    // SKIP if h1 uses gradient text (background-clip: text) — char split breaks it
     const h1 = document.querySelector('h1');
     if (h1 && !h1.classList.contains('text-reveal') && !h1.querySelector('span, svg')) {
-      h1.classList.add('text-reveal');
+      const h1Style = window.getComputedStyle(h1);
+      const hasGradient = h1Style.backgroundImage && h1Style.backgroundImage !== 'none';
+      const hasClip = h1Style.webkitBackgroundClip === 'text' || h1Style.backgroundClip === 'text';
+      if (hasGradient && hasClip) {
+        // Gradient text — just add data-reveal for fade-in, NOT text-reveal
+        if (!h1.hasAttribute('data-reveal')) {
+          h1.setAttribute('data-reveal', 'scale');
+        }
+      } else {
+        h1.classList.add('text-reveal');
+      }
     }
 
     // Auto stagger on grids

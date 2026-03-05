@@ -379,11 +379,60 @@ body {
   letter-spacing: -1.5px;
   line-height: 1.1;
   margin-bottom: 16px;
+  /* Blur-to-sharp animation */
+  animation: heroBlurIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 .hero p {
   font-size: 15px;
   color: var(--gray-500);
   font-style: italic;
+  animation: heroBlurIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
+/* Hero Blur-in + Glassmorphism Animation */
+@keyframes heroBlurIn {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+    transform: scale(1.08) translateY(16px);
+  }
+  40% {
+    opacity: 0.7;
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Glassmorphism glow behind hero text */
+.hero-content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 120%;
+  background: radial-gradient(ellipse, rgba(37,99,235,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: heroGlow 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+@keyframes heroGlow {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+    filter: blur(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
 }
 
 /* ============================
@@ -483,15 +532,8 @@ body {
   padding: 8px;
 }
 .step-num {
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--blue);
-  flex-shrink: 0;
-  min-width: 24px;
+  display: none;
 }
-.step-num::before { content: '['; }
-.step-num::after { content: ']'; }
 .step-item strong {
   display: block;
   font-size: 13px;

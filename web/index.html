@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
@@ -46,40 +45,35 @@
     <aside class="hero-sidebar hero-sidebar--left reveal">
       <div class="sidebar-card">
         <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-star"></i> Features
+Features
         </h4>
         <div class="feature-list">
           <div class="feature-item">
-            <i class="hgi-stroke hgi-checkmark-circle-02"></i>
-            <div>
+<div>
               <strong>100% Client-Side</strong>
               <span>No data sent to any server</span>
             </div>
           </div>
           <div class="feature-item">
-            <i class="hgi-stroke hgi-blockchain-06"></i>
-            <div>
+<div>
               <strong>30+ Chains</strong>
               <span>EVM, Solana, BTC, Cosmos & more</span>
             </div>
           </div>
           <div class="feature-item">
-            <i class="hgi-stroke hgi-layers-01"></i>
-            <div>
+<div>
               <strong>Batch Generate</strong>
               <span>Up to 100K wallets at once</span>
             </div>
           </div>
           <div class="feature-item">
-            <i class="hgi-stroke hgi-file-export"></i>
-            <div>
+<div>
               <strong>Export Options</strong>
               <span>CSV, JSON, or plain TXT</span>
             </div>
           </div>
           <div class="feature-item">
-            <i class="hgi-stroke hgi-lock-key"></i>
-            <div>
+<div>
               <strong>AES-256 Encrypt</strong>
               <span>Encrypt wallet files in-browser</span>
             </div>
@@ -184,8 +178,7 @@
             </div>
 
             <button class="btn-primary" id="generate-btn">
-              <i class="hgi-stroke hgi-play"></i>
-              Generate
+Generate
             </button>
 
             <!-- Progress -->
@@ -202,7 +195,7 @@
     <aside class="hero-sidebar hero-sidebar--right reveal">
       <div class="sidebar-card">
         <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-help-circle"></i> How it works
+How it works
         </h4>
         <div class="steps-list">
           <div class="step-item">
@@ -238,7 +231,7 @@
 
       <div class="sidebar-card sidebar-card--tip">
         <h4 class="sidebar-title">
-          <i class="hgi-stroke hgi-information-circle"></i> Did you know?
+Did you know?
         </h4>
         <p style="font-size:12px;color:var(--gray-500);line-height:1.5;margin:0">
           This tool supports <strong>all EVM-compatible</strong> chains with a single key — including Ethereum, Polygon, Arbitrum, Base, zkSync, and 17 more networks.
@@ -256,29 +249,25 @@
       <div class="trust-grid">
         <div class="trust-card">
           <div class="trust-icon trust-icon--green">
-            <i class="hgi-stroke hgi-source-code"></i>
-          </div>
+</div>
           <h4>Open Source</h4>
           <p>Every line of code is public on GitHub. Inspect, audit, or fork — full transparency.</p>
         </div>
         <div class="trust-card">
           <div class="trust-icon trust-icon--blue">
-            <i class="hgi-stroke hgi-wifi-disconnected-01"></i>
-          </div>
+</div>
           <h4>Zero Server Contact</h4>
           <p>No API calls, no backend. Works fully offline — disconnect your internet and try it.</p>
         </div>
         <div class="trust-card">
           <div class="trust-icon trust-icon--purple">
-            <i class="hgi-stroke hgi-lock-key"></i>
-          </div>
+</div>
           <h4>Browser Crypto API</h4>
           <p>Uses Web Crypto API for randomness — the same standard banks and browsers rely on.</p>
         </div>
         <div class="trust-card">
           <div class="trust-icon trust-icon--orange">
-            <i class="hgi-stroke hgi-cancel-circle"></i>
-          </div>
+</div>
           <h4>No Tracking</h4>
           <p>No cookies, no analytics, no fingerprinting. Zero data collection — period.</p>
         </div>
@@ -307,8 +296,7 @@
         </div>
         <div class="results-actions">
           <div class="search-box">
-            <i class="hgi-stroke hgi-search-01"></i>
-            <input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
+<input type="text" id="search-input" class="input input--sm" placeholder="Search address...">
           </div>
           <div class="toolbar-divider"></div>
           <button class="btn-ghost" id="toggle-keys">
@@ -316,21 +304,21 @@
             <span id="toggle-text">Show keys</span>
           </button>
           <button class="btn-ghost" id="copy-all-btn">
-            <i class="hgi-stroke hgi-copy-01"></i> Copy all
+Copy all
           </button>
           <div class="toolbar-divider"></div>
           <button class="btn-ghost" id="export-csv">
-            <i class="hgi-stroke hgi-file-02"></i> CSV
+CSV
           </button>
           <button class="btn-ghost" id="export-json">
-            <i class="hgi-stroke hgi-source-code"></i> JSON
+JSON
           </button>
           <button class="btn-ghost" id="export-txt">
-            <i class="hgi-stroke hgi-text-font"></i> TXT
+TXT
           </button>
           <div class="toolbar-divider"></div>
           <button class="btn-ghost btn-ghost--danger" id="clear-btn">
-            <i class="hgi-stroke hgi-delete-02"></i> Clear
+Clear
           </button>
         </div>
       </div>
@@ -355,21 +343,22 @@
       <!-- Pagination -->
       <div class="pagination" id="pagination">
         <button class="btn-ghost" id="prev-page" disabled>
-          <i class="hgi-stroke hgi-arrow-left-01"></i> Prev
+Prev
         </button>
         <span class="page-info" id="page-info">Page 1</span>
         <button class="btn-ghost" id="next-page">
-          Next <i class="hgi-stroke hgi-arrow-right-01"></i>
-        </button>
+          Next
+</button>
       </div>
     </section>
 
     <!-- History (below table) -->
     <div class="history-bar" id="history-section" style="display:none">
       <div class="history-header">
-        <h4><i class="hgi-stroke hgi-clock-02"></i> Recent History</h4>
+        <h4>
+Recent History</h4>
         <button class="btn-ghost btn-ghost--danger" id="clear-history">
-          <i class="hgi-stroke hgi-delete-02"></i> Clear
+Clear
         </button>
       </div>
       <div id="history-list" class="history-list"></div>

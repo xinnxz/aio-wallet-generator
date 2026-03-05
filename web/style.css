@@ -172,54 +172,37 @@ body {
   text-transform: uppercase;
 }
 
-/* ── Mega Item ── */
+/* ── Mega Item (text-only, no icons) ── */
 .mega-item {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border-radius: 8px;
   text-decoration: none;
-  transition: background 0.15s, transform 0.15s;
+  transition: background 0.15s;
 }
 .mega-item:hover {
   background: var(--gray-50);
-  transform: translateX(2px);
 }
 .mega-item.mega-active {
   background: rgba(59,130,246,0.06);
-}
-.mega-item-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: var(--gray-50);
-  color: var(--gray-600);
-  flex-shrink: 0;
-  transition: background 0.15s, color 0.15s;
-}
-.mega-item:hover .mega-item-icon {
-  background: rgba(59,130,246,0.1);
-  color: var(--blue);
-}
-.mega-item.mega-active .mega-item-icon {
-  background: rgba(59,130,246,0.1);
-  color: var(--blue);
 }
 .mega-item-label {
   font-size: 13px;
   font-weight: 600;
   color: var(--gray-800);
-  line-height: 1.3;
+}
+.mega-item:hover .mega-item-label {
+  color: var(--blue);
+}
+.mega-item.mega-active .mega-item-label {
+  color: var(--blue);
 }
 .mega-item-desc {
   font-size: 11px;
   color: var(--gray-400);
   line-height: 1.4;
-  margin-top: 1px;
 }
 
 /* ── Gradient Line at bottom ── */

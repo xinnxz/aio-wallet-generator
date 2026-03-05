@@ -7,7 +7,7 @@
   <meta name="description" content="Generate cryptocurrency wallets at scale. Support for EVM, Solana, Bitcoin, Tron, Sui, Aptos, Cosmos, TON, Starknet.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
@@ -19,11 +19,12 @@
   <!-- NAV (loaded by nav.js) -->
   <nav class="nav" id="main-nav"></nav>
 
-  <!-- HERO (parallax layer) -->
+  <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg"><div class="hero-ascii" id="hero-ascii"></div></div>
     <div class="hero-content reveal">
-      <h1>Generate wallets across 30+ chains</h1>
+      <h1>Generate wallets<br>
+      across 30+ chains.</h1>
       <p>All wallets are generated locally in your browser. Nothing is sent anywhere.</p>
     </div>
   </section>
@@ -366,9 +367,36 @@ Clear
 
   </section>
 
-  <!-- FOOTER -->
+  <!-- FOOTER — Terminal Tree Style -->
   <footer class="footer">
-    <p>All wallets are generated client-side. Private keys never leave your browser.</p>
+    <div class="footer-inner">
+      <div class="footer-brand-col">
+        <div class="footer-brand">AIO</div>
+        <p style="font-size:12px;color:var(--gray-400);margin-top:8px;max-width:200px">Client-side wallet generation for 30+ chains.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Tools</h5>
+        <a href="/">Generator</a>
+        <a href="/validator.html">Validator</a>
+        <a href="/converter.html">Converter</a>
+        <a href="/encrypt.html">Encrypt</a>
+        <a href="/hdwallet.html">HD Wallet</a>
+      </div>
+      <div class="footer-col">
+        <h5>Learn</h5>
+        <a href="/docs.html">Docs</a>
+        <a href="/security.html">Security</a>
+        <a href="/plugins.html">Plugins</a>
+      </div>
+      <div class="footer-col">
+        <h5>Social</h5>
+        <a href="https://github.com/xinnxz/aio-wallet-generator" target="_blank">GitHub</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>All wallets are generated client-side. Private keys never leave your browser.</span>
+      <div class="footer-status"><span class="footer-status-dot"></span> All Systems Operational</div>
+    </div>
   </footer>
 
   <!-- LOADING OVERLAY (3D Cube animation) -->
@@ -396,6 +424,7 @@ Clear
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
   <script src="i18n.js"></script>
+  <script src="ascii-bg.js"></script>
   <script src="nav.js"></script>
   <script src="interactions.js"></script>
   <script src="app.js"></script>

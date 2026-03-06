@@ -361,10 +361,10 @@ body {
 }
 .ascii-canvas {
   font-family: var(--mono);
-  font-size: 11px;
-  line-height: 1.3;
+  font-size: 12px;
+  line-height: 1.35;
   color: var(--blue);
-  opacity: 0.25;
+  opacity: 0.35;
   white-space: pre;
   overflow: hidden;
   margin: 0;

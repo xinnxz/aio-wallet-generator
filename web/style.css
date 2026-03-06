@@ -2095,6 +2095,45 @@ body {
   font-weight: 500;
 }
 
+/* Group separator row */
+.ct-group-row td {
+  padding: 0 !important;
+  border-bottom: none !important;
+}
+.ct-group-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 16px 16px 6px !important;
+  background: transparent;
+}
+.ct-group-row:hover { background: transparent !important; }
+
+/* Chain ID / sub-chain badges */
+.ct-badges {
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+}
+.ct-badge {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gray-400);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: var(--mono);
+}
+.ct-badge--sub {
+  color: var(--blue);
+  background: var(--blue-light);
+  border-color: rgba(37,99,235,0.15);
+}
+
 /* ============================
    QR CODE PAGE
    ============================ */

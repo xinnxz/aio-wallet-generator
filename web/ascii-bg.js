@@ -1,93 +1,98 @@
 /**
- * ASCII Art Background — Hiro.so-inspired
+ * ASCII Art Transition — Hiro.so-inspired
  * 
  * PENJELASAN:
- * Ini membuat background ASCII art di hero section yang mirip hiro.so.
+ * Membuat band ASCII art antara section form dan trust section.
  * 
- * Cara kerjanya:
- * 1. Bagian ATAS hero = karakter jarang, simple (titik, titik dua)
- * 2. Bagian BAWAH hero = karakter padat, kompleks (#, *, B, |/|)
- * 3. Ada animasi "typing" — karakter muncul satu per satu dari atas ke bawah
- * 4. Warna: biru accent (opacity rendah supaya tidak mengganggu teks)
+ * Cara kerja:
+ * 1. Band terdiri dari ~15-20 baris karakter
+ * 2. Baris atas = jarang (titik, spasi) → baris bawah = padat (#, *, |, /, B)
+ * 3. Ada animasi CONTINUOUS — karakter berganti secara random (seperti matrix/typing)
+ * 4. Warna biru accent, opacity rendah
+ * 
+ * Ini disebut "density gradient" — visual density meningkat dari atas ke bawah,
+ * membuat efek transisi halus dari konten terang ke section gelap (trust).
  */
 (function() {
-  const el = document.getElementById('hero-ascii');
+  const el = document.getElementById('ascii-canvas');
   if (!el) return;
 
-  // Character pools by complexity level (0 = simplest, 4 = densest)
+  // Character pools by density level
   const pools = [
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '.', '·'],           // Level 0: very sparse
-    [' ', ' ', ' ', '.', '·', ':', ' ', '.', ' '],            // Level 1: sparse dots
-    [' ', '.', ':', '·', '|', '/', ':', '.', '*', ' '],       // Level 2: mixed
-    [':', '|', '/', '.', '·', ':', '/', '|', '*', ':', '·'],  // Level 3: dense
-    [':', '|', '/', '#', '*', '|', '/', ':', '#', '|', '*', '"', '/', '|', '#', '#'] // Level 4: very dense
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '.'],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '.', '·', ' ', ' ', '.'],
+    [' ', ' ', ' ', ' ', '.', '·', ':', ' ', '.', ':', ' '],
+    [' ', ' ', '.', '·', ':', '|', '/', '.', ':', '*', ' '],
+    [' ', '.', ':', '|', '/', '*', '·', ':', '/', '|', '.', ':'],
+    ['.', ':', '|', '/', '*', ':', '·', ':', '/', '·', '|', '*'],
+    [':', '|', '/', '#', '*', '|', '/', ':', '#', '·', '*', ':', '|'],
+    [':', '|', '/', '#', '*', '|', '/', ':', '#', '|', '*', '"', 'B', '|', '#', '/', '*'],
+    ['#', '|', '/', '#', '*', '/', '#', '|', '*', '"', 'B', '#', '|', '/', '#', '*', '/', '#']
   ];
 
-  function generate() {
-    const charW = 7.6;   // approx char width in 13px monospace
-    const lineH = 18.2;  // approx line height at 13px * 1.4
-    const cols = Math.ceil(window.innerWidth / charW);
-    const rows = Math.ceil(el.parentElement.offsetHeight / lineH);
-    const lines = [];
+  const ROWS = 18;
+  let cols = 0;
+  let grid = [];  // 2D array of characters
 
-    for (let y = 0; y < rows; y++) {
-      let line = '';
-      // Progress 0..1 from top to bottom
-      const progress = y / Math.max(rows - 1, 1);
-      
-      // Level increases with progress: top=0, bottom=4
-      const level = Math.min(4, Math.floor(progress * 5));
-      const pool = pools[level];
-      
-      // Density also increases: top ~15%, bottom ~85%
-      const density = 0.12 + progress * 0.7;
+  function calcCols() {
+    cols = Math.ceil(window.innerWidth / 7.2);
+  }
+
+  // Generate initial grid
+  function buildGrid() {
+    calcCols();
+    grid = [];
+    for (let y = 0; y < ROWS; y++) {
+      const row = [];
+      const progress = y / (ROWS - 1);  // 0 top .. 1 bottom
+      const levelIdx = Math.min(pools.length - 1, Math.floor(progress * pools.length));
+      const pool = pools[levelIdx];
 
       for (let x = 0; x < cols; x++) {
-        if (Math.random() < density) {
-          line += pool[Math.floor(Math.random() * pool.length)];
-        } else {
-          line += ' ';
-        }
+        row.push(pool[Math.floor(Math.random() * pool.length)]);
       }
-      lines.push(line);
+      grid.push(row);
     }
-    return lines;
   }
 
-  // Animate: type in rows progressively
-  function animateIn() {
-    const lines = generate();
-    el.textContent = '';
-    
-    // Reveal rows with staggered timing
-    let currentRow = 0;
-    const totalRows = lines.length;
-    
-    function revealRow() {
-      if (currentRow >= totalRows) return;
-      
-      // Add 3-5 rows per frame for speed
-      const batchSize = Math.max(2, Math.floor(totalRows / 30));
-      const endRow = Math.min(currentRow + batchSize, totalRows);
-      
-      el.textContent = lines.slice(0, endRow).join('\n');
-      currentRow = endRow;
-      
-      if (currentRow < totalRows) {
-        requestAnimationFrame(revealRow);
-      }
-    }
-    
-    // Start animation after a short delay
-    setTimeout(() => requestAnimationFrame(revealRow), 400);
+  // Render grid to element
+  function render() {
+    el.textContent = grid.map(row => row.join('')).join('\n');
   }
 
-  animateIn();
+  // Animate: randomly mutate characters continuously
+  function animate() {
+    // Each frame, mutate ~3-5% of all characters
+    const totalCells = ROWS * cols;
+    const mutations = Math.max(10, Math.floor(totalCells * 0.04));
 
-  // Regenerate on resize (debounced)
+    for (let i = 0; i < mutations; i++) {
+      const y = Math.floor(Math.random() * ROWS);
+      const x = Math.floor(Math.random() * cols);
+      const progress = y / (ROWS - 1);
+      const levelIdx = Math.min(pools.length - 1, Math.floor(progress * pools.length));
+      const pool = pools[levelIdx];
+      grid[y][x] = pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    render();
+    requestAnimationFrame(animate);
+  }
+
+  // Init
+  buildGrid();
+  render();
+
+  // Start continuous animation after brief delay
+  setTimeout(() => requestAnimationFrame(animate), 500);
+
+  // Rebuild on resize (debounced)
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(animateIn, 300);
+    resizeTimer = setTimeout(() => {
+      buildGrid();
+      render();
+    }, 300);
   });
 })();

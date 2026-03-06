@@ -343,34 +343,34 @@ body {
 .hero {
   position: relative;
   text-align: center;
-  padding: 80px 20px 100px;
-  min-height: 420px;
+  padding: 80px 20px 48px;
   overflow: hidden;
-}
-/* ASCII art background */
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.hero-ascii {
-  position: absolute;
-  inset: 0;
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--blue);
-  opacity: 0.2;
-  white-space: pre;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
 }
 .hero-content {
   position: relative;
   z-index: 1;
+}
+
+/* ASCII Art Transition Section */
+.ascii-section {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  padding: 0;
+  margin: 0;
+}
+.ascii-canvas {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--blue);
+  opacity: 0.35;
+  white-space: pre;
+  overflow: hidden;
+  margin: 0;
+  padding: 0 8px;
+  user-select: none;
+  pointer-events: none;
 }
 .hero h1 {
   font-size: 44px;

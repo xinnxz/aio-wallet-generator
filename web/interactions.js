@@ -407,9 +407,9 @@
       });
     });
 
-    // Auto data-particles on hero sections
+    // Auto data-particles on hero sections (skip if hero has ASCII art)
     const hero = document.querySelector('.hero, .docs-hero, .sec-hero, .plug-hero, [class*="hero"]');
-    if (hero && !hero.hasAttribute('data-particles')) {
+    if (hero && !hero.hasAttribute('data-particles') && !hero.querySelector('#hero-ascii')) {
       hero.setAttribute('data-particles', '');
     }
 

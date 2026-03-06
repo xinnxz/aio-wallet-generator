@@ -386,21 +386,6 @@ body {
   font-style: italic;
 }
 
-/* Glassmorphism frosted card behind hero text */
-.hero-content {
-  position: relative;
-  z-index: 1;
-  background: rgba(239, 238, 241, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: 20px;
-  padding: 48px 40px;
-  max-width: 640px;
-  margin: 0 auto;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6);
-}
-
 /* ============================
    STATS
    ============================ */
@@ -498,8 +483,15 @@ body {
   padding: 8px;
 }
 .step-num {
-  display: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue);
+  flex-shrink: 0;
+  min-width: 24px;
 }
+.step-num::before { content: '['; }
+.step-num::after { content: ']'; }
 .step-item strong {
   display: block;
   font-size: 13px;
@@ -2922,29 +2914,66 @@ body {
   border-color: rgba(96, 165, 250, 0.3);
 }
 
-/* ─── Text Reveal ─── */
-.text-reveal .char {
-  display: inline-block;
+/* ─── Hero Blur Reveal ─── */
+.hero-blur-reveal {
+  position: relative;
+}
+.hero-blur-reveal h1 {
   opacity: 0;
-  transform: translateY(100%) rotateX(-80deg);
-  transform-origin: center bottom;
-  transition: none;
+  filter: blur(20px);
+  transform: translateY(30px) scale(0.95);
+  animation: heroBlurIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
 }
-.text-reveal.animate .char {
-  animation: charReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.hero-blur-reveal p {
+  opacity: 0;
+  filter: blur(12px);
+  transform: translateY(20px);
+  animation: heroBlurIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
 }
-@keyframes charReveal {
-  from {
+.hero-blur-reveal::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  max-width: 600px;
+  height: 120px;
+  background: rgba(37, 99, 235, 0.06);
+  border-radius: 32px;
+  filter: blur(40px);
+  opacity: 0;
+  animation: glassGlow 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  pointer-events: none;
+  z-index: -1;
+}
+@keyframes heroBlurIn {
+  0% {
     opacity: 0;
-    transform: translateY(100%) rotateX(-80deg);
+    filter: blur(20px);
+    transform: translateY(30px) scale(0.95);
   }
-  to {
+  50% {
+    opacity: 0.7;
+    filter: blur(6px);
+  }
+  100% {
     opacity: 1;
-    transform: translateY(0) rotateX(0deg);
+    filter: blur(0);
+    transform: translateY(0) scale(1);
   }
 }
-.text-reveal .word {
-  perspective: 600px;
+@keyframes glassGlow {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+    filter: blur(60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(40px);
+  }
 }
 
 /* ─── Tilt Cards ─── */

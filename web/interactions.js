@@ -108,47 +108,10 @@
   }
 
   // ─────────────────────────────────────────────
-  // 3. TEXT REVEAL
-  // Elemen dengan .text-reveal dipecah per karakter
-  // lalu animasi wave-in dari bawah.
+  // 3. TEXT REVEAL (disabled — replaced by hero-blur-reveal CSS)
   // ─────────────────────────────────────────────
   function initTextReveal() {
-    const els = document.querySelectorAll('.text-reveal');
-    els.forEach(el => {
-      const text = el.textContent;
-      el.innerHTML = '';
-      el.setAttribute('aria-label', text);
-
-      // Split into words, then chars within each word
-      const words = text.split(' ');
-      words.forEach((word, wIdx) => {
-        const wordSpan = document.createElement('span');
-        wordSpan.className = 'word';
-        wordSpan.style.display = 'inline-block';
-        wordSpan.style.whiteSpace = 'nowrap';
-
-        word.split('').forEach((char, cIdx) => {
-          const charSpan = document.createElement('span');
-          charSpan.className = 'char';
-          charSpan.textContent = char;
-          charSpan.style.animationDelay = `${(wIdx * 4 + cIdx) * 30}ms`;
-          wordSpan.appendChild(charSpan);
-        });
-        el.appendChild(wordSpan);
-
-        // Add space between words
-        if (wIdx < words.length - 1) {
-          const space = document.createElement('span');
-          space.innerHTML = '&nbsp;';
-          space.className = 'char';
-          space.style.animationDelay = `${(wIdx * 4 + word.length) * 30}ms`;
-          el.appendChild(space);
-        }
-      });
-
-      // Trigger animation after small delay
-      setTimeout(() => el.classList.add('animate'), 200);
-    });
+    // No-op: replaced by CSS-only hero-blur-reveal animation
   }
 
   // ─────────────────────────────────────────────
@@ -320,37 +283,10 @@
   }
 
   // ─────────────────────────────────────────────
-  // 7. SMOOTH COUNTER
-  // Angka yang count-up saat elemen masuk viewport.
+  // 7. SMOOTH COUNTER (disabled)
   // ─────────────────────────────────────────────
   function initSmoothCounters() {
-    const counters = document.querySelectorAll('[data-count]');
-    if (!counters.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const target = +el.dataset.count;
-          const suffix = el.dataset.countSuffix || '';
-          const duration = 1500;
-          const start = performance.now();
-
-          function update(now) {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            // Ease out cubic
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.floor(target * eased) + suffix;
-            if (progress < 1) requestAnimationFrame(update);
-          }
-          requestAnimationFrame(update);
-          observer.unobserve(el);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    counters.forEach(el => observer.observe(el));
+    // No-op: counter animation removed per user request
   }
 
   // ─────────────────────────────────────────────
@@ -477,21 +413,10 @@
       hero.setAttribute('data-particles', '');
     }
 
-    // Auto text-reveal on the FIRST h1 on the page
-    // SKIP if h1 uses gradient text (background-clip: text) — char split breaks it
-    const h1 = document.querySelector('h1');
-    if (h1 && !h1.classList.contains('text-reveal') && !h1.querySelector('span, svg')) {
-      const h1Style = window.getComputedStyle(h1);
-      const hasGradient = h1Style.backgroundImage && h1Style.backgroundImage !== 'none';
-      const hasClip = h1Style.webkitBackgroundClip === 'text' || h1Style.backgroundClip === 'text';
-      if (hasGradient && hasClip) {
-        // Gradient text — just add data-reveal for fade-in, NOT text-reveal
-        if (!h1.hasAttribute('data-reveal')) {
-          h1.setAttribute('data-reveal', 'scale');
-        }
-      } else {
-        h1.classList.add('text-reveal');
-      }
+    // Auto hero-blur-reveal on hero-content
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent && !heroContent.classList.contains('hero-blur-reveal')) {
+      heroContent.classList.add('hero-blur-reveal');
     }
 
     // Auto stagger on grids

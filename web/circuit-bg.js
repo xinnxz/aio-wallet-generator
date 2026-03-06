@@ -73,7 +73,7 @@
       rect.setAttribute('width', pw);
       rect.setAttribute('height', ph);
       rect.setAttribute('fill', 'none');
-      rect.setAttribute('stroke', 'rgba(0,0,0,0.06)');
+      rect.setAttribute('stroke', 'rgba(0,0,0,0.09)');
       rect.setAttribute('stroke-width', '1');
       svg.appendChild(rect);
 
@@ -82,8 +82,8 @@
         const c = document.createElementNS(NS, 'circle');
         c.setAttribute('cx', cx);
         c.setAttribute('cy', cy);
-        c.setAttribute('r', '1.5');
-        c.setAttribute('fill', 'rgba(0,0,0,0.08)');
+        c.setAttribute('r', '2');
+        c.setAttribute('fill', 'rgba(0,0,0,0.12)');
         svg.appendChild(c);
       });
     });
@@ -103,7 +103,7 @@
       const path = document.createElementNS(NS, 'path');
       path.setAttribute('d', d);
       path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', 'rgba(0,0,0,0.04)');
+      path.setAttribute('stroke', 'rgba(0,0,0,0.07)');
       path.setAttribute('stroke-width', '1');
       svg.appendChild(path);
 
@@ -127,11 +127,11 @@
       const el = document.createElement('div');
       el.style.cssText = `
         position: absolute;
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
         background: ${cfg.color};
-        box-shadow: 0 0 6px 2px ${cfg.color}, 0 0 18px 6px ${cfg.color}80;
+        box-shadow: 0 0 8px 3px ${cfg.color}, 0 0 20px 8px ${cfg.color}99, 0 0 40px 14px ${cfg.color}44;
         pointer-events: none;
         z-index: 2;
         transform: translate(-50%, -50%);

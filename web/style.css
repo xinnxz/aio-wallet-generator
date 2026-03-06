@@ -29,6 +29,15 @@
   --mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
 }
 
+/* -- Inline SVG Icons in Buttons -- */
+button svg, a svg {
+  vertical-align: middle;
+  flex-shrink: 0;
+  margin-right: 4px;
+  position: relative;
+  top: -1px;
+}
+
 /* -- Reset -- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }

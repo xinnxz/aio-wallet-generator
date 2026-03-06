@@ -207,13 +207,13 @@ function render() {
       <td data-label="Mnemonic" class="key-cell col-key ${keyHidden}" title="${w.mnemonic || ''}">${w.mnemonic || '-'}</td>
       <td data-label="Actions">
         <button class="copy-btn copy-btn--icon" data-val="${esc(w.address)}" data-label="Copy Address" title="Copy Address">
-          <i class="hgi-stroke hgi-copy-01"></i>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         </button>
         ${w.privateKey ? `<button class="copy-btn copy-btn--icon" data-val="${esc(w.privateKey)}" data-label="Copy Key" title="Copy Private Key">
-          <i class="hgi-stroke hgi-lock-key"></i>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
         </button>` : ''}
         ${w.mnemonic && w.mnemonic !== '-' ? `<button class="copy-btn copy-btn--icon" data-val="${esc(w.mnemonic)}" data-label="Copy Mnemonic" title="Copy Mnemonic">
-          <i class="hgi-stroke hgi-text-wrap"></i>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </button>` : ''}
       </td>`;
     dom.tbody.appendChild(tr);
@@ -379,7 +379,7 @@ document.addEventListener('click', e => {
   const label = btn.dataset.label;
   const origHTML = btn.innerHTML;
   navigator.clipboard.writeText(text).then(() => {
-    btn.innerHTML = '<i class="hgi-stroke hgi-checkmark-circle-02"></i> Copied';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Copied';
     btn.classList.add('copied');
     setTimeout(() => { btn.innerHTML = origHTML; btn.classList.remove('copied'); }, 1000);
   }).catch(() => toast('Copy failed', true));

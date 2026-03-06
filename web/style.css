@@ -343,7 +343,8 @@ body {
 .hero {
   position: relative;
   text-align: center;
-  padding: 80px 20px 48px;
+  padding: 80px 20px 100px;
+  min-height: 420px;
   overflow: hidden;
 }
 /* ASCII art background */
@@ -361,7 +362,7 @@ body {
   font-size: 13px;
   line-height: 1.4;
   color: var(--blue);
-  opacity: 0.12;
+  opacity: 0.2;
   white-space: pre;
   overflow: hidden;
   pointer-events: none;

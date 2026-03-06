@@ -114,7 +114,8 @@ async function generate(chain, count) {
 
   state.generating = true;
   dom.generateBtn.disabled = true;
-  dom.generateBtn.querySelector('i').className = 'hgi-stroke hgi-loading-03';
+  const btnIcon = dom.generateBtn.querySelector('i');
+  if (btnIcon) btnIcon.className = 'hgi-stroke hgi-loading-03';
   dom.progress.style.display = 'block';
 
   // Show 3D cube loading overlay
@@ -166,7 +167,8 @@ async function generate(chain, count) {
         // Reset button
         state.generating = false;
         dom.generateBtn.disabled = false;
-        dom.generateBtn.querySelector('i').className = 'hgi-stroke hgi-play';
+        const btnIcon2 = dom.generateBtn.querySelector('i');
+        if (btnIcon2) btnIcon2.className = 'hgi-stroke hgi-play';
         setTimeout(() => { dom.progress.style.display = 'none'; dom.progressFill.style.width = '0%'; }, 600);
 
         // Hide cube overlay with fade

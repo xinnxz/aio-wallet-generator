@@ -1,98 +1,105 @@
 /**
- * ASCII Art Transition — Hiro.so-inspired
+ * ASCII Art Transition — Hiro.so-inspired (refined)
  * 
  * PENJELASAN:
- * Membuat band ASCII art antara section form dan trust section.
+ * Versi sebelumnya terlalu padat dan chaotic. 
  * 
- * Cara kerja:
- * 1. Band terdiri dari ~15-20 baris karakter
- * 2. Baris atas = jarang (titik, spasi) → baris bawah = padat (#, *, |, /, B)
- * 3. Ada animasi CONTINUOUS — karakter berganti secara random (seperti matrix/typing)
- * 4. Warna biru accent, opacity rendah
- * 
- * Ini disebut "density gradient" — visual density meningkat dari atas ke bawah,
- * membuat efek transisi halus dari konten terang ke section gelap (trust).
+ * Perbaikan:
+ * - Jauh lebih SPARSE: 90% spasi di baris atas, hanya ~60% spasi di baris bawah  
+ * - Karakter NEVER berdekatan: selalu ada jarak antar karakter visible
+ * - Animasi PELAN: hanya ~1% karakter berubah per frame (subtle shimmer)
+ * - Jumlah baris dikurangi: 12 baris (bukan 18)
+ * - Lebih banyak variasi di baris bawah: /, |, #, *, :
  */
 (function() {
   const el = document.getElementById('ascii-canvas');
   if (!el) return;
 
-  // Character pools by density level
-  const pools = [
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '.'],
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '.', '·', ' ', ' ', '.'],
-    [' ', ' ', ' ', ' ', '.', '·', ':', ' ', '.', ':', ' '],
-    [' ', ' ', '.', '·', ':', '|', '/', '.', ':', '*', ' '],
-    [' ', '.', ':', '|', '/', '*', '·', ':', '/', '|', '.', ':'],
-    ['.', ':', '|', '/', '*', ':', '·', ':', '/', '·', '|', '*'],
-    [':', '|', '/', '#', '*', '|', '/', ':', '#', '·', '*', ':', '|'],
-    [':', '|', '/', '#', '*', '|', '/', ':', '#', '|', '*', '"', 'B', '|', '#', '/', '*'],
-    ['#', '|', '/', '#', '*', '/', '#', '|', '*', '"', 'B', '#', '|', '/', '#', '*', '/', '#']
-  ];
+  // Simple characters for different density levels
+  const light = ['.', '·', ':'];
+  const medium = ['.', ':', '·', '/', '|', '*'];
+  const heavy = [':', '/', '|', '#', '*', '/', '#', '|', '"', 'B', '#', '*'];
 
-  const ROWS = 18;
+  const ROWS = 14;
   let cols = 0;
-  let grid = [];  // 2D array of characters
+  let grid = [];
 
   function calcCols() {
-    cols = Math.ceil(window.innerWidth / 7.2);
+    cols = Math.ceil(window.innerWidth / 7.4);
   }
 
-  // Generate initial grid
+  function pickChar(progress) {
+    if (progress < 0.4) return light[Math.floor(Math.random() * light.length)];
+    if (progress < 0.7) return medium[Math.floor(Math.random() * medium.length)];
+    return heavy[Math.floor(Math.random() * heavy.length)];
+  }
+
+  // Density: probability that a cell has a character (not space)
+  function getDensity(progress) {
+    // Top rows: ~5% density, bottom rows: ~50% density
+    return 0.04 + progress * progress * 0.5;
+  }
+
   function buildGrid() {
     calcCols();
     grid = [];
     for (let y = 0; y < ROWS; y++) {
       const row = [];
-      const progress = y / (ROWS - 1);  // 0 top .. 1 bottom
-      const levelIdx = Math.min(pools.length - 1, Math.floor(progress * pools.length));
-      const pool = pools[levelIdx];
+      const p = y / (ROWS - 1);  // 0 = top, 1 = bottom
+      const density = getDensity(p);
 
       for (let x = 0; x < cols; x++) {
-        row.push(pool[Math.floor(Math.random() * pool.length)]);
+        if (Math.random() < density) {
+          row.push(pickChar(p));
+        } else {
+          row.push(' ');
+        }
       }
       grid.push(row);
     }
   }
 
-  // Render grid to element
   function render() {
-    el.textContent = grid.map(row => row.join('')).join('\n');
+    el.textContent = grid.map(r => r.join('')).join('\n');
   }
 
-  // Animate: randomly mutate characters continuously
+  // Subtle shimmer: only ~1% of cells mutate per frame
+  let frameCount = 0;
   function animate() {
-    // Each frame, mutate ~3-5% of all characters
+    frameCount++;
+    // Only update every 3rd frame (~20fps update rate) for performance
+    if (frameCount % 3 !== 0) {
+      requestAnimationFrame(animate);
+      return;
+    }
+
     const totalCells = ROWS * cols;
-    const mutations = Math.max(10, Math.floor(totalCells * 0.04));
+    const mutations = Math.max(3, Math.floor(totalCells * 0.008));
 
     for (let i = 0; i < mutations; i++) {
       const y = Math.floor(Math.random() * ROWS);
       const x = Math.floor(Math.random() * cols);
-      const progress = y / (ROWS - 1);
-      const levelIdx = Math.min(pools.length - 1, Math.floor(progress * pools.length));
-      const pool = pools[levelIdx];
-      grid[y][x] = pool[Math.floor(Math.random() * pool.length)];
+      const p = y / (ROWS - 1);
+      const density = getDensity(p);
+
+      if (Math.random() < density) {
+        grid[y][x] = pickChar(p);
+      } else {
+        grid[y][x] = ' ';
+      }
     }
 
     render();
     requestAnimationFrame(animate);
   }
 
-  // Init
   buildGrid();
   render();
+  setTimeout(() => requestAnimationFrame(animate), 800);
 
-  // Start continuous animation after brief delay
-  setTimeout(() => requestAnimationFrame(animate), 500);
-
-  // Rebuild on resize (debounced)
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      buildGrid();
-      render();
-    }, 300);
+    resizeTimer = setTimeout(() => { buildGrid(); render(); }, 300);
   });
 })();

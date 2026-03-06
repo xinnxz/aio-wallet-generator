@@ -40,7 +40,7 @@
   // ── Create SVG ──
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('viewBox', `0 0 ${VW} ${VH}`);
-  svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  svg.setAttribute('preserveAspectRatio', 'none');
   svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;';
 
   // ── Draw blocks ──
@@ -98,16 +98,16 @@
     const glow = document.createElementNS(NS, 'circle');
     glow.setAttribute('cx', startPos.x);
     glow.setAttribute('cy', startPos.y);
-    glow.setAttribute('r', '18');
+    glow.setAttribute('r', '30');
     glow.setAttribute('fill', cfg.color);
-    glow.setAttribute('opacity', '0.25');
+    glow.setAttribute('opacity', '0.35');
     svg.appendChild(glow);
 
     // Inner bright dot
     const dot = document.createElementNS(NS, 'circle');
     dot.setAttribute('cx', startPos.x);
     dot.setAttribute('cy', startPos.y);
-    dot.setAttribute('r', '4');
+    dot.setAttribute('r', '7');
     dot.setAttribute('fill', cfg.color);
     dot.setAttribute('opacity', '0.9');
     svg.appendChild(dot);

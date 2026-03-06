@@ -87,7 +87,7 @@
       rect.setAttribute('width', pw);
       rect.setAttribute('height', ph);
       rect.setAttribute('fill', 'none');
-      rect.setAttribute('stroke', 'rgba(255,255,255,0.07)');
+      rect.setAttribute('stroke', 'rgba(0,0,0,0.07)');
       rect.setAttribute('stroke-width', '1');
 
       // Corner dots (node titik di sudut kotak)
@@ -100,7 +100,7 @@
         dot.setAttribute('cx', cx);
         dot.setAttribute('cy', cy);
         dot.setAttribute('r', '2');
-        dot.setAttribute('fill', 'rgba(255,255,255,0.12)');
+        dot.setAttribute('fill', 'rgba(0,0,0,0.08)');
         svg.appendChild(dot);
       });
 
@@ -134,7 +134,7 @@
       const path = document.createElementNS(NS, 'path');
       path.setAttribute('d', d);
       path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', 'rgba(255,255,255,0.06)');
+      path.setAttribute('stroke', 'rgba(0,0,0,0.05)');
       path.setAttribute('stroke-width', '1');
       svg.appendChild(path);
       paths.push({ el: path, d });

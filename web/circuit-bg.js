@@ -1,16 +1,10 @@
 /**
- * circuit-bg.js — Fleek.sh-inspired Circuit Flow Animation
+ * circuit-bg.js — Circuit Flow Animation (SVG-only approach)
  * 
- * PENJELASAN:
- * Animasi background sirkuit dengan titik cahaya bergerak.
- * Versi ini pakai requestAnimationFrame (bukan CSS offset-path)
- * untuk kompatibilitas browser yang lebih baik.
+ * SEMUA elemen (blocks, lines, dots) ada di dalam SVG yang sama.
+ * Ini menghindari masalah coordinate mismatch antara HTML divs dan SVG viewBox.
  * 
- * Cara kerja:
- * 1. SVG menggambar kotak-kotak (blocks) dan garis penghubung
- * 2. Titik cahaya (dots) dipindahkan secara manual via JS
- *    di sepanjang waypoints dari path
- * 3. Setiap dot punya warna dan kecepatan berbeda
+ * Dots dianimasikan via requestAnimationFrame mengubah cx/cy attributes.
  */
 (function() {
   const container = document.getElementById('circuit-bg');
@@ -18,19 +12,23 @@
 
   const NS = 'http://www.w3.org/2000/svg';
 
-  // ── Blocks: kotak-kotak sirkuit (persentase) ──
+  // Ukuran viewBox (fixed, lalu SVG di-stretch ke container)
+  const VW = 1400;
+  const VH = 500;
+
+  // ── Block positions (dalam viewBox units) ──
   const blocks = [
-    { x: 3,  y: 8,  w: 25, h: 32 },
-    { x: 30, y: 3,  w: 28, h: 26 },
-    { x: 61, y: 6,  w: 20, h: 34 },
-    { x: 84, y: 10, w: 14, h: 28 },
-    { x: 2,  y: 50, w: 20, h: 38 },
-    { x: 24, y: 44, w: 30, h: 30 },
-    { x: 57, y: 48, w: 24, h: 34 },
-    { x: 83, y: 42, w: 16, h: 40 },
+    { x: 40,  y: 30,  w: 320, h: 160 },
+    { x: 400, y: 15,  w: 360, h: 130 },
+    { x: 820, y: 25,  w: 280, h: 170 },
+    { x: 1150,y: 50,  w: 210, h: 140 },
+    { x: 25,  y: 250, w: 280, h: 190 },
+    { x: 340, y: 220, w: 400, h: 150 },
+    { x: 790, y: 240, w: 320, h: 170 },
+    { x: 1160,y: 210, w: 220, h: 200 },
   ];
 
-  // ── Connections: hubungan antar block ──
+  // ── Connections between blocks ──
   const connections = [
     [0,1], [1,2], [2,3],
     [0,4], [1,5], [2,6], [3,7],
@@ -38,174 +36,172 @@
   ];
 
   // ── Dot configs ──
-  const dotConfigs = [
-    { color: '#22c55e', speed: 0.15 },   // hijau
-    { color: '#3b82f6', speed: 0.12 },   // biru
-    { color: '#f97316', speed: 0.18 },   // oranye
-    { color: '#a855f7', speed: 0.10 },   // ungu
-    { color: '#06b6d4', speed: 0.14 },   // cyan
-  ];
+  const dotColors = ['#22c55e', '#3b82f6', '#f97316', '#a855f7', '#06b6d4'];
+  const dotSpeeds = [0.0012, 0.0009, 0.0015, 0.0008, 0.0011];
 
-  function build() {
-    container.innerHTML = '';
-    const W = container.offsetWidth || 1400;
-    const H = container.offsetHeight || 400;
+  // Create SVG
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${VW} ${VH}`);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
 
-    // ── Create SVG ──
-    const svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('width', '100%');
-    svg.setAttribute('height', '100%');
-    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-    svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
-    container.appendChild(svg);
+  // ── Defs: glow filter ──
+  const defs = document.createElementNS(NS, 'defs');
+  dotColors.forEach((color, i) => {
+    const filter = document.createElementNS(NS, 'filter');
+    filter.setAttribute('id', `glow${i}`);
+    filter.setAttribute('x', '-200%');
+    filter.setAttribute('y', '-200%');
+    filter.setAttribute('width', '500%');
+    filter.setAttribute('height', '500%');
 
-    // ── Draw blocks ──
-    blocks.forEach(b => {
-      const px = (b.x / 100) * W;
-      const py = (b.y / 100) * H;
-      const pw = (b.w / 100) * W;
-      const ph = (b.h / 100) * H;
+    const flood = document.createElementNS(NS, 'feFlood');
+    flood.setAttribute('flood-color', color);
+    flood.setAttribute('flood-opacity', '0.8');
+    flood.setAttribute('result', 'flood');
 
-      const rect = document.createElementNS(NS, 'rect');
-      rect.setAttribute('x', px);
-      rect.setAttribute('y', py);
-      rect.setAttribute('width', pw);
-      rect.setAttribute('height', ph);
-      rect.setAttribute('fill', 'none');
-      rect.setAttribute('stroke', 'rgba(0,0,0,0.09)');
-      rect.setAttribute('stroke-width', '1');
-      svg.appendChild(rect);
+    const composite = document.createElementNS(NS, 'feComposite');
+    composite.setAttribute('in', 'flood');
+    composite.setAttribute('in2', 'SourceGraphic');
+    composite.setAttribute('operator', 'in');
+    composite.setAttribute('result', 'mask');
 
-      // Corner nodes
-      [[px,py],[px+pw,py],[px,py+ph],[px+pw,py+ph]].forEach(([cx,cy]) => {
-        const c = document.createElementNS(NS, 'circle');
-        c.setAttribute('cx', cx);
-        c.setAttribute('cy', cy);
-        c.setAttribute('r', '2');
-        c.setAttribute('fill', 'rgba(0,0,0,0.12)');
-        svg.appendChild(c);
-      });
+    const blur1 = document.createElementNS(NS, 'feGaussianBlur');
+    blur1.setAttribute('in', 'mask');
+    blur1.setAttribute('stdDeviation', '6');
+    blur1.setAttribute('result', 'glow1');
+
+    const blur2 = document.createElementNS(NS, 'feGaussianBlur');
+    blur2.setAttribute('in', 'mask');
+    blur2.setAttribute('stdDeviation', '14');
+    blur2.setAttribute('result', 'glow2');
+
+    const merge = document.createElementNS(NS, 'feMerge');
+    ['glow2', 'glow1', 'SourceGraphic'].forEach(inp => {
+      const node = document.createElementNS(NS, 'feMergeNode');
+      node.setAttribute('in', inp);
+      merge.appendChild(node);
     });
 
-    // ── Draw connections & gather waypoints ──
-    const allPaths = [];
-    connections.forEach(([a, b]) => {
-      const ba = blocks[a], bb = blocks[b];
-      const ax = ((ba.x + ba.w) / 100) * W;
-      const ay = ((ba.y + ba.h / 2) / 100) * H;
-      const bx = (bb.x / 100) * W;
-      const by = ((bb.y + bb.h / 2) / 100) * H;
-      const midX = (ax + bx) / 2;
+    filter.appendChild(flood);
+    filter.appendChild(composite);
+    filter.appendChild(blur1);
+    filter.appendChild(blur2);
+    filter.appendChild(merge);
+    defs.appendChild(filter);
+  });
+  svg.appendChild(defs);
 
-      // Draw L-shape path
-      const d = `M ${ax} ${ay} L ${midX} ${ay} L ${midX} ${by} L ${bx} ${by}`;
-      const path = document.createElementNS(NS, 'path');
-      path.setAttribute('d', d);
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', 'rgba(0,0,0,0.07)');
-      path.setAttribute('stroke-width', '1');
-      svg.appendChild(path);
+  // ── Draw blocks ──
+  blocks.forEach(b => {
+    const rect = document.createElementNS(NS, 'rect');
+    rect.setAttribute('x', b.x);
+    rect.setAttribute('y', b.y);
+    rect.setAttribute('width', b.w);
+    rect.setAttribute('height', b.h);
+    rect.setAttribute('fill', 'none');
+    rect.setAttribute('stroke', 'rgba(0,0,0,0.08)');
+    rect.setAttribute('stroke-width', '1');
+    svg.appendChild(rect);
 
-      // Waypoints for animation
-      allPaths.push([
-        { x: ax, y: ay },
-        { x: midX, y: ay },
-        { x: midX, y: by },
-        { x: bx, y: by },
-      ]);
+    // Corner nodes
+    [[b.x, b.y], [b.x+b.w, b.y], [b.x, b.y+b.h], [b.x+b.w, b.y+b.h]].forEach(([cx, cy]) => {
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', cx);
+      c.setAttribute('cy', cy);
+      c.setAttribute('r', '2.5');
+      c.setAttribute('fill', 'rgba(0,0,0,0.1)');
+      svg.appendChild(c);
     });
+  });
 
-    // ── Create animated dots ──
-    const dots = [];
-    const shuffled = allPaths.sort(() => Math.random() - 0.5);
+  // ── Draw connections & build waypoints ──
+  const allWaypoints = [];
+  connections.forEach(([a, b]) => {
+    const ba = blocks[a], bb = blocks[b];
+    const ax = ba.x + ba.w;
+    const ay = ba.y + ba.h / 2;
+    const bx = bb.x;
+    const by = bb.y + bb.h / 2;
+    const midX = (ax + bx) / 2;
 
-    dotConfigs.forEach((cfg, i) => {
-      if (i >= shuffled.length) return;
-      const waypoints = shuffled[i];
+    const d = `M ${ax} ${ay} L ${midX} ${ay} L ${midX} ${by} L ${bx} ${by}`;
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'rgba(0,0,0,0.06)');
+    path.setAttribute('stroke-width', '1');
+    svg.appendChild(path);
 
-      const el = document.createElement('div');
-      el.style.cssText = `
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: ${cfg.color};
-        box-shadow: 0 0 8px 3px ${cfg.color}, 0 0 20px 8px ${cfg.color}99, 0 0 40px 14px ${cfg.color}44;
-        pointer-events: none;
-        z-index: 2;
-        transform: translate(-50%, -50%);
-      `;
-      container.appendChild(el);
+    allWaypoints.push([
+      { x: ax, y: ay },
+      { x: midX, y: ay },
+      { x: midX, y: by },
+      { x: bx, y: by },
+    ]);
+  });
 
-      dots.push({
-        el,
-        waypoints,
-        progress: Math.random(),     // mulai di posisi random
-        speed: cfg.speed / 100,       // kecepatan per frame
-        direction: 1,                 // 1 = maju, -1 = mundur
-      });
+  // ── Create dot circles (INSIDE SVG) ──
+  const shuffled = [...allWaypoints].sort(() => Math.random() - 0.5);
+  const dots = [];
+
+  dotColors.forEach((color, i) => {
+    if (i >= shuffled.length) return;
+    const waypoints = shuffled[i];
+
+    const circle = document.createElementNS(NS, 'circle');
+    circle.setAttribute('r', '5');
+    circle.setAttribute('fill', color);
+    circle.setAttribute('filter', `url(#glow${i})`);
+    svg.appendChild(circle);
+
+    dots.push({
+      el: circle,
+      waypoints,
+      progress: Math.random(),
+      speed: dotSpeeds[i],
+      direction: 1,
     });
+  });
 
-    return dots;
-  }
+  container.appendChild(svg);
 
-  // ── Hitung posisi di sepanjang waypoints ──
-  function getPosition(waypoints, t) {
-    // Hitung total panjang path
+  // ── Position along waypoints ──
+  function getPos(wp, t) {
     let totalLen = 0;
     const segLens = [];
-    for (let i = 1; i < waypoints.length; i++) {
-      const dx = waypoints[i].x - waypoints[i-1].x;
-      const dy = waypoints[i].y - waypoints[i-1].y;
-      const len = Math.sqrt(dx*dx + dy*dy);
-      segLens.push(len);
-      totalLen += len;
+    for (let i = 1; i < wp.length; i++) {
+      const dx = wp[i].x - wp[i-1].x;
+      const dy = wp[i].y - wp[i-1].y;
+      segLens.push(Math.sqrt(dx*dx + dy*dy));
+      totalLen += segLens[segLens.length - 1];
     }
-
-    // Cari posisi pada t (0-1)
     let target = t * totalLen;
     for (let i = 0; i < segLens.length; i++) {
       if (target <= segLens[i]) {
-        const ratio = target / segLens[i];
+        const r = target / segLens[i];
         return {
-          x: waypoints[i].x + (waypoints[i+1].x - waypoints[i].x) * ratio,
-          y: waypoints[i].y + (waypoints[i+1].y - waypoints[i].y) * ratio,
+          x: wp[i].x + (wp[i+1].x - wp[i].x) * r,
+          y: wp[i].y + (wp[i+1].y - wp[i].y) * r,
         };
       }
       target -= segLens[i];
     }
-    return waypoints[waypoints.length - 1];
+    return wp[wp.length - 1];
   }
 
-  // ── Animation loop ──
-  let dots = build();
-
+  // ── Animate ──
   function animate() {
     dots.forEach(d => {
       d.progress += d.speed * d.direction;
+      if (d.progress >= 1) { d.progress = 1; d.direction = -1; }
+      else if (d.progress <= 0) { d.progress = 0; d.direction = 1; }
 
-      // Balik arah jika sudah sampai ujung
-      if (d.progress >= 1) {
-        d.progress = 1;
-        d.direction = -1;
-      } else if (d.progress <= 0) {
-        d.progress = 0;
-        d.direction = 1;
-      }
-
-      const pos = getPosition(d.waypoints, d.progress);
-      d.el.style.left = pos.x + 'px';
-      d.el.style.top = pos.y + 'px';
+      const pos = getPos(d.waypoints, d.progress);
+      d.el.setAttribute('cx', pos.x);
+      d.el.setAttribute('cy', pos.y);
     });
     requestAnimationFrame(animate);
   }
   animate();
-
-  // ── Responsive rebuild ──
-  let timer;
-  window.addEventListener('resize', () => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { dots = build(); }, 500);
-  });
 })();

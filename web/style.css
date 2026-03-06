@@ -366,25 +366,6 @@ body {
   z-index: 0;
   pointer-events: none;
 }
-.circuit-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--dot-color, #3b82f6);
-  box-shadow:
-    0 0 6px 2px var(--dot-color, #3b82f6),
-    0 0 16px 4px var(--dot-color, #3b82f6),
-    0 0 30px 8px color-mix(in srgb, var(--dot-color, #3b82f6) 40%, transparent);
-  z-index: 2;
-  pointer-events: none;
-  will-change: offset-distance;
-}
-
-@keyframes circuitPathLoop {
-  0%   { offset-distance: 0%; }
-  100% { offset-distance: 100%; }
-}
 
 .hero-content {
   position: relative;

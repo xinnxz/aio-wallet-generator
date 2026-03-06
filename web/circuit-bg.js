@@ -1,22 +1,17 @@
 /**
- * circuit-bg.js — Circuit Flow Animation (SVG-only approach)
+ * circuit-bg.js — Circuit Flow Animation (Simplified, Reliable)
  * 
- * SEMUA elemen (blocks, lines, dots) ada di dalam SVG yang sama.
- * Ini menghindari masalah coordinate mismatch antara HTML divs dan SVG viewBox.
- * 
- * Dots dianimasikan via requestAnimationFrame mengubah cx/cy attributes.
+ * Uses simple SVG circles with opacity (no complex filters).
+ * All coordinates in viewBox space. Animation via requestAnimationFrame.
  */
 (function() {
   const container = document.getElementById('circuit-bg');
   if (!container) return;
 
   const NS = 'http://www.w3.org/2000/svg';
+  const VW = 1400, VH = 500;
 
-  // Ukuran viewBox (fixed, lalu SVG di-stretch ke container)
-  const VW = 1400;
-  const VH = 500;
-
-  // ── Block positions (dalam viewBox units) ──
+  // Block positions
   const blocks = [
     { x: 40,  y: 30,  w: 320, h: 160 },
     { x: 400, y: 15,  w: 360, h: 130 },
@@ -28,69 +23,25 @@
     { x: 1160,y: 210, w: 220, h: 200 },
   ];
 
-  // ── Connections between blocks ──
   const connections = [
-    [0,1], [1,2], [2,3],
-    [0,4], [1,5], [2,6], [3,7],
-    [4,5], [5,6], [6,7],
+    [0,1],[1,2],[2,3],
+    [0,4],[1,5],[2,6],[3,7],
+    [4,5],[5,6],[6,7],
   ];
 
-  // ── Dot configs ──
-  const dotColors = ['#22c55e', '#3b82f6', '#f97316', '#a855f7', '#06b6d4'];
-  const dotSpeeds = [0.0012, 0.0009, 0.0015, 0.0008, 0.0011];
+  const dotCfg = [
+    { color: '#22c55e', speed: 0.003 },
+    { color: '#3b82f6', speed: 0.002 },
+    { color: '#f97316', speed: 0.004 },
+    { color: '#a855f7', speed: 0.0025 },
+    { color: '#06b6d4', speed: 0.003 },
+  ];
 
-  // Create SVG
+  // ── Create SVG ──
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('viewBox', `0 0 ${VW} ${VH}`);
   svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-  svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
-
-  // ── Defs: glow filter ──
-  const defs = document.createElementNS(NS, 'defs');
-  dotColors.forEach((color, i) => {
-    const filter = document.createElementNS(NS, 'filter');
-    filter.setAttribute('id', `glow${i}`);
-    filter.setAttribute('x', '-200%');
-    filter.setAttribute('y', '-200%');
-    filter.setAttribute('width', '500%');
-    filter.setAttribute('height', '500%');
-
-    const flood = document.createElementNS(NS, 'feFlood');
-    flood.setAttribute('flood-color', color);
-    flood.setAttribute('flood-opacity', '0.8');
-    flood.setAttribute('result', 'flood');
-
-    const composite = document.createElementNS(NS, 'feComposite');
-    composite.setAttribute('in', 'flood');
-    composite.setAttribute('in2', 'SourceGraphic');
-    composite.setAttribute('operator', 'in');
-    composite.setAttribute('result', 'mask');
-
-    const blur1 = document.createElementNS(NS, 'feGaussianBlur');
-    blur1.setAttribute('in', 'mask');
-    blur1.setAttribute('stdDeviation', '6');
-    blur1.setAttribute('result', 'glow1');
-
-    const blur2 = document.createElementNS(NS, 'feGaussianBlur');
-    blur2.setAttribute('in', 'mask');
-    blur2.setAttribute('stdDeviation', '14');
-    blur2.setAttribute('result', 'glow2');
-
-    const merge = document.createElementNS(NS, 'feMerge');
-    ['glow2', 'glow1', 'SourceGraphic'].forEach(inp => {
-      const node = document.createElementNS(NS, 'feMergeNode');
-      node.setAttribute('in', inp);
-      merge.appendChild(node);
-    });
-
-    filter.appendChild(flood);
-    filter.appendChild(composite);
-    filter.appendChild(blur1);
-    filter.appendChild(blur2);
-    filter.appendChild(merge);
-    defs.appendChild(filter);
-  });
-  svg.appendChild(defs);
+  svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;';
 
   // ── Draw blocks ──
   blocks.forEach(b => {
@@ -105,11 +56,11 @@
     svg.appendChild(rect);
 
     // Corner nodes
-    [[b.x, b.y], [b.x+b.w, b.y], [b.x, b.y+b.h], [b.x+b.w, b.y+b.h]].forEach(([cx, cy]) => {
+    [[b.x, b.y],[b.x+b.w, b.y],[b.x, b.y+b.h],[b.x+b.w, b.y+b.h]].forEach(([cx,cy]) => {
       const c = document.createElementNS(NS, 'circle');
       c.setAttribute('cx', cx);
       c.setAttribute('cy', cy);
-      c.setAttribute('r', '2.5');
+      c.setAttribute('r', '2');
       c.setAttribute('fill', 'rgba(0,0,0,0.1)');
       svg.appendChild(c);
     });
@@ -119,13 +70,11 @@
   const allWaypoints = [];
   connections.forEach(([a, b]) => {
     const ba = blocks[a], bb = blocks[b];
-    const ax = ba.x + ba.w;
-    const ay = ba.y + ba.h / 2;
-    const bx = bb.x;
-    const by = bb.y + bb.h / 2;
+    const ax = ba.x + ba.w, ay = ba.y + ba.h/2;
+    const bx = bb.x, by = bb.y + bb.h/2;
     const midX = (ax + bx) / 2;
 
-    const d = `M ${ax} ${ay} L ${midX} ${ay} L ${midX} ${by} L ${bx} ${by}`;
+    const d = `M${ax},${ay} L${midX},${ay} L${midX},${by} L${bx},${by}`;
     const path = document.createElementNS(NS, 'path');
     path.setAttribute('d', d);
     path.setAttribute('fill', 'none');
@@ -133,40 +82,47 @@
     path.setAttribute('stroke-width', '1');
     svg.appendChild(path);
 
-    allWaypoints.push([
-      { x: ax, y: ay },
-      { x: midX, y: ay },
-      { x: midX, y: by },
-      { x: bx, y: by },
-    ]);
+    allWaypoints.push([{x:ax,y:ay},{x:midX,y:ay},{x:midX,y:by},{x:bx,y:by}]);
   });
 
-  // ── Create dot circles (INSIDE SVG) ──
+  // ── Create dots — SIMPLE approach: circle + larger blurred circle behind ──
   const shuffled = [...allWaypoints].sort(() => Math.random() - 0.5);
   const dots = [];
 
-  dotColors.forEach((color, i) => {
+  dotCfg.forEach((cfg, i) => {
     if (i >= shuffled.length) return;
-    const waypoints = shuffled[i];
+    const wp = shuffled[i];
+    const startPos = getPos(wp, Math.random());
 
-    const circle = document.createElementNS(NS, 'circle');
-    circle.setAttribute('r', '5');
-    circle.setAttribute('fill', color);
-    circle.setAttribute('filter', `url(#glow${i})`);
-    svg.appendChild(circle);
+    // Outer glow (larger, blurred, semi-transparent)
+    const glow = document.createElementNS(NS, 'circle');
+    glow.setAttribute('cx', startPos.x);
+    glow.setAttribute('cy', startPos.y);
+    glow.setAttribute('r', '18');
+    glow.setAttribute('fill', cfg.color);
+    glow.setAttribute('opacity', '0.25');
+    svg.appendChild(glow);
+
+    // Inner bright dot
+    const dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('cx', startPos.x);
+    dot.setAttribute('cy', startPos.y);
+    dot.setAttribute('r', '4');
+    dot.setAttribute('fill', cfg.color);
+    dot.setAttribute('opacity', '0.9');
+    svg.appendChild(dot);
 
     dots.push({
-      el: circle,
-      waypoints,
+      dot, glow, waypoints: wp,
       progress: Math.random(),
-      speed: dotSpeeds[i],
+      speed: cfg.speed,
       direction: 1,
     });
   });
 
   container.appendChild(svg);
 
-  // ── Position along waypoints ──
+  // ── Waypoint interpolation ──
   function getPos(wp, t) {
     let totalLen = 0;
     const segLens = [];
@@ -190,18 +146,21 @@
     return wp[wp.length - 1];
   }
 
-  // ── Animate ──
+  // ── Animation loop ──
   function animate() {
-    dots.forEach(d => {
+    for (let i = 0; i < dots.length; i++) {
+      const d = dots[i];
       d.progress += d.speed * d.direction;
       if (d.progress >= 1) { d.progress = 1; d.direction = -1; }
       else if (d.progress <= 0) { d.progress = 0; d.direction = 1; }
 
       const pos = getPos(d.waypoints, d.progress);
-      d.el.setAttribute('cx', pos.x);
-      d.el.setAttribute('cy', pos.y);
-    });
+      d.dot.setAttribute('cx', pos.x);
+      d.dot.setAttribute('cy', pos.y);
+      d.glow.setAttribute('cx', pos.x);
+      d.glow.setAttribute('cy', pos.y);
+    }
     requestAnimationFrame(animate);
   }
-  animate();
+  requestAnimationFrame(animate);
 })();

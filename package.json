@@ -27,7 +27,7 @@
     "validate",
     "convert"
   ],
-  "author": "",
+  "author": "xinnxz",
   "license": "MIT",
   "dependencies": {
     "ethers": "^6.13.0",

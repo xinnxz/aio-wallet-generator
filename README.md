@@ -1,6 +1,8 @@
 # ⚡ AIO Chain — All-in-One Web3 Wallet Toolkit
 
-> Generate, validate, convert, and secure crypto wallets across **9 chains / 30+ networks** — from **Web**, **CLI**, **Browser Extension**, or **Mobile App**.
+[![npm version](https://img.shields.io/npm/v/web3-wallet-toolkit.svg?style=flat-square)](https://www.npmjs.com/package/web3-wallet-toolkit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)> Generate, validate, convert, and secure crypto wallets across **9 chains / 30+ networks** — from **Web**, **CLI**, **Browser Extension**, or **Mobile App**.
 
 100% **client-side**. Zero tracking. Open source.
 
@@ -171,6 +173,20 @@ aio-wallet-generator/
 
 ---
 
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more details on how to get started.
+
+## Security
+
+If you discover any security related issues, please refer to our [Security Policy](SECURITY.md) for reporting guidelines.
+
+## Code of Conduct
+
+To ensure a welcoming, safe, and inclusive environment, all participants must adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+---
+
 ## License
 
-MIT
+MIT License. See the [LICENSE](LICENSE) file for more information.

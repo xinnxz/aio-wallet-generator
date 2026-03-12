@@ -28,7 +28,7 @@
     "convert"
   ],
   "author": "xinnxz",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "dependencies": {
     "ethers": "^6.13.0",
     "@solana/web3.js": "^1.95.0",
